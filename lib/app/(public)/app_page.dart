@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:routefly/routefly.dart';
 
+import '../core/assets/sounds.dart' as sounds;
+import '../core/assets/static.dart' as img;
+import '../interactor/actions/game_action.dart';
+
 class AppPage extends StatefulWidget {
   const AppPage({super.key});
 
@@ -11,13 +15,15 @@ class AppPage extends StatefulWidget {
 
 class _AppPageState extends State<AppPage> {
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      Future.delayed(const Duration(seconds: 1), () {
-        Routefly.navigate('/home');
-      });
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Future.wait([
+      fetchGamesAction(),
+      img.precacheCache(context),
+      sounds.precacheCache(),
+    ]).whenComplete(() {
+      sounds.introSound();
+      Routefly.navigate('/home');
     });
   }
 

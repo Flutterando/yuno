@@ -1,5 +1,6 @@
 import 'package:yuno/app/core/services/game_service.dart';
 
+import 'game_category.dart';
 import 'game_platform.dart';
 
 class Game {
@@ -9,7 +10,7 @@ class Game {
   final GamePlatform platform;
   final String image;
   final String path;
-  final String? category;
+  final GameCategory category;
   final String? genre;
   final String? publisher;
 
@@ -20,7 +21,7 @@ class Game {
     required this.platform,
     required this.image,
     required this.path,
-    this.category,
+    required this.category,
     this.genre,
     this.publisher,
   });

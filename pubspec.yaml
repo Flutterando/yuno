@@ -48,6 +48,7 @@ dependencies:
   file_selector: ^1.0.2
   android_intent_plus: ^4.0.3
   file_picker: ^6.1.1
+  soundpool: ^2.4.1
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/static/
+    - assets/sounds/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

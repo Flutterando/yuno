@@ -7,11 +7,10 @@ import 'package:routefly/routefly.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:yuno/app/core/services/game_service.dart';
 import 'package:yuno/app/core/widgets/animated_floating_action_button.dart';
-import 'package:yuno/app/interactor/models/game.dart';
-import 'package:yuno/app/interactor/models/platforms/aethersx2.dart';
 import 'package:yuno/injector.dart';
 import 'package:yuno/routes.dart';
 
+import '../core/assets/sounds.dart' as sounds;
 import '../core/assets/static.dart' as assets;
 import '../core/widgets/animated_menu_leading.dart';
 import '../core/widgets/animated_title_app_bart.dart';
@@ -66,50 +65,49 @@ class _HomePageState extends State<HomePage> {
   }
 
   void handleKey(GamepadButton event) {
-    if (event == GamepadButton.dpadDown || event == GamepadButton.leftStickDown) {
-      setState(() {
-        selectedItemIndex = (selectedItemIndex + crossAxisCount) % itemCount; // Assumindo 20 itens
-      });
-      handlerSelect(selectedItemIndex.toInt());
-    } else if (event == GamepadButton.dpadUp || event == GamepadButton.leftStickUp) {
-      setState(() {
-        selectedItemIndex = (selectedItemIndex - crossAxisCount) >= 0 ? selectedItemIndex - crossAxisCount : selectedItemIndex;
-      });
-      handlerSelect(selectedItemIndex.toInt());
-    } else if (event == GamepadButton.dpadLeft) {
-      setState(() {
-        selectedItemIndex = selectedItemIndex > 0 ? selectedItemIndex - 1 : selectedItemIndex;
-      });
-      handlerSelect(selectedItemIndex.toInt());
-    } else if (event == GamepadButton.dpadRight) {
-      setState(() {
-        selectedItemIndex = (selectedItemIndex + 1) % itemCount;
-      });
-      handlerSelect(selectedItemIndex.toInt());
-    } else if (event == GamepadButton.LB) {
-      setState(() {
-        selectedDestinationIndex = (selectedDestinationIndex - 1) >= 0 ? selectedDestinationIndex - 1 : selectedDestinationIndex;
-      });
-      menuScrollController.scrollToIndex(
-        selectedDestinationIndex,
-        preferPosition: AutoScrollPosition.middle,
-      );
-    } else if (event == GamepadButton.RB) {
-      setState(() {
-        selectedDestinationIndex = selectedDestinationIndex + 1;
-      });
-      menuScrollController.scrollToIndex(
-        selectedDestinationIndex,
-        preferPosition: AutoScrollPosition.middle,
-      );
-    } else if (event == GamepadButton.select) {
-      setState(() {
-        hasRailsExtanded = !hasRailsExtanded;
-      });
+    switch (event) {
+      case GamepadButton.dpadDown || GamepadButton.leftStickDown:
+        handlerSelect((selectedItemIndex + crossAxisCount) % itemCount);
+      case GamepadButton.dpadUp || GamepadButton.leftStickUp:
+        handlerSelect((selectedItemIndex - crossAxisCount) >= 0 ? selectedItemIndex - crossAxisCount : selectedItemIndex);
+      case GamepadButton.dpadLeft || GamepadButton.leftStickLeft:
+        handlerSelect(selectedItemIndex > 0 ? selectedItemIndex - 1 : selectedItemIndex);
+      case GamepadButton.dpadRight || GamepadButton.leftStickRight:
+        handlerSelect((selectedItemIndex + 1) % itemCount);
+      case GamepadButton.LB:
+        handlerDestinationSelect((selectedDestinationIndex - 1) >= 0 ? selectedDestinationIndex - 1 : selectedDestinationIndex);
+      case GamepadButton.RB:
+        handlerDestinationSelect(selectedDestinationIndex + 1);
+      case GamepadButton.select:
+        setState(() {
+          hasRailsExtanded = !hasRailsExtanded;
+        });
+      case GamepadButton.buttonA:
+      case GamepadButton.buttonB:
+      case GamepadButton.buttonX:
+      case GamepadButton.buttonY:
+      case GamepadButton.start:
+      case GamepadButton.rightThumb:
+      case GamepadButton.leftThumb:
     }
   }
 
+  void handlerDestinationSelect(int index) {
+    sounds.doubleSound();
+    setState(() {
+      selectedDestinationIndex = index;
+    });
+    menuScrollController.scrollToIndex(
+      index,
+      preferPosition: AutoScrollPosition.middle,
+    );
+  }
+
   void handlerSelect(int index) {
+    sounds.clickSound();
+    setState(() {
+      selectedItemIndex = index;
+    });
     _updateTitle('Game ${index + 1}');
     scrollController.scrollToIndex(
       index,
@@ -321,30 +319,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         floatingActionButton: AnimatedFloatingActionButton(
-          onPressed: () async {
-            //String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-            //print(selectedDirectory);
-            //print(Directory(selectedDirectory!).listSync());
-            // final directoryPath = await getDirectoryPath();
-            // if (directoryPath != null) {
-            //   final uri = Uri.decodeFull(directoryPath);
-            //   final dir = Directory.fromUri(Uri.directory(uri));
-            //   print(dir.existsSync());
-            //   return;
-            // }
-
-            final game = Game(
-              id: 'id',
-              name: '',
-              description: 'description',
-              platform: AetherSX2(),
-              image: 'image',
-              path:
-                  'content://com.android.externalstorage.documents/tree/primary${Uri.encodeComponent(':Emulation/rooms/ps2')}/document/primary${Uri.encodeComponent(':Emulation/rooms/ps2/Prince of Persia - The Sands of Time (USA) (En,Fr,Es).iso')}',
-            );
-
-            game.executeGame(injector.get<GameService>());
-          },
+          onPressed: () async {},
           label: 'Add Game',
           icon: Icons.add,
           animation: widget.transitionAnimation,
