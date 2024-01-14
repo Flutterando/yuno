@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'bubble_background.dart';
+import 'particles_background.dart';
 import 'waves_background.dart';
 
 enum BackgroundType {
   waves,
   bubble,
+  particles,
   none,
 }
 
@@ -19,6 +21,7 @@ class Background extends StatelessWidget {
     return switch (type) {
       BackgroundType.waves => WaveBackground(color: color),
       BackgroundType.bubble => BubbleBackground(color: color, key: ValueKey(color)),
+      BackgroundType.particles => ParticlesBackground(color: color),
       BackgroundType.none => const SizedBox(),
     };
   }

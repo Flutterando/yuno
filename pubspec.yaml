@@ -55,6 +55,7 @@ dependencies:
   floating_bubbles: ^2.6.1
   wave: ^0.2.2
   loading_animation_widget: ^1.2.0+4
+  newton_particles: ^0.1.7
 
 dev_dependencies:
   flutter_native_splash: ^2.3.9
