@@ -51,6 +51,10 @@ dependencies:
   soundpool: ^2.4.1
   uno: ^1.1.9
   wakelock_plus: ^1.1.4
+  shared_preferences: ^2.2.2
+  floating_bubbles: ^2.6.1
+  wave: ^0.2.2
+  loading_animation_widget: ^1.2.0+4
 
 dev_dependencies:
   flutter_test:

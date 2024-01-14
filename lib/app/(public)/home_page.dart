@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:routefly/routefly.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:yuno/app/core/services/game_service.dart';
+import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/atoms/game_atom.dart';
 import 'package:yuno/app/interactor/models/game.dart';
 import 'package:yuno/injector.dart';
@@ -14,6 +15,7 @@ import 'package:yuno/routes.dart';
 import '../core/assets/sounds.dart' as sounds;
 import '../core/widgets/animated_menu_leading.dart';
 import '../core/widgets/animated_title_app_bart.dart';
+import '../core/widgets/background/background.dart';
 import '../core/widgets/card_tile/card_tile.dart';
 import '../core/widgets/command_bar.dart';
 
@@ -89,26 +91,62 @@ class _HomePageState extends State<HomePage> {
         handlerDestinationSelect(selectedDestinationIndex - 1);
       case GamepadButton.RB:
         handlerDestinationSelect(selectedDestinationIndex + 1);
-      case GamepadButton.select:
-        switchRail();
+      case GamepadButton.start:
+      default:
+        if (gameConfigState.value.swapABXY) {
+          abxy(event);
+        } else {
+          bayx(event);
+        }
+    }
+  }
+
+  void bayx(GamepadButton event) {
+    switch (event) {
+      case GamepadButton.buttonA:
+        openApps();
+      case GamepadButton.buttonB:
+        openGame();
+      case GamepadButton.buttonX:
+        openSettings();
+      case GamepadButton.buttonY:
+        favorite();
+      default:
+    }
+  }
+
+  void abxy(GamepadButton event) {
+    switch (event) {
       case GamepadButton.buttonA:
         openGame();
       case GamepadButton.buttonB:
         openApps();
       case GamepadButton.buttonX:
+        favorite();
       case GamepadButton.buttonY:
         openSettings();
-      case GamepadButton.start:
-      case GamepadButton.rightThumb:
-      case GamepadButton.leftThumb:
+      default:
     }
   }
 
+  void favorite() {}
+
+  void resetConfig() {
+    setState(() {
+      title = 'Home';
+      newColorScheme = null;
+      selectedItemIndex = -1;
+    });
+  }
+
   void openSettings() {
+    resetConfig();
     Routefly.push(routePaths.config);
   }
 
-  void openApps() {}
+  void openApps() {
+    resetConfig();
+  }
 
   void switchRail() {
     sounds.openRail();
@@ -177,7 +215,7 @@ class _HomePageState extends State<HomePage> {
       } else {
         newColorScheme = await ColorScheme.fromImageProvider(
           provider: FileImage(File(game.image)),
-          brightness: Brightness.light,
+          brightness: Theme.of(context).brightness,
         );
       }
 
@@ -200,6 +238,8 @@ class _HomePageState extends State<HomePage> {
     return RxBuilder(builder: (context) {
       var Size(:width) = MediaQuery.sizeOf(context);
 
+      final config = gameConfigState.value;
+
       const itemWidth = 140.0;
       final railsMinWidth = hasRailsExtanded ? 256.0 : 72.0;
 
@@ -211,104 +251,117 @@ class _HomePageState extends State<HomePage> {
       }
 
       final theme = Theme.of(context);
+      final colorScheme = newColorScheme ?? theme.colorScheme;
 
       return Theme(
-        data: newColorScheme == null
-            ? theme
-            : theme.copyWith(
-                colorScheme: newColorScheme!,
-              ),
-        child: FocusScope(
-          canRequestFocus: false,
-          child: Scaffold(
-            appBar: AnimatedTitleAppBar(
-              leading: IconButton(
-                icon: AnimatedMenuLeading(
-                  isCloseMenu: hasRailsExtanded,
-                  icon: AnimatedIcons.menu_close,
-                ),
-                onPressed: switchRail,
-              ),
-              title: title,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () {
-                    Routefly.push(routePaths.config);
-                  },
-                ),
-              ],
+        data: theme.copyWith(
+          colorScheme: colorScheme,
+        ),
+        child: Stack(
+          children: [
+            Container(
+              color: colorScheme.background,
             ),
-            body: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SingleChildScrollView(
-                  controller: menuScrollController,
-                  child: IntrinsicHeight(
-                    child: NavigationRail(
-                      extended: hasRailsExtanded,
-                      onDestinationSelected: (value) {
-                        handlerDestinationSelect(value);
+            Background(
+              type: config.backgroundType,
+              color: colorScheme.primaryContainer,
+            ),
+            FocusScope(
+              canRequestFocus: false,
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                appBar: AnimatedTitleAppBar(
+                  backgroundColor: Colors.transparent,
+                  leading: IconButton(
+                    icon: AnimatedMenuLeading(
+                      isCloseMenu: hasRailsExtanded,
+                      icon: AnimatedIcons.menu_close,
+                    ),
+                    onPressed: switchRail,
+                  ),
+                  title: title,
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.search),
+                      onPressed: () {
+                        // Routefly.push(routePaths.search);
                       },
-                      destinations: [
-                        for (var i = 0; i < availableCategoriesState.length; i++)
-                          NavigationRailDestination(
-                            icon: AutoScrollTag(
-                                controller: menuScrollController,
-                                index: i,
-                                key: ValueKey(i),
-                                child: Image.asset(
-                                  availableCategoriesState[i].image,
-                                  width: 32,
-                                )),
-                            label: Text(availableCategoriesState[i].name),
-                          ),
-                      ],
-                      selectedIndex: selectedDestinationIndex,
                     ),
-                  ),
+                  ],
                 ),
-                Expanded(
-                  child: GridView.builder(
-                    controller: scrollController,
-                    addAutomaticKeepAlives: true,
-                    padding: const EdgeInsets.only(bottom: 120),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      childAspectRatio: 3 / 5,
-                    ),
-                    itemCount: games.length,
-                    itemBuilder: (context, index) {
-                      return AutoScrollTag(
-                        index: index,
-                        key: ValueKey(index),
-                        controller: scrollController,
-                        child: CardTile(
-                          game: games[index],
-                          transitionAnimation: widget.transitionAnimation,
-                          selected: selectedItemIndex == index,
-                          onTap: () {
-                            if (index == selectedItemIndex) {
-                              openGame();
-                            } else {
-                              handlerSelect(index);
-                            }
+                body: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SingleChildScrollView(
+                      controller: menuScrollController,
+                      child: IntrinsicHeight(
+                        child: NavigationRail(
+                          backgroundColor: Colors.transparent,
+                          extended: hasRailsExtanded,
+                          onDestinationSelected: (value) {
+                            handlerDestinationSelect(value);
                           },
-                          index: index,
-                          gamesLength: games.length,
+                          destinations: [
+                            for (var i = 0; i < availableCategoriesState.length; i++)
+                              NavigationRailDestination(
+                                icon: AutoScrollTag(
+                                    controller: menuScrollController,
+                                    index: i,
+                                    key: ValueKey(i),
+                                    child: Image.asset(
+                                      availableCategoriesState[i].image,
+                                      width: 32,
+                                    )),
+                                label: Text(availableCategoriesState[i].name),
+                              ),
+                          ],
+                          selectedIndex: selectedDestinationIndex,
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GridView.builder(
+                        controller: scrollController,
+                        addAutomaticKeepAlives: true,
+                        padding: const EdgeInsets.only(bottom: 120),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          childAspectRatio: 3 / 5,
+                        ),
+                        itemCount: games.length,
+                        itemBuilder: (context, index) {
+                          return AutoScrollTag(
+                            index: index,
+                            key: ValueKey(index),
+                            controller: scrollController,
+                            child: CardTile(
+                              game: games[index],
+                              transitionAnimation: widget.transitionAnimation,
+                              selected: selectedItemIndex == index,
+                              onTap: () {
+                                if (index == selectedItemIndex) {
+                                  openGame();
+                                } else {
+                                  handlerSelect(index);
+                                }
+                              },
+                              index: index,
+                              gamesLength: games.length,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+                bottomNavigationBar: NavigationCommand(
+                  onApps: openApps,
+                  onSettings: openSettings,
+                  onPlay: openGame,
+                ),
+              ),
             ),
-            bottomNavigationBar: NavigationCommand(
-              onApps: openApps,
-              onSettings: openSettings,
-              onPlay: openGame,
-            ),
-          ),
+          ],
         ),
       );
     });

@@ -8,11 +8,7 @@ List<RouteEntity> get routes => [
   RouteEntity(
     key: '/config',
     uri: Uri.parse('/config'),
-    routeBuilder: (ctx, settings) => Routefly.defaultRouteBuilder(
-      ctx,
-      settings,
-      const a0.ConfigPage(),
-    ),
+    routeBuilder: a0.routeBuilder,
   ),
   RouteEntity(
     key: '/home',

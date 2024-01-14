@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:routefly/routefly.dart';
+import 'package:yuno/routes.dart';
 
 import '../core/assets/sounds.dart' as sounds;
 import '../core/assets/static.dart' as img;
@@ -21,22 +24,32 @@ class _AppPageState extends State<AppPage> {
       firstInitialization(context),
       img.precacheCache(context),
       sounds.precacheCache(),
+      Future.delayed(const Duration(seconds: 2)),
     ]).whenComplete(() {
       sounds.introSound();
-      Routefly.navigate('/home');
+      Routefly.navigate(routePaths.home);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Material(
-      child: Center(
-        child: Text(
-          'YuNO',
-          style: GoogleFonts.lemon(
-            fontSize: 48,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'YuNO',
+            style: GoogleFonts.lemon(
+              fontSize: 48,
+            ),
           ),
-        ),
+          const Gap(7),
+          LoadingAnimationWidget.staggeredDotsWave(
+            size: 40,
+            color: theme.colorScheme.onBackground,
+          ),
+        ],
       ),
     );
   }

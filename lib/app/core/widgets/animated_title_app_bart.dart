@@ -1,14 +1,20 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+const _dicionary = [' '];
 
 class AnimatedTitleAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final Widget? leading;
   final List<Widget> actions;
+  final Color? backgroundColor;
 
   AnimatedTitleAppBar({
     super.key,
     required this.title,
+    this.backgroundColor,
     this.actions = const [],
     this.leading,
   }) : assert(title.isNotEmpty);
@@ -34,7 +40,11 @@ class _CustomAppBarState extends State<AnimatedTitleAppBar> with SingleTickerPro
       vsync: this,
     );
     controller.addListener(() {
-      final textoParcial = widget.title.substring(0, (widget.title.length * controller.value).round());
+      var textoParcial = widget.title.substring(0, (widget.title.length * controller.value).round());
+
+      if (textoParcial != widget.title) {
+        textoParcial += getRandomCharacter();
+      }
 
       setState(() {
         title = textoParcial;
@@ -44,6 +54,22 @@ class _CustomAppBarState extends State<AnimatedTitleAppBar> with SingleTickerPro
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.forward();
     });
+  }
+
+  String getRandomCharacter() {
+    Random random = Random();
+    int choice = random.nextInt(3);
+
+    if (choice == 0) {
+      // Gera um número aleatório (ASCII 48 a 57)
+      return String.fromCharCode(random.nextInt(10) + 48);
+    } else if (choice == 1) {
+      // Gera uma letra maiúscula aleatória (ASCII 65 a 90)
+      return String.fromCharCode(random.nextInt(26) + 65);
+    } else {
+      // Gera uma letra minúscula aleatória (ASCII 97 a 122)
+      return String.fromCharCode(random.nextInt(26) + 97);
+    }
   }
 
   @override
@@ -66,6 +92,7 @@ class _CustomAppBarState extends State<AnimatedTitleAppBar> with SingleTickerPro
   Widget build(BuildContext context) {
     return AppBar(
       leading: widget.leading,
+      backgroundColor: widget.backgroundColor,
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

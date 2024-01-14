@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -24,6 +26,15 @@ class AnimatedFloatingActionButton extends StatelessWidget {
       begin: 100,
       end: 0,
     ));
+
+    final rotationAnimation = CurvedAnimation(
+      parent: animation,
+      curve: Curves.elasticOut,
+    ).drive(Tween<double>(
+      begin: pi * 2,
+      end: 0,
+    ));
+
     final scheme = Theme.of(context).colorScheme;
     return ListenableBuilder(
       listenable: animation,
@@ -44,7 +55,10 @@ class AnimatedFloatingActionButton extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(icon),
+                    Transform.rotate(
+                      angle: rotationAnimation.value,
+                      child: Icon(icon),
+                    ),
                     const Gap(8),
                     Text(label),
                   ],
