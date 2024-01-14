@@ -19,6 +19,10 @@ const _introSound = 'assets/sounds/intro.mp3';
 int _introSoundId = 0;
 void introSound() => _pool.play(_introSoundId);
 
+const _openRailSound = 'assets/sounds/open_rail.mp3';
+int _openRailId = 0;
+void openRail() => _pool.play(_openRailId);
+
 Future<void> precacheCache() async {
   _clickSoundId = await rootBundle.load(_clickSound).then((ByteData soundData) {
     return _pool.load(soundData);
@@ -30,6 +34,10 @@ Future<void> precacheCache() async {
     return _pool.load(soundData);
   });
   _introSoundId = await rootBundle.load(_introSound).then((ByteData soundData) {
+    return _pool.load(soundData);
+  });
+
+  _openRailId = await rootBundle.load(_openRailSound).then((ByteData soundData) {
     return _pool.load(soundData);
   });
 }

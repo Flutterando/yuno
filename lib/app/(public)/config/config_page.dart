@@ -17,6 +17,12 @@ class _ConfigPageState extends State<ConfigPage> {
         title: 'Config',
       ),
       // body: const Placeholder(),
+      // floatingActionButton: AnimatedFloatingActionButton(
+      //   onPressed: () async {},
+      //   label: 'Add Game',
+      //   icon: Icons.add,
+      //   animation: widget.transitionAnimation,
+      // ),
     );
   }
 }

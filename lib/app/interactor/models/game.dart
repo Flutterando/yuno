@@ -10,9 +10,11 @@ class Game {
   final GamePlatform platform;
   final String image;
   final String path;
-  final GameCategory category;
+  final Set<GameCategory> category;
   final String? genre;
   final String? publisher;
+
+  bool get hasImage => image.isNotEmpty;
 
   Game({
     required this.id,
@@ -21,7 +23,7 @@ class Game {
     required this.platform,
     required this.image,
     required this.path,
-    required this.category,
+    this.category = const {},
     this.genre,
     this.publisher,
   });

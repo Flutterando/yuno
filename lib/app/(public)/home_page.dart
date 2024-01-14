@@ -1,20 +1,21 @@
 import 'dart:async';
-import 'dart:ui';
+import 'dart:io';
 
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:routefly/routefly.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:yuno/app/core/services/game_service.dart';
-import 'package:yuno/app/core/widgets/animated_floating_action_button.dart';
+import 'package:yuno/app/interactor/atoms/game_atom.dart';
+import 'package:yuno/app/interactor/models/game.dart';
 import 'package:yuno/injector.dart';
 import 'package:yuno/routes.dart';
 
 import '../core/assets/sounds.dart' as sounds;
-import '../core/assets/static.dart' as assets;
 import '../core/widgets/animated_menu_leading.dart';
 import '../core/widgets/animated_title_app_bart.dart';
 import '../core/widgets/card_tile/card_tile.dart';
+import '../core/widgets/command_bar.dart';
 
 Route routeBuilder(BuildContext context, RouteSettings settings) {
   return PageRouteBuilder(
@@ -46,12 +47,13 @@ class _HomePageState extends State<HomePage> {
   var selectedDestinationIndex = 0;
   var crossAxisCount = 0;
   var title = 'Home';
-  final itemCount = 20;
   final scrollController = AutoScrollController();
   final menuScrollController = AutoScrollController();
-
+  List<Game> get games => gamesByCategoryState;
+  DateTime? _lastOpenGameAt;
   var hasRailsExtanded = false;
   Timer? _timer;
+  ColorScheme? newColorScheme;
 
   late RxDisposer _disposer;
 
@@ -64,39 +66,71 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  bool allowPressed() {
+    return _lastOpenGameAt == null || //
+        DateTime.now().difference(_lastOpenGameAt!).inSeconds > 1;
+  }
+
   void handleKey(GamepadButton event) {
+    if (Routefly.currentOriginalPath != routePaths.home) {
+      return;
+    }
+
     switch (event) {
       case GamepadButton.dpadDown || GamepadButton.leftStickDown:
-        handlerSelect((selectedItemIndex + crossAxisCount) % itemCount);
+        handlerSelect((selectedItemIndex + crossAxisCount) % games.length);
       case GamepadButton.dpadUp || GamepadButton.leftStickUp:
         handlerSelect((selectedItemIndex - crossAxisCount) >= 0 ? selectedItemIndex - crossAxisCount : selectedItemIndex);
       case GamepadButton.dpadLeft || GamepadButton.leftStickLeft:
         handlerSelect(selectedItemIndex > 0 ? selectedItemIndex - 1 : selectedItemIndex);
       case GamepadButton.dpadRight || GamepadButton.leftStickRight:
-        handlerSelect((selectedItemIndex + 1) % itemCount);
+        handlerSelect((selectedItemIndex + 1) % games.length);
       case GamepadButton.LB:
-        handlerDestinationSelect((selectedDestinationIndex - 1) >= 0 ? selectedDestinationIndex - 1 : selectedDestinationIndex);
+        handlerDestinationSelect(selectedDestinationIndex - 1);
       case GamepadButton.RB:
         handlerDestinationSelect(selectedDestinationIndex + 1);
       case GamepadButton.select:
-        setState(() {
-          hasRailsExtanded = !hasRailsExtanded;
-        });
+        switchRail();
       case GamepadButton.buttonA:
+        openGame();
       case GamepadButton.buttonB:
+        openApps();
       case GamepadButton.buttonX:
       case GamepadButton.buttonY:
+        openSettings();
       case GamepadButton.start:
       case GamepadButton.rightThumb:
       case GamepadButton.leftThumb:
     }
   }
 
-  void handlerDestinationSelect(int index) {
-    sounds.doubleSound();
+  void openSettings() {
+    Routefly.push(routePaths.config);
+  }
+
+  void openApps() {}
+
+  void switchRail() {
+    sounds.openRail();
     setState(() {
-      selectedDestinationIndex = index;
+      hasRailsExtanded = !hasRailsExtanded;
     });
+  }
+
+  void handlerDestinationSelect(int index) {
+    if (!allowPressed()) {
+      return;
+    }
+    sounds.doubleSound();
+
+    if (index < 0 || index >= availableCategoriesState.length) {
+      return;
+    }
+    selectedDestinationIndex = index;
+    title = 'Home';
+    newColorScheme = null;
+    selectedItemIndex = -1;
+    gamesCategoryState.value = availableCategoriesState[index];
     menuScrollController.scrollToIndex(
       index,
       preferPosition: AutoScrollPosition.middle,
@@ -104,15 +138,53 @@ class _HomePageState extends State<HomePage> {
   }
 
   void handlerSelect(int index) {
+    if (!allowPressed()) {
+      return;
+    }
+    if (selectedItemIndex == index) {
+      return;
+    }
+
     sounds.clickSound();
     setState(() {
       selectedItemIndex = index;
     });
-    _updateTitle('Game ${index + 1}');
+    final game = games[index];
+    harmonize(game);
     scrollController.scrollToIndex(
       index,
       preferPosition: AutoScrollPosition.middle,
     );
+  }
+
+  void openGame() async {
+    if (!allowPressed()) {
+      return;
+    }
+    if (selectedItemIndex < 0 || selectedItemIndex >= games.length) {
+      return;
+    }
+    _lastOpenGameAt = DateTime.now();
+    sounds.enterSound();
+  }
+
+  void harmonize(Game game) {
+    _timer?.cancel();
+
+    _timer = Timer(const Duration(milliseconds: 500), () async {
+      if (game.image.isEmpty) {
+        newColorScheme = null;
+      } else {
+        newColorScheme = await ColorScheme.fromImageProvider(
+          provider: FileImage(File(game.image)),
+          brightness: Brightness.light,
+        );
+      }
+
+      setState(() {
+        title = game.name;
+      });
+    });
   }
 
   @override
@@ -125,216 +197,120 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var Size(:width) = MediaQuery.sizeOf(context);
+    return RxBuilder(builder: (context) {
+      var Size(:width) = MediaQuery.sizeOf(context);
 
-    const itemWidth = 140.0;
-    final railsMinWidth = hasRailsExtanded ? 256.0 : 72.0;
+      const itemWidth = 140.0;
+      final railsMinWidth = hasRailsExtanded ? 256.0 : 72.0;
 
-    final gridWidth = width - railsMinWidth;
+      final gridWidth = width - railsMinWidth;
 
-    crossAxisCount = (gridWidth / itemWidth).floor();
-    if (crossAxisCount < 2) {
-      crossAxisCount = 2;
-    }
+      crossAxisCount = (gridWidth / itemWidth).floor();
+      if (crossAxisCount < 2) {
+        crossAxisCount = 2;
+      }
 
-    return FocusScope(
-      canRequestFocus: false,
-      child: Scaffold(
-        appBar: AnimatedTitleAppBar(
-          leading: IconButton(
-            icon: AnimatedMenuLeading(
-              isCloseMenu: hasRailsExtanded,
-              icon: AnimatedIcons.menu_close,
-            ),
-            onPressed: () {
-              setState(() {
-                hasRailsExtanded = !hasRailsExtanded;
-              });
-            },
-          ),
-          title: title,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                Routefly.push(routePaths.config);
-              },
-            ),
-          ],
-        ),
-        body: Row(
-          children: [
-            SingleChildScrollView(
-              controller: menuScrollController,
-              child: IntrinsicHeight(
-                child: NavigationRail(
-                  extended: hasRailsExtanded,
-                  destinations: [
-                    NavigationRailDestination(
-                      icon: AutoScrollTag(
-                        controller: menuScrollController,
-                        index: 0,
-                        key: const ValueKey(0),
-                        child: const Icon(Icons.all_inclusive_outlined),
-                      ),
-                      label: const Text('All'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.star),
-                      label: Text('Android'),
-                    ),
-                    NavigationRailDestination(
-                      icon: Image.asset(assets.switchPNG),
-                      label: const Text('Nintendo Switch'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.all_inclusive_outlined),
-                      label: Text('All'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.star),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.android, color: Colors.green),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.all_inclusive_outlined),
-                      label: Text('All'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.star),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.android, color: Colors.green),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.all_inclusive_outlined),
-                      label: Text('All'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.star),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.android, color: Colors.green),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.all_inclusive_outlined),
-                      label: Text('All'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.star),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.android, color: Colors.green),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.all_inclusive_outlined),
-                      label: Text('All'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.star),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.android, color: Colors.green),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.all_inclusive_outlined),
-                      label: Text('All'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.star),
-                      label: Text('Android'),
-                    ),
-                    const NavigationRailDestination(
-                      icon: Icon(Icons.android, color: Colors.green),
-                      label: Text('Android'),
-                    ),
-                  ],
-                  selectedIndex: selectedDestinationIndex,
-                ),
+      final theme = Theme.of(context);
+
+      return Theme(
+        data: newColorScheme == null
+            ? theme
+            : theme.copyWith(
+                colorScheme: newColorScheme!,
               ),
-            ),
-            Expanded(
-              child: GridView.builder(
-                controller: scrollController,
-                addAutomaticKeepAlives: true,
-                padding: const EdgeInsets.only(bottom: 120),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  childAspectRatio: 3 / 5,
+        child: FocusScope(
+          canRequestFocus: false,
+          child: Scaffold(
+            appBar: AnimatedTitleAppBar(
+              leading: IconButton(
+                icon: AnimatedMenuLeading(
+                  isCloseMenu: hasRailsExtanded,
+                  icon: AnimatedIcons.menu_close,
                 ),
-                itemCount: itemCount,
-                itemBuilder: (context, index) {
-                  double start = index / itemCount;
-                  double duration = 1 / itemCount;
-
-                  final curved = CurvedAnimation(
-                    parent: widget.transitionAnimation,
-                    curve: const Interval(0.5, 1.0),
-                  );
-
-                  final animation = Tween(begin: 1.0, end: 0.0).animate(CurvedAnimation(
-                    parent: curved,
-                    curve: Interval(start, start + duration, curve: Curves.easeOut),
-                  ));
-
-                  return AutoScrollTag(
-                    index: index,
-                    key: ValueKey(index),
-                    controller: scrollController,
-                    child: AnimatedBuilder(
-                      animation: animation,
-                      builder: (context, _) {
-                        return Opacity(
-                          opacity: lerpDouble(1.0, 0.0, animation.value)!,
-                          child: Transform.translate(
-                            offset: Offset(0, animation.value * 100),
-                            child: CardTile(
-                              selected: selectedItemIndex == index,
-                              onTap: () {
-                                setState(() {
-                                  selectedItemIndex = index;
-                                });
-                              },
-                              title: 'Game ${index + 1}',
-                            ),
-                          ),
-                        );
+                onPressed: switchRail,
+              ),
+              title: title,
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () {
+                    Routefly.push(routePaths.config);
+                  },
+                ),
+              ],
+            ),
+            body: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SingleChildScrollView(
+                  controller: menuScrollController,
+                  child: IntrinsicHeight(
+                    child: NavigationRail(
+                      extended: hasRailsExtanded,
+                      onDestinationSelected: (value) {
+                        handlerDestinationSelect(value);
                       },
+                      destinations: [
+                        for (var i = 0; i < availableCategoriesState.length; i++)
+                          NavigationRailDestination(
+                            icon: AutoScrollTag(
+                                controller: menuScrollController,
+                                index: i,
+                                key: ValueKey(i),
+                                child: Image.asset(
+                                  availableCategoriesState[i].image,
+                                  width: 32,
+                                )),
+                            label: Text(availableCategoriesState[i].name),
+                          ),
+                      ],
+                      selectedIndex: selectedDestinationIndex,
                     ),
-                  );
-                },
-              ),
+                  ),
+                ),
+                Expanded(
+                  child: GridView.builder(
+                    controller: scrollController,
+                    addAutomaticKeepAlives: true,
+                    padding: const EdgeInsets.only(bottom: 120),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      childAspectRatio: 3 / 5,
+                    ),
+                    itemCount: games.length,
+                    itemBuilder: (context, index) {
+                      return AutoScrollTag(
+                        index: index,
+                        key: ValueKey(index),
+                        controller: scrollController,
+                        child: CardTile(
+                          game: games[index],
+                          transitionAnimation: widget.transitionAnimation,
+                          selected: selectedItemIndex == index,
+                          onTap: () {
+                            if (index == selectedItemIndex) {
+                              openGame();
+                            } else {
+                              handlerSelect(index);
+                            }
+                          },
+                          index: index,
+                          gamesLength: games.length,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
+            bottomNavigationBar: NavigationCommand(
+              onApps: openApps,
+              onSettings: openSettings,
+              onPlay: openGame,
+            ),
+          ),
         ),
-        floatingActionButton: AnimatedFloatingActionButton(
-          onPressed: () async {},
-          label: 'Add Game',
-          icon: Icons.add,
-          animation: widget.transitionAnimation,
-        ),
-      ),
-    );
-  }
-
-  void _updateTitle(String newTitle) {
-    _timer?.cancel();
-
-    _timer = Timer(const Duration(milliseconds: 500), () {
-      setState(() {
-        title = newTitle;
-      });
+      );
     });
   }
 }

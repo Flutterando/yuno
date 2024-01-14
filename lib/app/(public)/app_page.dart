@@ -18,7 +18,7 @@ class _AppPageState extends State<AppPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     Future.wait([
-      fetchGamesAction(),
+      firstInitialization(context),
       img.precacheCache(context),
       sounds.precacheCache(),
     ]).whenComplete(() {
