@@ -9,6 +9,14 @@
             "request": "launch",
             "type": "dart"
         },
+        {
+            "name": "yuno: Profile",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--profile"
+            ]
+        }
        
     ]
 }
