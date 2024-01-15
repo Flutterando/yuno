@@ -1,6 +1,0 @@
-flutter_launcher_icons:
-  android: true
-  image_path: "assets/logo-light.png"
-  adaptive_icon_background: "#FFFFFF"
-  min_sdk_android: 29
-  
