@@ -34,7 +34,7 @@ jobs:
         KEYSTORE: ${{ secrets.KEYSTORE }}
 
     - name: Build APK
-      run: flutter build apk --release --flavor prod
+      run: flutter build apk --release --flavor --split-per-abi prod
       env:
         KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWD }}
         KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
