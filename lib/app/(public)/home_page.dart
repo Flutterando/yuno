@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +56,7 @@ class _HomePageState extends State<HomePage> {
   var hasRailsExtanded = false;
   Timer? _timer;
   ColorScheme? newColorScheme;
+  Brightness? newBrightness;
 
   late RxDisposer _disposer;
 
@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void openGame() async {
+  void openGame() {
     if (!allowPressed()) {
       return;
     }
@@ -213,15 +213,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   void harmonize(Game game) {
+    if (newBrightness == null) {
+      return;
+    }
+
     _timer?.cancel();
 
-    _timer = Timer(const Duration(milliseconds: 500), () async {
-      if (game.image.isEmpty) {
+    _timer = Timer(const Duration(milliseconds: 500), () {
+      if (game.image.isEmpty || game.imageColor == null) {
         newColorScheme = null;
       } else {
-        newColorScheme = await ColorScheme.fromImageProvider(
-          provider: FileImage(File(game.image)),
-          brightness: Theme.of(context).brightness,
+        newColorScheme = ColorScheme.fromSeed(
+          seedColor: game.imageColor!,
+          brightness: newBrightness!,
         );
       }
 
@@ -257,6 +261,9 @@ class _HomePageState extends State<HomePage> {
       }
 
       final theme = Theme.of(context);
+
+      newBrightness = theme.brightness;
+
       final colorScheme = newColorScheme ?? theme.colorScheme;
 
       return Stack(

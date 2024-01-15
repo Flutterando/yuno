@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:yuno/app/core/services/game_service.dart';
 
 import 'game_category.dart';
@@ -9,6 +11,7 @@ class Game {
   final String description;
   final GamePlatform platform;
   final String image;
+  final Color? imageColor;
   final String path;
   final Set<GameCategory> category;
   final String? genre;
@@ -23,6 +26,7 @@ class Game {
     required this.platform,
     required this.image,
     required this.path,
+    this.imageColor,
     this.category = const {},
     this.genre,
     this.publisher,

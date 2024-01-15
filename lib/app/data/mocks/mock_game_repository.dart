@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:uno/uno.dart';
 import 'package:yuno/app/interactor/models/game.dart';
@@ -23,6 +24,7 @@ class MockGameRepository implements GameRepository {
         platform: Yuzu(),
         image: await cacheImage(
             'https://cgngamesbh.com.br/product_images/p/512/Mario_Odyssey_Switch__68057_zoom.jpg'),
+        imageColor: Colors.red,
         path: 'caminho_do_jogo',
         category: {
           defaultCategoryAllState,
@@ -37,6 +39,7 @@ class MockGameRepository implements GameRepository {
         name: 'Dave the diver',
         description: 'Dave to Diver',
         platform: Yuzu(),
+        imageColor: Colors.blue,
         image: await cacheImage(
             'https://images.nintendolife.com/08ce0f98414a5/dave-the-diver-cover.cover_large.jpg'),
         path: 'caminho_do_jogo',
@@ -51,6 +54,7 @@ class MockGameRepository implements GameRepository {
         id: '3',
         name: 'Prince of Persia - The Sands of Time',
         description: 'Prince game',
+        imageColor: Colors.deepPurple,
         platform: AetherSX2(),
         image: await cacheImage(
             'https://upload.wikimedia.org/wikipedia/pt/thumb/8/85/Prince-of-Persia-The-Sands-of-Time-Cover.jpg/250px-Prince-of-Persia-The-Sands-of-Time-Cover.jpg'),
