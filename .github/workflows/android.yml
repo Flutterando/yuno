@@ -43,4 +43,5 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         artifacts: ${{ github.workspace }}/build/app/outputs/flutter-apk/app-prod-release.apk
+        allowUpdates: true
     
