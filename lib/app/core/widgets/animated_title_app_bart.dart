@@ -8,11 +8,13 @@ class AnimatedTitleAppBar extends StatefulWidget implements PreferredSizeWidget 
   final Widget? leading;
   final List<Widget> actions;
   final Color? backgroundColor;
+  final Color? surfaceTintColor;
 
   AnimatedTitleAppBar({
     super.key,
     required this.title,
     this.backgroundColor,
+    this.surfaceTintColor,
     this.actions = const [],
     this.leading,
   }) : assert(title.isNotEmpty);
@@ -91,6 +93,7 @@ class _CustomAppBarState extends State<AnimatedTitleAppBar> with SingleTickerPro
     return AppBar(
       leading: widget.leading,
       backgroundColor: widget.backgroundColor,
+      surfaceTintColor: widget.surfaceTintColor,
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

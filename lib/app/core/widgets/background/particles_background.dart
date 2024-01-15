@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:newton_particles/newton_particles.dart';
 
+import 'background.dart';
+
 class ParticlesBackground extends StatelessWidget {
-  final Color color;
-  const ParticlesBackground({super.key, required this.color});
+  const ParticlesBackground({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final color = ColorProvider.of(context).color;
+
     return Newton(
       activeEffects: [
         RainEffect(

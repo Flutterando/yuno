@@ -26,10 +26,11 @@ List<GameCategory> get availableCategoriesState {
   }.toList(growable: false);
 }
 
-final defaultCategoryAllState = GameCategory(name: 'All', image: img.allPNG);
-final defaultCategoryFavorite = GameCategory(name: 'Favorite', image: img.favoritePNG);
+final defaultCategoryAllState = GameCategory(name: 'All', image: img.allSVG);
+final defaultCategoryFavorite =
+    GameCategory(name: 'Favorite', image: img.favoriteSVG);
 
 final categorieState = <GameCategory>[
-  GameCategory(name: 'Android', image: img.androidPNG),
-  GameCategory(name: 'Nintendo Switch', image: img.switchPNG),
+  GameCategory(name: 'Android', image: img.androidSVG),
+  GameCategory(name: 'Nintendo Switch', image: img.switchSVG),
 ];

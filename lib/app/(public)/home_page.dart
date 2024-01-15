@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:routefly/routefly.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:yuno/app/core/services/game_service.dart';
@@ -82,9 +83,12 @@ class _HomePageState extends State<HomePage> {
       case GamepadButton.dpadDown || GamepadButton.leftStickDown:
         handlerSelect((selectedItemIndex + crossAxisCount) % games.length);
       case GamepadButton.dpadUp || GamepadButton.leftStickUp:
-        handlerSelect((selectedItemIndex - crossAxisCount) >= 0 ? selectedItemIndex - crossAxisCount : selectedItemIndex);
+        handlerSelect((selectedItemIndex - crossAxisCount) >= 0
+            ? selectedItemIndex - crossAxisCount
+            : selectedItemIndex);
       case GamepadButton.dpadLeft || GamepadButton.leftStickLeft:
-        handlerSelect(selectedItemIndex > 0 ? selectedItemIndex - 1 : selectedItemIndex);
+        handlerSelect(
+            selectedItemIndex > 0 ? selectedItemIndex - 1 : selectedItemIndex);
       case GamepadButton.dpadRight || GamepadButton.leftStickRight:
         handlerSelect((selectedItemIndex + 1) % games.length);
       case GamepadButton.LB:
@@ -255,116 +259,118 @@ class _HomePageState extends State<HomePage> {
       final theme = Theme.of(context);
       final colorScheme = newColorScheme ?? theme.colorScheme;
 
-      return Theme(
-        data: theme.copyWith(
-          colorScheme: colorScheme,
-        ),
-        child: Stack(
-          children: [
-            Container(
-              color: colorScheme.background,
-            ),
-            Background(
-              type: config.backgroundType,
-              color: colorScheme.primaryContainer,
-            ),
-            FocusScope(
-              canRequestFocus: false,
-              child: Scaffold(
+      return Stack(
+        children: [
+          Container(
+            color: colorScheme.background,
+          ),
+          Background(
+            type: config.backgroundType,
+            color: colorScheme.primaryContainer,
+          ),
+          FocusScope(
+            canRequestFocus: false,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AnimatedTitleAppBar(
+                surfaceTintColor: colorScheme.surfaceTint,
                 backgroundColor: Colors.transparent,
-                appBar: AnimatedTitleAppBar(
-                  backgroundColor: Colors.transparent,
-                  leading: IconButton(
-                    icon: AnimatedMenuLeading(
-                      isCloseMenu: hasRailsExtanded,
-                      icon: AnimatedIcons.menu_close,
-                    ),
-                    onPressed: switchRail,
+                leading: IconButton(
+                  icon: AnimatedMenuLeading(
+                    isCloseMenu: hasRailsExtanded,
+                    icon: AnimatedIcons.menu_close,
                   ),
-                  title: title,
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.search),
-                      onPressed: () {
-                        // Routefly.push(routePaths.search);
+                  onPressed: switchRail,
+                ),
+                title: title,
+                actions: [
+                  IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      // Routefly.push(routePaths.search);
+                    },
+                  ),
+                ],
+              ),
+              body: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SingleChildScrollView(
+                    controller: menuScrollController,
+                    child: IntrinsicHeight(
+                      child: NavigationRail(
+                        backgroundColor: Colors.transparent,
+                        indicatorColor: colorScheme.surfaceVariant,
+                        extended: hasRailsExtanded,
+                        onDestinationSelected: (value) {
+                          handlerDestinationSelect(value);
+                        },
+                        destinations: [
+                          for (var i = 0;
+                              i < availableCategoriesState.length;
+                              i++)
+                            NavigationRailDestination(
+                              icon: AutoScrollTag(
+                                controller: menuScrollController,
+                                index: i,
+                                key: ValueKey(i),
+                                child: SvgPicture.asset(
+                                  availableCategoriesState[i].image,
+                                  width: 28,
+                                ),
+                              ),
+                              label: Text(availableCategoriesState[i].name),
+                            ),
+                        ],
+                        selectedIndex: selectedDestinationIndex,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GridView.builder(
+                      controller: scrollController,
+                      addAutomaticKeepAlives: true,
+                      padding: const EdgeInsets.only(bottom: 120),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        childAspectRatio: 3 / 5,
+                      ),
+                      itemCount: games.length,
+                      itemBuilder: (context, index) {
+                        return AutoScrollTag(
+                          index: index,
+                          key: ValueKey(index),
+                          controller: scrollController,
+                          child: CardTile(
+                            game: games[index],
+                            colorSelect: colorScheme.primary,
+                            transitionAnimation: widget.transitionAnimation,
+                            selected: selectedItemIndex == index,
+                            onTap: () {
+                              if (index == selectedItemIndex) {
+                                openGame();
+                              } else {
+                                handlerSelect(index);
+                              }
+                            },
+                            index: index,
+                            gamesLength: games.length,
+                          ),
+                        );
                       },
                     ),
-                  ],
-                ),
-                body: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SingleChildScrollView(
-                      controller: menuScrollController,
-                      child: IntrinsicHeight(
-                        child: NavigationRail(
-                          backgroundColor: Colors.transparent,
-                          extended: hasRailsExtanded,
-                          onDestinationSelected: (value) {
-                            handlerDestinationSelect(value);
-                          },
-                          destinations: [
-                            for (var i = 0; i < availableCategoriesState.length; i++)
-                              NavigationRailDestination(
-                                icon: AutoScrollTag(
-                                    controller: menuScrollController,
-                                    index: i,
-                                    key: ValueKey(i),
-                                    child: Image.asset(
-                                      availableCategoriesState[i].image,
-                                      width: 32,
-                                    )),
-                                label: Text(availableCategoriesState[i].name),
-                              ),
-                          ],
-                          selectedIndex: selectedDestinationIndex,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GridView.builder(
-                        controller: scrollController,
-                        addAutomaticKeepAlives: true,
-                        padding: const EdgeInsets.only(bottom: 120),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: crossAxisCount,
-                          childAspectRatio: 3 / 5,
-                        ),
-                        itemCount: games.length,
-                        itemBuilder: (context, index) {
-                          return AutoScrollTag(
-                            index: index,
-                            key: ValueKey(index),
-                            controller: scrollController,
-                            child: CardTile(
-                              game: games[index],
-                              transitionAnimation: widget.transitionAnimation,
-                              selected: selectedItemIndex == index,
-                              onTap: () {
-                                if (index == selectedItemIndex) {
-                                  openGame();
-                                } else {
-                                  handlerSelect(index);
-                                }
-                              },
-                              index: index,
-                              gamesLength: games.length,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                bottomNavigationBar: NavigationCommand(
-                  onApps: openApps,
-                  onSettings: openSettings,
-                  onPlay: openGame,
-                ),
+                  ),
+                ],
+              ),
+              bottomNavigationBar: NavigationCommand(
+                colorScheme: colorScheme,
+                onApps: openApps,
+                onSettings: openSettings,
+                onPlay: openGame,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       );
     });
   }

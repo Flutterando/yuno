@@ -1,24 +1,28 @@
 import 'package:floating_bubbles/floating_bubbles.dart';
 import 'package:flutter/material.dart';
 
+import 'background.dart';
+
 class BubbleBackground extends StatelessWidget {
-  final Color color;
-  const BubbleBackground({super.key, required this.color});
+  const BubbleBackground({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final color = ColorProvider.of(context).color;
+    print("BubbleBackground: $color");
     return Stack(
+      key: Key(color.toString()),
       children: [
         Positioned.fill(
           child: FloatingBubbles.alwaysRepeating(
-            noOfBubbles: 10,
+            noOfBubbles: 20,
             colorsOfBubbles: [color],
             sizeFactor: 0.16,
-            opacity: 30,
+            opacity: 50,
             paintingStyle: PaintingStyle.stroke,
             strokeWidth: 8,
-            shape: BubbleShape.circle, // circle is the default. No need to explicitly mention if its a circle.
-            speed: BubbleSpeed.slow, // normal is the default
+            shape: BubbleShape.circle,
+            speed: BubbleSpeed.slow,
           ),
         ),
       ],

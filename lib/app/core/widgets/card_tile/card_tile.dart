@@ -12,6 +12,7 @@ class CardTile extends StatelessWidget {
   final VoidCallback? onTap;
   final bool selected;
   final Game game;
+  final Color colorSelect;
 
   const CardTile({
     super.key,
@@ -19,6 +20,7 @@ class CardTile extends StatelessWidget {
     required this.transitionAnimation,
     required this.index,
     required this.gamesLength,
+    required this.colorSelect,
     this.onTap,
     this.selected = false,
   });
@@ -90,7 +92,7 @@ class CardTile extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: borderRadius,
                       border: Border.all(
-                        color: selected ? Theme.of(context).colorScheme.primary : Colors.transparent,
+                        color: selected ? colorSelect : Colors.transparent,
                         width: 3,
                       ),
                       image: game.hasImage

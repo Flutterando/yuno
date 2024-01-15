@@ -41,10 +41,12 @@ class MainActivity: FlutterActivity() {
     override fun onGenericMotionEvent(event: MotionEvent): Boolean {
         if (event.source and InputDevice.SOURCE_JOYSTICK == InputDevice.SOURCE_JOYSTICK) {
             if (event.action == MotionEvent.ACTION_MOVE) {
-                // Tratar os movimentos do D-pad
                 val hatX = event.getAxisValue(MotionEvent.AXIS_HAT_X)
                 val hatY = event.getAxisValue(MotionEvent.AXIS_HAT_Y)
-    
+
+                Log.d("YUNO", "hatX: $hatX")
+                Log.d("YUNO", "hatY: $hatY")
+
                 when {
                     hatY == -1f -> channel.invokeMethod("dpadUpPressed", null)
                     hatY == 1f -> channel.invokeMethod("dpadDownPressed", null)
@@ -52,7 +54,6 @@ class MainActivity: FlutterActivity() {
                     hatX == 1f -> channel.invokeMethod("dpadRightPressed", null)
                 }
     
-                // Tratar os movimentos do analógico esquerdo
                 val axisX = event.getAxisValue(MotionEvent.AXIS_X)
                 val axisY = event.getAxisValue(MotionEvent.AXIS_Y)
     
@@ -72,6 +73,7 @@ class MainActivity: FlutterActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (event.source and InputDevice.SOURCE_GAMEPAD == InputDevice.SOURCE_GAMEPAD) {
+            Log.d("YUNO", "KeyEvent: $keyCode")
             when (keyCode) {
                 KeyEvent.KEYCODE_BUTTON_A -> {
                     channel.invokeMethod("buttonAPressed", null)
@@ -129,7 +131,6 @@ class MainActivity: FlutterActivity() {
                     channel.invokeMethod("RBPressed", null)
                     return true
                 }
-                // Adicione mais casos para outros botões, se necessário.
             }
         }
         return super.onKeyDown(keyCode, event)

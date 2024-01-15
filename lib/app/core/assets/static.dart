@@ -1,15 +1,22 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-const switchPNG = 'assets/static/switch.png';
-const allPNG = 'assets/static/all.png';
-const favoritePNG = 'assets/static/favorite.png';
-const androidPNG = 'assets/static/android.png';
+const allSVG = 'assets/static/all.svg';
+const switchSVG = 'assets/static/switch.svg';
+const favoriteSVG = 'assets/static/favorite.svg';
+const androidSVG = 'assets/static/android.svg';
 
 Future<void> precacheCache(BuildContext context) async {
-  await precacheImage(const AssetImage(switchPNG), context);
-  await precacheImage(const AssetImage(allPNG), context);
-  await precacheImage(const AssetImage(favoritePNG), context);
-  await precacheImage(const AssetImage(androidPNG), context);
+  for (final asset in [
+    allSVG,
+    switchSVG,
+    favoriteSVG,
+    androidSVG,
+  ]) {
+    const loader = SvgAssetLoader(allSVG);
+    await svg.cache
+        .putIfAbsent(loader.cacheKey(null), () => loader.loadBytes(null));
+  }
 }

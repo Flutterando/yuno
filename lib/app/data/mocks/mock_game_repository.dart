@@ -73,6 +73,34 @@ class MockGameRepository implements GameRepository {
         genre: 'Platform',
         publisher: 'Nintendo',
       ),
+      Game(
+        id: '5',
+        name: 'GTA Vice City',
+        description: 'GTA Vice City',
+        platform: Yuzu(),
+        image: '',
+        path: 'caminho_do_jogo',
+        category: {
+          defaultCategoryAllState,
+          categorieState.firstWhere((e) => e.name == "Android"),
+        },
+        genre: 'Sandbox',
+        publisher: 'Rockstar',
+      ),
+      Game(
+        id: '6',
+        name: 'GTA San Andreas',
+        description: 'GTA San Andreas',
+        platform: Yuzu(),
+        image: '',
+        path: 'caminho_do_jogo',
+        category: {
+          defaultCategoryAllState,
+          categorieState.firstWhere((e) => e.name == "Android"),
+        },
+        genre: 'Sandbox',
+        publisher: 'Rockstar',
+      ),
     ];
   }
 

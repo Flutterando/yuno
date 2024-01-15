@@ -5,17 +5,15 @@ class NavigationCommand extends StatelessWidget {
   final VoidCallback? onApps;
   final VoidCallback? onSettings;
   final VoidCallback? onPlay;
+  final ColorScheme colorScheme;
 
-  const NavigationCommand({super.key, this.onApps, this.onSettings, this.onPlay});
+  const NavigationCommand({super.key, this.onApps, this.onSettings, this.onPlay, required this.colorScheme});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
       height: 40,
-      width: size.width,
       padding: const EdgeInsets.symmetric(horizontal: 17),
       decoration: BoxDecoration(
         color: colorScheme.primaryContainer,

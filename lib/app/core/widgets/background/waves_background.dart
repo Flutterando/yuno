@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
+import 'background.dart';
+
 class WaveBackground extends StatelessWidget {
-  final Color color;
-  const WaveBackground({super.key, required this.color});
+  const WaveBackground({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final color = ColorProvider.of(context).color;
+
     return Stack(
       children: [
         Positioned.fill(
