@@ -50,4 +50,6 @@ jobs:
       with:
         artifacts: "${{ github.workspace }}/build/app/outputs/flutter-apk/*.apk,${{ github.workspace }}/build/app/outputs/bundle/prodRelease/app-prod-release.aab"
         allowUpdates: true
-    
+        makeLatest: true
+        omitBodyDuringUpdate: true
+
