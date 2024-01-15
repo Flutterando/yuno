@@ -41,5 +41,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: app-release.apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+        path: ${{ github.workspace }}/build/app/outputs/flutter-apk/app-release.apk
     
