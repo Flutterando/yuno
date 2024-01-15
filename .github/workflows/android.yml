@@ -39,9 +39,15 @@ jobs:
         KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWD }}
         KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
 
+    - name: Build AppBundle
+      run: flutter build appbundle --release --flavor prod
+      env:
+        KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWD }}
+        KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+
     - name: Upload Artifact
       uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ github.workspace }}/build/app/outputs/flutter-apk/*.apk
+        artifacts: ${{ github.workspace }}/build/app/outputs/flutter-apk/*.apk,${{ github.workspace }}/build/app/outputs/flutter-apk/*.aab
         allowUpdates: true
     
