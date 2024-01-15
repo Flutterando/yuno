@@ -20,8 +20,6 @@ please read these instructions carefully.
 ### New Features
 - If you'd like to add a feature to the library that doesn't already exist, feel free to describe
   the feature in a new [GitHub issue].
-    - You can also join us on [Discord] to discuss some initials
-      thoughts.
 - If you'd like to implement the new feature, please wait for feedback from the project maintainers
   before spending too much time writing the code. In some cases, enhancements may not align well
   with the project objectives at the time.
@@ -117,7 +115,6 @@ Examples of PR titles:
 [GitHub issues]: https://github.com/Flutterando/yuno/issues/new
 [PRs]: https://github.com/Flutterando/yuno/pulls
 [fork guide]: https://guides.github.com/activities/forking/#fork
-[Discord]: https://discord.gg/7qvSXRMMYw
 [Puro]: https://puro.dev/
 [Puro install]: https://puro.dev/#installation
 [pubspec doc]: https://dart.dev/tools/pub/pubspec
