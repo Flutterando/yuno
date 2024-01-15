@@ -48,6 +48,6 @@ jobs:
     - name: Upload Artifact
       uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ github.workspace }}/build/app/outputs/flutter-apk/*.apk,${{ github.workspace }}/build/app/outputs/flutter-apk/*.aab
+        artifacts: ${{ github.workspace }}/build/app/outputs/flutter-apk/*.apk,${{ github.workspace }}build/app/outputs/bundle/prodRelease/*.aab
         allowUpdates: true
     
