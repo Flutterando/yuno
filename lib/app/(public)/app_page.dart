@@ -38,10 +38,11 @@ class _AppPageState extends State<AppPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Gap(35),
           Text(
             'YuNO',
             style: GoogleFonts.lemon(
-              fontSize: 48,
+              fontSize: 47.5,
             ),
           ),
           const Gap(7),

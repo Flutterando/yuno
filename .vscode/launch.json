@@ -5,16 +5,35 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "yuno",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "yuno: Profile",
+            "name": "[DEV] yuno",
             "request": "launch",
             "type": "dart",
             "args": [
-                "--profile"
+                "--flavor", "dev"
+            ]
+        },
+        {
+            "name": "[DEV] yuno: Profile",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor", "dev", "--profile"
+            ]
+        },
+        {
+            "name": "[PROD] yuno",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor", "prod"
+            ]
+        },
+        {
+            "name": "[PROD] yuno: Profile",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor", "prod", "--profile"
             ]
         }
        

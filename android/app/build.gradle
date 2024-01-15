@@ -40,6 +40,21 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    flavorDimensions "default"
+
+    productFlavors {
+        dev {
+            dimension "default"
+            resValue "string", "app_name", "[DEV]YuNO"
+            applicationIdSuffix ".dev"
+        }
+
+        prod {
+            dimension "default"
+            resValue "string", "app_name", "YuNO"
+        }
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "br.com.flutterando.yuno"
