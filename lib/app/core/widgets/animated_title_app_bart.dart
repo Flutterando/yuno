@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const _dicionary = [' '];
-
 class AnimatedTitleAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final Widget? leading;
