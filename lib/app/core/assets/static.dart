@@ -7,6 +7,9 @@ const allSVG = 'assets/static/all.svg';
 const switchSVG = 'assets/static/switch.svg';
 const favoriteSVG = 'assets/static/favorite.svg';
 const androidSVG = 'assets/static/android.svg';
+const ps1SVG = 'assets/static/ps1.svg';
+const ps2SVG = 'assets/static/ps2.svg';
+const pspSVG = 'assets/static/psp.svg';
 
 Future<void> precacheCache(BuildContext context) async {
   for (final asset in [
@@ -14,6 +17,9 @@ Future<void> precacheCache(BuildContext context) async {
     switchSVG,
     favoriteSVG,
     androidSVG,
+    ps1SVG,
+    ps2SVG,
+    pspSVG,
   ]) {
     const loader = SvgAssetLoader(allSVG);
     await svg.cache

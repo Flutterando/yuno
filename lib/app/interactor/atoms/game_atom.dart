@@ -33,4 +33,7 @@ final defaultCategoryFavorite =
 final categorieState = <GameCategory>[
   GameCategory(name: 'Android', image: img.androidSVG),
   GameCategory(name: 'Nintendo Switch', image: img.switchSVG),
+  GameCategory(name: 'Playstation 1', image: img.ps1SVG),
+  GameCategory(name: 'Playstation 2', image: img.ps2SVG),
+  GameCategory(name: 'Playstation Portable', image: img.pspSVG),
 ];

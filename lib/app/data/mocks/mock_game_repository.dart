@@ -21,7 +21,8 @@ class MockGameRepository implements GameRepository {
         name: 'Super Mario Odyssey',
         description: 'Super Mario Odyssey',
         platform: Yuzu(),
-        image: await cacheImage('https://cgngamesbh.com.br/product_images/p/512/Mario_Odyssey_Switch__68057_zoom.jpg'),
+        image: await cacheImage(
+            'https://cgngamesbh.com.br/product_images/p/512/Mario_Odyssey_Switch__68057_zoom.jpg'),
         path: 'caminho_do_jogo',
         category: {
           defaultCategoryAllState,
@@ -36,7 +37,8 @@ class MockGameRepository implements GameRepository {
         name: 'Dave the diver',
         description: 'Dave to Diver',
         platform: Yuzu(),
-        image: await cacheImage('https://images.nintendolife.com/08ce0f98414a5/dave-the-diver-cover.cover_large.jpg'),
+        image: await cacheImage(
+            'https://images.nintendolife.com/08ce0f98414a5/dave-the-diver-cover.cover_large.jpg'),
         path: 'caminho_do_jogo',
         category: {
           defaultCategoryAllState,
@@ -50,11 +52,12 @@ class MockGameRepository implements GameRepository {
         name: 'Prince of Persia - The Sands of Time',
         description: 'Prince game',
         platform: AetherSX2(),
-        image: await cacheImage('https://upload.wikimedia.org/wikipedia/pt/thumb/8/85/Prince-of-Persia-The-Sands-of-Time-Cover.jpg/250px-Prince-of-Persia-The-Sands-of-Time-Cover.jpg'),
+        image: await cacheImage(
+            'https://upload.wikimedia.org/wikipedia/pt/thumb/8/85/Prince-of-Persia-The-Sands-of-Time-Cover.jpg/250px-Prince-of-Persia-The-Sands-of-Time-Cover.jpg'),
         path: 'caminho_do_jogo',
         category: {
           defaultCategoryAllState,
-          categorieState.firstWhere((e) => e.name == "Nintendo Switch"),
+          categorieState.firstWhere((e) => e.name == "Playstation 2"),
         },
         genre: 'Platform',
         publisher: 'Nintendo',
@@ -113,7 +116,8 @@ class MockGameRepository implements GameRepository {
 
     if (!file.existsSync()) {
       await file.create(recursive: true);
-      final response = await uno.get(imageUrl, responseType: ResponseType.arraybuffer);
+      final response =
+          await uno.get(imageUrl, responseType: ResponseType.arraybuffer);
       await file.writeAsBytes(response.data);
     }
 
