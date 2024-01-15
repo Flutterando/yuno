@@ -92,6 +92,8 @@ class _HomePageState extends State<HomePage> {
       case GamepadButton.RB:
         handlerDestinationSelect(selectedDestinationIndex + 1);
       case GamepadButton.start:
+      case GamepadButton.select:
+        switchRail();
       default:
         if (gameConfigState.value.swapABXY) {
           abxy(event);
