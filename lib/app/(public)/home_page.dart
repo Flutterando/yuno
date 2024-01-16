@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Game> get games => filteredGamesState;
   DateTime? _lastOpenGameAt;
-  var hasRailsExtanded = false;
+  var hasRailsExtended = false;
   Timer? _timer;
   ColorScheme? newColorScheme;
   Brightness? newBrightness;
@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
   void switchRail() {
     sounds.openRail();
     setState(() {
-      hasRailsExtanded = !hasRailsExtanded;
+      hasRailsExtended = !hasRailsExtended;
     });
   }
 
@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
       final config = gameConfigState.value;
 
       const itemWidth = 140.0;
-      final railsMinWidth = hasRailsExtanded ? 256.0 : 72.0;
+      final railsMinWidth = hasRailsExtended ? 256.0 : 72.0;
 
       final gridWidth = width - railsMinWidth;
 
@@ -286,7 +286,7 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: Colors.transparent,
               leading: IconButton(
                 icon: AnimatedMenuLeading(
-                  isCloseMenu: hasRailsExtanded,
+                  isCloseMenu: hasRailsExtended,
                   icon: AnimatedIcons.menu_close,
                 ),
                 onPressed: switchRail,
@@ -307,7 +307,7 @@ class _HomePageState extends State<HomePage> {
                     child: NavigationRail(
                       backgroundColor: Colors.transparent,
                       indicatorColor: colorScheme.surfaceVariant,
-                      extended: hasRailsExtanded,
+                      extended: hasRailsExtended,
                       onDestinationSelected: (value) {
                         handlerDestinationSelect(value);
                       },
