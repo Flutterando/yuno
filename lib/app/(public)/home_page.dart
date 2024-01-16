@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:routefly/routefly.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:yuno/app/core/services/game_service.dart';
@@ -332,46 +333,69 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: GridView.builder(
-                    controller: scrollController,
-                    addAutomaticKeepAlives: true,
-                    padding: const EdgeInsets.only(bottom: 120),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      childAspectRatio: 3 / 5,
-                    ),
-                    itemCount: games.length,
-                    itemBuilder: (context, index) {
-                      return AutoScrollTag(
-                        index: index,
-                        key: ValueKey(index),
-                        controller: scrollController,
-                        child: CardTile(
-                          game: games[index],
-                          colorSelect: colorScheme.primary,
-                          transitionAnimation: widget.transitionAnimation,
-                          selected: selectedItemIndex == index,
-                          onTap: () {
-                            if (index == selectedItemIndex) {
-                              openGame();
-                            } else {
-                              handlerSelect(index);
-                            }
-                          },
-                          index: index,
-                          gamesLength: games.length,
+                if (games.isEmpty)
+                  Expanded(
+                    child: Center(
+                      child: Container(
+                        height: 90,
+                        width: 220,
+                        alignment: Alignment.center,
+                        color: colorScheme.surfaceVariant.withOpacity(0.5),
+                        child: const Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('No games found'),
+                            Gap(3),
+                            Icon(Icons.gamepad_outlined),
+                          ],
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   ),
-                ),
+                if (games.isNotEmpty)
+                  Expanded(
+                    child: GridView.builder(
+                      controller: scrollController,
+                      addAutomaticKeepAlives: true,
+                      padding: const EdgeInsets.only(bottom: 120),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        childAspectRatio: 3 / 5,
+                      ),
+                      itemCount: games.length,
+                      itemBuilder: (context, index) {
+                        return AutoScrollTag(
+                          index: index,
+                          key: ValueKey(index),
+                          controller: scrollController,
+                          child: CardTile(
+                            game: games[index],
+                            colorSelect: colorScheme.primary,
+                            transitionAnimation: widget.transitionAnimation,
+                            selected: selectedItemIndex == index,
+                            onTap: () {
+                              if (index == selectedItemIndex) {
+                                openGame();
+                              } else {
+                                handlerSelect(index);
+                              }
+                            },
+                            index: index,
+                            gamesLength: games.length,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
               ],
             ),
             bottomNavigationBar: NavigationCommand(
               colorScheme: colorScheme,
               onApps: openApps,
               onSettings: openSettings,
+              onFavorite: () {
+                debugPrint('onFavorite');
+              },
               onPlay: openGame,
             ),
           ),

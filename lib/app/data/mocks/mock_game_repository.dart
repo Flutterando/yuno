@@ -28,7 +28,6 @@ class MockGameRepository implements GameRepository {
         path: 'caminho_do_jogo',
         category: {
           defaultCategoryAllState,
-          defaultCategoryFavorite,
           categorieState.firstWhere((e) => e.name == "Nintendo Switch"),
         },
         genre: 'Platform',

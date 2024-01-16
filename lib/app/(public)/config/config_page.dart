@@ -6,6 +6,7 @@ import 'package:yuno/injector.dart';
 import '../../core/services/game_service.dart';
 import '../../core/widgets/animated_title_app_bart.dart';
 import 'widgets/about_widget.dart';
+import 'widgets/feedback_widget.dart';
 import 'widgets/platform_widget.dart';
 import 'widgets/settings_widget.dart';
 
@@ -27,6 +28,7 @@ Route routeBuilder(BuildContext context, RouteSettings settings) {
 
 class ConfigPage extends StatefulWidget {
   final Animation<double> transitionAnimation;
+
   const ConfigPage({super.key, required this.transitionAnimation});
 
   @override
@@ -66,28 +68,42 @@ class _ConfigPageState extends State<ConfigPage> {
       ),
       body: Row(
         children: [
-          NavigationRail(
-            extended: true,
-            destinations: const [
-              NavigationRailDestination(
-                icon: Icon(Icons.gamepad),
-                label: Text('Gamepad'),
+          Stack(
+            children: [
+              NavigationRail(
+                extended: true,
+                destinations: const [
+                  NavigationRailDestination(
+                    icon: Icon(Icons.gamepad),
+                    label: Text('Platforms'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.settings),
+                    label: Text('Preferences'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.chat_outlined),
+                    label: Text('Feedback'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.info_outline),
+                    label: Text('About'),
+                  ),
+                ],
+                selectedIndex: selectedItemIndex,
+                onDestinationSelected: (index) {
+                  setState(() {
+                    selectedItemIndex = index;
+                  });
+                },
               ),
-              NavigationRailDestination(
-                icon: Icon(Icons.settings),
-                label: Text('Settings'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.info_outline),
-                label: Text('Settings'),
+              Positioned(
+                bottom: 10,
+                left: 18,
+                right: 0,
+                child: Text(buildNumberState.value),
               ),
             ],
-            selectedIndex: selectedItemIndex,
-            onDestinationSelected: (index) {
-              setState(() {
-                selectedItemIndex = index;
-              });
-            },
           ),
           Expanded(
             child: IndexedStack(
@@ -95,6 +111,7 @@ class _ConfigPageState extends State<ConfigPage> {
               children: [
                 PlatformWidget(transitionAnimation: widget.transitionAnimation),
                 const SettingsWidget(),
+                const FeedbackWidget(),
                 const AboutWidget(),
               ],
             ),
