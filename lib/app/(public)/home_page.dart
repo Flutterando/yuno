@@ -6,11 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:routefly/routefly.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:yuno/app/core/services/game_service.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/atoms/game_atom.dart';
 import 'package:yuno/app/interactor/models/game.dart';
-import 'package:yuno/injector.dart';
 import 'package:yuno/routes.dart';
 
 import '../core/assets/sounds.dart' as sounds;
@@ -20,6 +18,8 @@ import '../core/widgets/animated_title_app_bart.dart';
 import '../core/widgets/background/background.dart';
 import '../core/widgets/card_tile/card_tile.dart';
 import '../core/widgets/command_bar.dart';
+import '../interactor/atoms/gamepad_atom.dart';
+import '../interactor/services/gamepad_service.dart';
 
 Route routeBuilder(BuildContext context, RouteSettings settings) {
   return PageRouteBuilder(
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Game> get games => filteredGamesState;
   DateTime? _lastOpenGameAt;
-  var hasRailsExtanded = false;
+  var hasRailsExtended = false;
   Timer? _timer;
   ColorScheme? newColorScheme;
   Brightness? newBrightness;
@@ -67,10 +67,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    final gamepadService = injector.get<GameService>();
-    _disposer = rxObserver(() => gamepadService.state, effect: (state) {
-      handleKey(state!);
-    });
+    _disposer = rxObserver(() => gamepadState.value, effect: handleKey);
   }
 
   bool allowPressed() {
@@ -78,14 +75,16 @@ class _HomePageState extends State<HomePage> {
         DateTime.now().difference(_lastOpenGameAt!).inSeconds > 1;
   }
 
-  void handleKey(GamepadButton event) {
-    if (Routefly.currentOriginalPath != routePaths.home) {
+  void handleKey(GamepadButton? event) {
+    if (Routefly.currentOriginalPath != routePaths.home || event == null) {
       return;
     }
 
     switch (event) {
       case GamepadButton.dpadDown || GamepadButton.leftStickDown:
-        handlerSelect((selectedItemIndex + crossAxisCount) % games.length);
+        handlerSelect((selectedItemIndex + crossAxisCount) < games.length
+            ? selectedItemIndex + crossAxisCount
+            : selectedItemIndex);
       case GamepadButton.dpadUp || GamepadButton.leftStickUp:
         handlerSelect((selectedItemIndex - crossAxisCount) >= 0
             ? selectedItemIndex - crossAxisCount
@@ -162,7 +161,7 @@ class _HomePageState extends State<HomePage> {
   void switchRail() {
     sounds.openRail();
     setState(() {
-      hasRailsExtanded = !hasRailsExtanded;
+      hasRailsExtended = !hasRailsExtended;
     });
   }
 
@@ -256,7 +255,7 @@ class _HomePageState extends State<HomePage> {
       final config = gameConfigState.value;
 
       const itemWidth = 140.0;
-      final railsMinWidth = hasRailsExtanded ? 256.0 : 72.0;
+      final railsMinWidth = hasRailsExtended ? 256.0 : 72.0;
 
       final gridWidth = width - railsMinWidth;
 
@@ -287,7 +286,7 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: Colors.transparent,
               leading: IconButton(
                 icon: AnimatedMenuLeading(
-                  isCloseMenu: hasRailsExtanded,
+                  isCloseMenu: hasRailsExtended,
                   icon: AnimatedIcons.menu_close,
                 ),
                 onPressed: switchRail,
@@ -308,7 +307,7 @@ class _HomePageState extends State<HomePage> {
                     child: NavigationRail(
                       backgroundColor: Colors.transparent,
                       indicatorColor: colorScheme.surfaceVariant,
-                      extended: hasRailsExtanded,
+                      extended: hasRailsExtended,
                       onDestinationSelected: (value) {
                         handlerDestinationSelect(value);
                       },

@@ -1,7 +1,6 @@
 import 'dart:ui';
 
-import 'package:yuno/app/core/services/game_service.dart';
-
+import '../repositories/apps_repository.dart';
 import 'game_category.dart';
 import 'game_platform.dart';
 
@@ -32,7 +31,7 @@ class Game {
     this.publisher,
   });
 
-  void executeGame(GameService service) {
-    platform.execute(this, service);
+  Future<void> execute(AppsRepository appsRepository) {
+    return platform.execute(this, appsRepository);
   }
 }

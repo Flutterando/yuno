@@ -1,10 +1,10 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
-import 'package:yuno/app/interactor/atoms/config_atom.dart';
-import 'package:yuno/injector.dart';
 
-import '../../core/services/game_service.dart';
 import '../../core/widgets/animated_title_app_bart.dart';
+import '../../interactor/atoms/config_atom.dart';
+import '../../interactor/atoms/gamepad_atom.dart';
+import '../../interactor/services/gamepad_service.dart';
 import 'widgets/about_widget.dart';
 import 'widgets/feedback_widget.dart';
 import 'widgets/platform_widget.dart';
@@ -44,8 +44,7 @@ class _ConfigPageState extends State<ConfigPage> {
   void initState() {
     super.initState();
 
-    final gamepadService = injector.get<GameService>();
-    _disposer = rxObserver(() => gamepadService.state, effect: (state) {
+    _disposer = rxObserver(() => gamepadState.value, effect: (state) {
       if (gameConfigState.value.swapABXY && state == GamepadButton.buttonA) {
         Navigator.of(context).pop();
       } else if (state == GamepadButton.buttonB) {

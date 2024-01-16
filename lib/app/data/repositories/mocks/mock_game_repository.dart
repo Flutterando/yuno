@@ -3,13 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:uno/uno.dart';
+import 'package:yuno/app/interactor/atoms/game_atom.dart';
 import 'package:yuno/app/interactor/models/game.dart';
 import 'package:yuno/app/interactor/models/platforms/aethersx2.dart';
 import 'package:yuno/app/interactor/models/platforms/android.dart';
-
-import '../../interactor/atoms/game_atom.dart';
-import '../../interactor/models/platforms/yuzu.dart';
-import '../../interactor/repositories/game_repository.dart';
+import 'package:yuno/app/interactor/models/platforms/yuzu.dart';
+import 'package:yuno/app/interactor/repositories/game_repository.dart';
 
 class MockGameRepository implements GameRepository {
   final uno = Uno();
