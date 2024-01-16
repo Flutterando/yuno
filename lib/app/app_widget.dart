@@ -18,7 +18,24 @@ class AppWidget extends StatelessWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: gameConfigState.value.themeMode,
-        routerConfig: Routefly.routerConfig(routes: routes),
+        routerConfig: Routefly.routerConfig(
+          routes: routes,
+          initialPath: routePaths.splash,
+          routeBuilder: (context, settings, child) {
+            return PageRouteBuilder(
+              settings: settings,
+              pageBuilder: (_, a1, a2) {
+                return child;
+              },
+              transitionsBuilder: (context, a1, a2, child) {
+                return FadeTransition(
+                  opacity: a1,
+                  child: child,
+                );
+              },
+            );
+          },
+        ),
       );
     });
   }

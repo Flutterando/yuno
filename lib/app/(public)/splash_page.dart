@@ -7,7 +7,8 @@ import 'package:yuno/routes.dart';
 
 import '../core/assets/sounds.dart' as sounds;
 import '../core/assets/static.dart' as img;
-import '../interactor/actions/game_action.dart';
+import '../interactor/actions/apps_action.dart' as apps;
+import '../interactor/actions/game_action.dart' as game;
 
 class AppPage extends StatefulWidget {
   const AppPage({super.key});
@@ -21,7 +22,8 @@ class _AppPageState extends State<AppPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     Future.wait([
-      firstInitialization(context),
+      apps.fetchApps(),
+      game.firstInitialization(context),
       img.precacheCache(context),
       sounds.precacheCache(),
       Future.delayed(const Duration(seconds: 2)),

@@ -7,12 +7,26 @@ import '../../core/assets/static.dart' as img;
 // states
 final gamesState = Atom<List<Game>>([]);
 
+final gameSearchState = Atom<String>(
+  '',
+  pipe: debounceTime(const Duration(milliseconds: 500)),
+);
+
 final gamesCategoryState = Atom<GameCategory>(defaultCategoryAllState);
 
-List<Game> get gamesByCategoryState {
-  return gamesState.value //
-      .where((game) => game.category.contains(gamesCategoryState.value))
-      .toList();
+List<Game> get filteredGamesState {
+  if (gameSearchState.value.isEmpty) {
+    return gamesState.value //
+        .where((game) => game.category.contains(gamesCategoryState.value))
+        .toList();
+  } else {
+    return gamesState.value //
+        .where((game) => game.name
+            .toLowerCase()
+            .contains(gameSearchState.value.toLowerCase()))
+        .where((game) => game.category.contains(gamesCategoryState.value))
+        .toList();
+  }
 }
 
 List<GameCategory> get availableCategoriesState {
