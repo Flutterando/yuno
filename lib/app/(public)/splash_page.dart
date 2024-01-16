@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:routefly/routefly.dart';
+import 'package:yuno/app/interactor/actions/gamepad_action.dart';
 import 'package:yuno/routes.dart';
 
 import '../core/assets/sounds.dart' as sounds;
@@ -21,6 +22,7 @@ class _AppPageState extends State<AppPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    registerGamepad();
     Future.wait([
       apps.fetchApps(),
       game.firstInitialization(context),

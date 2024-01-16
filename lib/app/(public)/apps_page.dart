@@ -1,12 +1,12 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:yuno/app/core/services/game_service.dart';
 import 'package:yuno/app/interactor/actions/apps_action.dart';
+import 'package:yuno/app/interactor/atoms/gamepad_atom.dart';
 
-import '../../injector.dart';
 import '../interactor/atoms/app_atom.dart';
 import '../interactor/atoms/config_atom.dart';
+import '../interactor/services/gamepad_service.dart';
 
 class AppsPage extends StatefulWidget {
   const AppsPage({super.key});
@@ -21,9 +21,7 @@ class _AppsPageState extends State<AppsPage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-
-    final gamepadService = injector.get<GameService>();
-    _disposer = rxObserver(() => gamepadService.state, effect: (state) {
+    _disposer = rxObserver(() => gamepadState.value, effect: (state) {
       if (gameConfigState.value.swapABXY && state == GamepadButton.buttonA) {
         Navigator.of(context).pop();
       } else if (state == GamepadButton.buttonB) {
