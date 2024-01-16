@@ -2,11 +2,13 @@
 
 import 'package:flutter/material.dart';
 
-// const myimagePNG = 'assets/image/myimage.png';
+const flutterandoPNG = 'assets/images/flutterando.jpeg';
+const fteamPNG = 'assets/images/fteam.jpeg';
 
 Future<void> precacheCache(BuildContext context) async {
   for (final asset in [
-    // myimagePNG
+    flutterandoPNG,
+    fteamPNG,
   ]) {
     await precacheImage(AssetImage(asset), context);
   }
