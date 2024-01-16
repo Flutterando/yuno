@@ -3,11 +3,19 @@ import 'package:gap/gap.dart';
 
 class NavigationCommand extends StatelessWidget {
   final VoidCallback? onApps;
-  final VoidCallback? onSettings;
   final VoidCallback? onPlay;
+  final VoidCallback? onFavorite;
+  final VoidCallback? onSettings;
   final ColorScheme colorScheme;
 
-  const NavigationCommand({super.key, this.onApps, this.onSettings, this.onPlay, required this.colorScheme});
+  const NavigationCommand({
+    super.key,
+    this.onApps,
+    this.onFavorite,
+    this.onSettings,
+    this.onPlay,
+    required this.colorScheme,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +45,14 @@ class NavigationCommand extends StatelessWidget {
             textColor: colorScheme.background,
           ),
           const Spacer(),
+          LabelButton(
+            label: 'Favorite',
+            buttonText: 'X',
+            onTap: onFavorite,
+            background: colorScheme.onBackground,
+            textColor: colorScheme.background,
+          ),
+          const Gap(17),
           LabelButton(
             label: 'Play',
             buttonText: 'A',
