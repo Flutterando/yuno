@@ -6,8 +6,9 @@ import 'package:routefly/routefly.dart';
 import 'package:yuno/app/interactor/actions/gamepad_action.dart';
 import 'package:yuno/routes.dart';
 
+import '../core/assets/images.dart' as images;
 import '../core/assets/sounds.dart' as sounds;
-import '../core/assets/static.dart' as img;
+import '../core/assets/svgs.dart' as svgs;
 import '../interactor/actions/apps_action.dart' as apps;
 import '../interactor/actions/game_action.dart' as game;
 
@@ -26,7 +27,8 @@ class _AppPageState extends State<AppPage> {
     Future.wait([
       apps.fetchApps(),
       game.firstInitialization(context),
-      img.precacheCache(context),
+      svgs.precacheCache(context),
+      images.precacheCache(context),
       sounds.precacheCache(),
       Future.delayed(const Duration(seconds: 2)),
     ]).whenComplete(() {

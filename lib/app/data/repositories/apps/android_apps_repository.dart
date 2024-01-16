@@ -1,9 +1,8 @@
 import 'package:android_intent_plus/android_intent.dart' as android_intent;
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart' as installed_apps;
-
-import '../../interactor/models/app_model.dart';
-import '../../interactor/repositories/apps_repository.dart';
+import 'package:yuno/app/interactor/models/app_model.dart';
+import 'package:yuno/app/interactor/repositories/apps_repository.dart';
 
 class AndroidAppsRepository implements AppsRepository {
   @override

@@ -2,7 +2,7 @@ import 'package:asp/asp.dart';
 import 'package:yuno/app/interactor/models/game.dart';
 import 'package:yuno/app/interactor/models/game_category.dart';
 
-import '../../core/assets/static.dart' as img;
+import '../../core/assets/svgs.dart' as img;
 
 // states
 final gamesState = Atom<List<Game>>([]);

@@ -21,7 +21,7 @@ Future<void> precacheCache(BuildContext context) async {
     ps2SVG,
     pspSVG,
   ]) {
-    const loader = SvgAssetLoader(allSVG);
+    final loader = SvgAssetLoader(asset);
     await svg.cache
         .putIfAbsent(loader.cacheKey(null), () => loader.loadBytes(null));
   }
