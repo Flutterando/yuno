@@ -112,7 +112,7 @@ class _ConfigPageState extends State<ConfigPage> {
                 PlatformWidget(transitionAnimation: widget.transitionAnimation),
                 const SettingsWidget(),
                 const FeedbackWidget(),
-                const AboutWidget(),
+                AboutWidget(),
               ],
             ),
           ),

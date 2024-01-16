@@ -60,6 +60,7 @@ dependencies:
   flutter_svg: ^2.0.9
   collection: ^1.18.0
   package_info_plus: ^5.0.1
+  url_launcher: ^6.2.3
 
 dev_dependencies:
   flutter_native_splash: ^2.3.9
