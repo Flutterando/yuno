@@ -82,7 +82,9 @@ class _HomePageState extends State<HomePage> {
 
     switch (event) {
       case GamepadButton.dpadDown || GamepadButton.leftStickDown:
-        handlerSelect((selectedItemIndex + crossAxisCount) % games.length);
+        handlerSelect((selectedItemIndex + crossAxisCount) < games.length
+            ? selectedItemIndex + crossAxisCount
+            : selectedItemIndex);
       case GamepadButton.dpadUp || GamepadButton.leftStickUp:
         handlerSelect((selectedItemIndex - crossAxisCount) >= 0
             ? selectedItemIndex - crossAxisCount
