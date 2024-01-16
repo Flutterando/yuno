@@ -1,9 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:yuno/app/core/widgets/channel_card.dart';
+import 'package:yuno/app/interactor/actions/config_action.dart';
 
 import '../../../core/assets/images.dart' as img;
 import '../../../core/widgets/sponsor_card.dart';
@@ -13,21 +12,15 @@ class AboutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'YuNO',
-            style: GoogleFonts.lemon(
-              fontSize: 47.5,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 26, vertical: 12),
-            child: Text(
-              'Yuno is a minimalist, open-source retro gaming frontend designed to deliver a nostalgic and efficient gaming experience. This project aims to create a simplified interface for accessing and playing your favorite retro games.',
-              textAlign: TextAlign.justify,
-            ),
+          const Text(
+            'Yuno is a minimalist, open-source retro gaming frontend designed to deliver a nostalgic and efficient gaming experience. This project aims to create a simplified interface for accessing and playing your favorite retro games.',
+            textAlign: TextAlign.justify,
           ),
           TextButton(
             onPressed: _seeMoreLaunchUrl,
@@ -36,7 +29,7 @@ class AboutWidget extends StatelessWidget {
           const Gap(12),
           Text(
             'Sponsors',
-            style: Theme.of(context).textTheme.displaySmall,
+            style: theme.textTheme.titleMedium,
           ),
           const Gap(12),
           Wrap(
@@ -53,11 +46,12 @@ class AboutWidget extends StatelessWidget {
               )
             ],
           ),
-          const Gap(12),
+          const Gap(14),
           Text(
             'Channels',
-            style: Theme.of(context).textTheme.displaySmall,
+            style: theme.textTheme.titleMedium,
           ),
+          const Gap(12),
           Wrap(
             children: [
               ChannelCard(
@@ -67,38 +61,30 @@ class AboutWidget extends StatelessWidget {
               )
             ],
           ),
-          const Gap(12)
+          const Gap(120)
         ],
       ),
     );
   }
 
   final Uri _url = Uri.https('github.com', '/Flutterando/yuno');
-  Future<void> _seeMoreLaunchUrl() async {
-    if (!await launchUrl(_url)) {
-      throw Exception("Cold't launch");
-    }
+  Future<void> _seeMoreLaunchUrl() {
+    return openUrl(_url);
   }
 
   final Uri _urlFluterrandoSite = Uri.https('flutterando.com.br');
-  Future<void> _goToFluterrandoSite() async {
-    if (!await launchUrl(_urlFluterrandoSite)) {
-      throw Exception("Cold't launch");
-    }
+  Future<void> _goToFluterrandoSite() {
+    return openUrl(_urlFluterrandoSite);
   }
 
   final Uri _urlFteamSite = Uri.https('fteam.dev');
-  Future<void> _goToFteamSite() async {
-    if (!await launchUrl(_urlFteamSite)) {
-      throw Exception("Cold't launch");
-    }
+  Future<void> _goToFteamSite() {
+    return openUrl(_urlFteamSite);
   }
 
   final Uri _urlFlutterandoCanal =
       Uri.https('youtube.com', '/channel/UCplT2lzN6MHlVHHLt6so39A');
-  Future<void> _goToFlutterandoChannel() async {
-    if (!await launchUrl(_urlFlutterandoCanal)) {
-      throw Exception("Cold't launch");
-    }
+  Future<void> _goToFlutterandoChannel() {
+    return openUrl(_urlFlutterandoCanal);
   }
 }

@@ -14,3 +14,8 @@ Future<void> fetchConfig() async {
   final repository = injector.get<ConfigRepository>();
   gameConfigState.value = await repository.getConfig();
 }
+
+Future<void> openUrl(Uri uri) async {
+  final repository = injector.get<ConfigRepository>();
+  await repository.openUrl(uri);
+}

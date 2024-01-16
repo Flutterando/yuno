@@ -15,29 +15,25 @@ class SponsorsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: InkWell(
-          onTap: onTap,
-          child: SizedBox(
-            width: 120,
-            child: Column(
-              children: <Widget>[
-                Image.asset(
-                  image,
-                  height: 100,
-                  width: 100,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  sponsorName,
-                  style: const TextStyle(fontSize: 20),
-                ),
-              ],
+      clipBehavior: Clip.antiAlias,
+      child: SizedBox(
+        width: 120,
+        child: Column(
+          children: <Widget>[
+            Image.asset(
+              image,
+              fit: BoxFit.cover,
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  sponsorName,
+                  style: const TextStyle(fontSize: 14),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
