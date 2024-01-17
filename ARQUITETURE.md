@@ -8,7 +8,7 @@ Encompasses all pages and subpages of the application.
   - Represents the user interface layer.
   - Should be decoupled as much as possible from non-essential UI packages.
 - **Widgets:**
-  - Contains visual components specific to different parts of the application.
+  - Contains specific visual components for a single page.
 
 ## 2. Interactor
 
