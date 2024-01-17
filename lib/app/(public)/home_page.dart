@@ -18,6 +18,7 @@ import '../core/widgets/animated_title_app_bart.dart';
 import '../core/widgets/background/background.dart';
 import '../core/widgets/card_tile/card_tile.dart';
 import '../core/widgets/command_bar.dart';
+import '../interactor/actions/game_action.dart';
 import '../interactor/atoms/gamepad_atom.dart';
 import '../interactor/services/gamepad_service.dart';
 
@@ -214,6 +215,7 @@ class _HomePageState extends State<HomePage> {
     }
     _lastOpenGameAt = DateTime.now();
     sounds.enterSound();
+    openGameWithPlayer(games[selectedItemIndex]);
   }
 
   void harmonize(Game game) {

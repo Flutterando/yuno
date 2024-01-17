@@ -6,6 +6,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:yuno/injector.dart';
 
 import 'app/app_widget.dart';
+import 'app/data/repositories/isar/isar_datasource.dart';
 import 'app/interactor/actions/config_action.dart';
 import 'app/interactor/atoms/config_atom.dart';
 
@@ -25,6 +26,8 @@ void main() async {
 
   final packageInfo = await PackageInfo.fromPlatform();
   buildNumberState.value = 'build-${packageInfo.buildNumber}';
+
+  await IsarDatasource.init();
 
   runApp(const AppWidget());
 }

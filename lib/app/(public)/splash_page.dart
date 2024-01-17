@@ -11,6 +11,7 @@ import '../core/assets/sounds.dart' as sounds;
 import '../core/assets/svgs.dart' as svgs;
 import '../interactor/actions/apps_action.dart' as apps;
 import '../interactor/actions/game_action.dart' as game;
+import '../interactor/actions/platform_action.dart' as platform;
 
 class AppPage extends StatefulWidget {
   const AppPage({super.key});
@@ -25,6 +26,7 @@ class _AppPageState extends State<AppPage> {
     super.didChangeDependencies();
     registerGamepad();
     Future.wait([
+      platform.fetchPlatforms(),
       apps.fetchApps(),
       game.firstInitialization(context),
       svgs.precacheCache(context),

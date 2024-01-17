@@ -60,9 +60,13 @@ dependencies:
   flutter_svg: ^2.0.9
   collection: ^1.18.0
   package_info_plus: ^5.0.1
+  isar: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
 
 dev_dependencies:
   flutter_native_splash: ^2.3.9
+  isar_generator: ^3.1.0+1
+  build_runner: ^2.4.8
   flutter_test:
     sdk: flutter
 

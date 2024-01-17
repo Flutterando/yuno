@@ -2,6 +2,7 @@ import 'package:android_intent_plus/android_intent.dart' as android_intent;
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart' as installed_apps;
 import 'package:yuno/app/interactor/models/app_model.dart';
+import 'package:yuno/app/interactor/models/player.dart';
 import 'package:yuno/app/interactor/repositories/apps_repository.dart';
 
 class AndroidAppsRepository implements AppsRepository {
@@ -39,19 +40,14 @@ class AndroidAppsRepository implements AppsRepository {
   }
 
   @override
-  Future<void> openWithCustomConfig({
-    required String action,
-    String? package,
-    String? componentName,
-    Map<String, dynamic> arguments = const {},
-  }) async {
-    final intent = android_intent.AndroidIntent(
-      action: action,
-      package: package,
-      componentName: componentName,
-      arguments: arguments,
+  Future<void> openIntent(PlayerIntent intent) async {
+    final newIntent = android_intent.AndroidIntent(
+      action: intent.action,
+      package: intent.package,
+      componentName: intent.componentName,
+      arguments: intent.arguments,
     );
 
-    return intent.launch();
+    return newIntent.launch();
   }
 }

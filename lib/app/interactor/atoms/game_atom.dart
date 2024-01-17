@@ -17,14 +17,14 @@ final gamesCategoryState = Atom<GameCategory>(defaultCategoryAllState);
 List<Game> get filteredGamesState {
   if (gameSearchState.value.isEmpty) {
     return gamesState.value //
-        .where((game) => game.category.contains(gamesCategoryState.value))
+        .where((game) => game.categories.contains(gamesCategoryState.value))
         .toList();
   } else {
     return gamesState.value //
         .where((game) => game.name
             .toLowerCase()
             .contains(gameSearchState.value.toLowerCase()))
-        .where((game) => game.category.contains(gamesCategoryState.value))
+        .where((game) => game.categories.contains(gamesCategoryState.value))
         .toList();
   }
 }
@@ -34,20 +34,21 @@ List<GameCategory> get availableCategoriesState {
     defaultCategoryAllState,
     defaultCategoryFavorite,
     ...gamesState.value //
-        .map((game) => game.category)
-        .expand((category) => category)
+        .map((game) => game.categories)
+        .expand((categories) => categories)
         .toSet()
   }.toList(growable: false);
 }
 
-final defaultCategoryAllState = GameCategory(name: 'All', image: img.allSVG);
+final defaultCategoryAllState =
+    GameCategory(name: 'All', image: img.allSVG, id: 'all');
 final defaultCategoryFavorite =
-    GameCategory(name: 'Favorite', image: img.favoriteSVG);
+    GameCategory(name: 'Favorite', image: img.favoriteSVG, id: 'favorite');
 
 final categorieState = <GameCategory>[
-  GameCategory(name: 'Android', image: img.androidSVG),
-  GameCategory(name: 'Nintendo Switch', image: img.switchSVG),
-  GameCategory(name: 'Playstation 1', image: img.ps1SVG),
-  GameCategory(name: 'Playstation 2', image: img.ps2SVG),
-  GameCategory(name: 'Playstation Portable', image: img.pspSVG),
+  GameCategory(name: 'Android', image: img.androidSVG, id: 'android'),
+  GameCategory(name: 'Nintendo Switch', image: img.switchSVG, id: 'switch'),
+  GameCategory(name: 'Playstation 1', image: img.ps1SVG, id: 'ps1'),
+  GameCategory(name: 'Playstation 2', image: img.ps2SVG, id: 'ps2'),
+  GameCategory(name: 'Playstation Portable', image: img.pspSVG, id: 'psp'),
 ];

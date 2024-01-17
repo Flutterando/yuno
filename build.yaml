@@ -1,0 +1,8 @@
+targets:
+  $default:
+    builders:
+      isar_generator|isar_gen:
+        enabled: true
+        generate_for:
+          include:
+            - lib/app/data/repositories/isar/db/*.dart

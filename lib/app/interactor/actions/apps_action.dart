@@ -1,22 +1,14 @@
-import 'package:android_intent_plus/android_intent.dart' as android_intent;
 import 'package:collection/collection.dart';
-import 'package:installed_apps/app_info.dart';
-import 'package:installed_apps/installed_apps.dart' as installed_apps;
+import 'package:yuno/app/interactor/models/player.dart';
 
+import '../../../injector.dart';
 import '../atoms/app_atom.dart';
 import '../models/app_model.dart';
+import '../repositories/apps_repository.dart';
 
 Future<void> fetchApps() async {
-  List<AppInfo> apps =
-      await installed_apps.InstalledApps.getInstalledApps(true, true);
-
-  final models = apps.map((e) {
-    return AppModel(
-      name: e.name!,
-      package: e.packageName!,
-      icon: e.icon!,
-    );
-  }).toSet();
+  final repository = injector.get<AppsRepository>();
+  final models = await repository.getInstalledApps();
 
   if (const DeepCollectionEquality().equals(appsState.value, models)) {
     return;
@@ -33,17 +25,21 @@ Future<void> fetchApps() async {
 }
 
 Future<void> openApp(AppModel app) async {
-  await installed_apps.InstalledApps.startApp(app.package);
+  final repository = injector.get<AppsRepository>();
+  await repository.openApp(app);
 }
 
 Future<void> openAppSettings(AppModel app) async {
-  await installed_apps.InstalledApps.openSettings(app.package);
+  final repository = injector.get<AppsRepository>();
+  await repository.openAppSettings(app);
 }
 
 Future<void> openConfiguration() async {
-  const intent = android_intent.AndroidIntent(
-    action: 'android.settings.SETTINGS',
-  );
+  final repository = injector.get<AppsRepository>();
+  await repository.openConfiguration();
+}
 
-  intent.launch();
+Future<void> openIntent(PlayerIntent intent) async {
+  final repository = injector.get<AppsRepository>();
+  await repository.openIntent(intent);
 }
