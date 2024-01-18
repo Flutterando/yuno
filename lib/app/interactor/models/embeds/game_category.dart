@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:io';
+
 class GameCategory {
   final String id;
   final String name;
@@ -12,6 +14,8 @@ class GameCategory {
     required this.image,
     this.extensions = const [],
   });
+
+  bool checkFileExtension(File element) => true;
 
   @override
   bool operator ==(covariant GameCategory other) {

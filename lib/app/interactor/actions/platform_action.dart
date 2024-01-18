@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -44,8 +46,8 @@ Future<void> createPlatform(PlatformModel platform) async {
   final games = await _getGames(platform);
   platform = platform.copyWith(games: games);
 
-  //await repository.createPlatform(platform);
-  //await fetchPlatforms();
+  await repository.createPlatform(platform);
+  await fetchPlatforms();
 }
 
 Future<List<Game>> _getGames(PlatformModel platform) async {
@@ -54,15 +56,24 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
   }
 
   final games = <Game>[];
-  final directory =
-      Directory(convertContentUriToFilePath(platform.folder.path));
+  final directory = Directory(convertContentUriToFilePath(platform.folder.path));
   final files = directory //
       .listSync()
       .whereType<File>()
+      .where(platform.category.checkFileExtension)
       .toList();
 
   for (var file in files) {
-    print(file);
+    final name = file.path.split('/').last;
+    games.add(Game(
+      name: name,
+      path: addFileInUri(
+        platform.folder.path,
+        name,
+      ),
+      description: '',
+      image: '',
+    ));
   }
 
   return games;
@@ -82,10 +93,9 @@ Future<void> deletePlatform(PlatformModel platform) async {
 
 Future<void> syncPlatform(PlatformModel platform) async {}
 
-String addFileInUri(String dirUri, String fileName) {
-  String path = Uri.encodeComponent(dirUri);
-  path = path.replaceAll('/storage/emulated/0/', 'primary:');
-  return 'content://com.android.externalstorage.documents/document/$path';
+String addFileInUri(String path, String file) {
+  String encoded = Uri.encodeComponent('/$file');
+  return '$path$encoded';
 }
 
 String convertContentUriToFilePath(String contentUri) {
