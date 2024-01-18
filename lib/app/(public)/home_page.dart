@@ -8,7 +8,7 @@ import 'package:routefly/routefly.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/atoms/game_atom.dart';
-import 'package:yuno/app/interactor/models/game.dart';
+import 'package:yuno/app/interactor/models/embeds/game.dart';
 import 'package:yuno/routes.dart';
 
 import '../core/assets/sounds.dart' as sounds;
@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
 
   void openSettings() {
     resetConfig();
-    Routefly.push(routePaths.config);
+    Routefly.push(routePaths.config.path);
   }
 
   void openApps() async {

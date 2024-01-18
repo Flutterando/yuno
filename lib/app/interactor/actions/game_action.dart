@@ -4,20 +4,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:yuno/app/interactor/actions/player_action.dart';
-import 'package:yuno/injector.dart';
+import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 
 import '../atoms/game_atom.dart';
-import '../models/game.dart';
-import '../repositories/game_repository.dart';
+import '../models/embeds/game.dart';
 import 'apps_action.dart' as appsAction;
 
-Future<void> fetchGamesAction() async {
-  final repository = injector.get<GameRepository>();
-  gamesState.value = await repository.getGames();
-}
-
 Future<void> precacheGameImages(BuildContext context) async {
-  for (var game in gamesState.value) {
+  for (var game in gamesState) {
     if (game.image.isEmpty) {
       debugPrint('Game "${game.name}" don\'t have a image');
       continue;
@@ -33,18 +27,17 @@ Future<void> precacheGameImages(BuildContext context) async {
   }
 }
 
-Future<void> firstInitialization(BuildContext context) async {
-  await fetchGamesAction();
-  await precacheGameImages(context);
-}
-
 Future<void> openGameWithPlayer(Game game) async {
-  final platform = game.overradedPlatform ?? game.platform;
-  final intent = getAppIntent(game, platform);
+  final platform =
+      platformsState.value.firstWhere((p) => p.games.contains(game)).player;
+
+  final selectedPlayer = game.overradedPlayer ?? platform;
+  if (selectedPlayer == null) {
+    return;
+  }
+  final intent = getAppIntent(game, selectedPlayer);
   if (intent == null) {
-    if (platform.player != null) {
-      await appsAction.openApp(platform.player!.app);
-    }
+    await appsAction.openApp(selectedPlayer.app);
   } else {
     appsAction.openIntent(intent);
   }

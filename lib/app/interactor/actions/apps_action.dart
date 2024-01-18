@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:yuno/app/interactor/models/player.dart';
+import 'package:yuno/app/interactor/models/embeds/player.dart';
 
 import '../../../injector.dart';
 import '../atoms/app_atom.dart';

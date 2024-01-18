@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:yuno/app/interactor/models/game.dart';
+import 'package:yuno/app/interactor/models/embeds/game.dart';
 
 class CardTile extends StatelessWidget {
   final Animation<double> transitionAnimation;
@@ -26,13 +26,25 @@ class CardTile extends StatelessWidget {
   });
 
   Widget noImage() {
+    final player = game.overradedPlayer;
+    Widget image = const Icon(Icons.image_not_supported_outlined);
+    if (player != null) {
+      image = SizedBox(
+        width: 48,
+        child: Image.memory(
+          player.app.icon,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
     return Container(
       padding: const EdgeInsets.all(8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Icon(Icons.image_not_supported_outlined),
+          image,
           const Gap(8),
           Text(
             game.name,

@@ -1,6 +1,6 @@
 import 'package:yuno/app/interactor/models/app_model.dart';
 
-import '../models/player.dart';
+import '../models/embeds/player.dart';
 
 abstract class AppsRepository {
   Future<Set<AppModel>> getInstalledApps();
