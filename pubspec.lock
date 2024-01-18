@@ -803,9 +803,10 @@ packages:
   routefly:
     dependency: "direct main"
     description:
-      path: "/Users/jacob/Projects/routefly"
-      relative: false
-    source: path
+      name: routefly
+      sha256: "8d38b9322e253d6d313fc7f311d79beaf99a4425974eedb32f192a77da7a34f0"
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.8"
   sa4_migration_kit:
     dependency: transitive

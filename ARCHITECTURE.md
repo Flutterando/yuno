@@ -12,7 +12,7 @@ Encompasses all pages and subpages of the application.
 
 ## 2. Interactor
 
-Encompasses business rules.
+Encompasses business rules and yours interfacer.
 
 - **Atoms:**
   - Small building blocks representing atomic units of functionality.
