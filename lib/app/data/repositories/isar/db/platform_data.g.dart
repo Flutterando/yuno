@@ -27,18 +27,24 @@ const PlatformDataSchema = CollectionSchema(
       name: r'folder',
       type: IsarType.string,
     ),
-    r'lastUpdate': PropertySchema(
+    r'games': PropertySchema(
       id: 2,
+      name: r'games',
+      type: IsarType.objectList,
+      target: r'GameData',
+    ),
+    r'lastUpdate': PropertySchema(
+      id: 3,
       name: r'lastUpdate',
       type: IsarType.dateTime,
     ),
     r'playerExtra': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'playerExtra',
       type: IsarType.string,
     ),
     r'playerPackageId': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'playerPackageId',
       type: IsarType.string,
     )
@@ -50,7 +56,7 @@ const PlatformDataSchema = CollectionSchema(
   idName: r'id',
   indexes: {},
   links: {},
-  embeddedSchemas: {},
+  embeddedSchemas: {r'GameData': GameDataSchema},
   getId: _platformDataGetId,
   getLinks: _platformDataGetLinks,
   attach: _platformDataAttach,
@@ -65,13 +71,26 @@ int _platformDataEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.category.length * 3;
   bytesCount += 3 + object.folder.length * 3;
+  bytesCount += 3 + object.games.length * 3;
+  {
+    final offsets = allOffsets[GameData]!;
+    for (var i = 0; i < object.games.length; i++) {
+      final value = object.games[i];
+      bytesCount += GameDataSchema.estimateSize(value, offsets, allOffsets);
+    }
+  }
   {
     final value = object.playerExtra;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.playerPackageId.length * 3;
+  {
+    final value = object.playerPackageId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -83,9 +102,15 @@ void _platformDataSerialize(
 ) {
   writer.writeString(offsets[0], object.category);
   writer.writeString(offsets[1], object.folder);
-  writer.writeDateTime(offsets[2], object.lastUpdate);
-  writer.writeString(offsets[3], object.playerExtra);
-  writer.writeString(offsets[4], object.playerPackageId);
+  writer.writeObjectList<GameData>(
+    offsets[2],
+    allOffsets,
+    GameDataSchema.serialize,
+    object.games,
+  );
+  writer.writeDateTime(offsets[3], object.lastUpdate);
+  writer.writeString(offsets[4], object.playerExtra);
+  writer.writeString(offsets[5], object.playerPackageId);
 }
 
 PlatformData _platformDataDeserialize(
@@ -97,10 +122,17 @@ PlatformData _platformDataDeserialize(
   final object = PlatformData();
   object.category = reader.readString(offsets[0]);
   object.folder = reader.readString(offsets[1]);
+  object.games = reader.readObjectList<GameData>(
+        offsets[2],
+        GameDataSchema.deserialize,
+        allOffsets,
+        GameData(),
+      ) ??
+      [];
   object.id = id;
-  object.lastUpdate = reader.readDateTime(offsets[2]);
-  object.playerExtra = reader.readStringOrNull(offsets[3]);
-  object.playerPackageId = reader.readString(offsets[4]);
+  object.lastUpdate = reader.readDateTime(offsets[3]);
+  object.playerExtra = reader.readStringOrNull(offsets[4]);
+  object.playerPackageId = reader.readStringOrNull(offsets[5]);
   return object;
 }
 
@@ -116,11 +148,19 @@ P _platformDataDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readObjectList<GameData>(
+            offset,
+            GameDataSchema.deserialize,
+            allOffsets,
+            GameData(),
+          ) ??
+          []) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -491,6 +531,95 @@ extension PlatformDataQueryFilter
     });
   }
 
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      gamesLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'games',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      gamesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'games',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      gamesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'games',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      gamesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'games',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      gamesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'games',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      gamesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'games',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
   QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -755,8 +884,26 @@ extension PlatformDataQueryFilter
   }
 
   QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      playerPackageIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'playerPackageId',
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      playerPackageIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'playerPackageId',
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
       playerPackageIdEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -770,7 +917,7 @@ extension PlatformDataQueryFilter
 
   QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
       playerPackageIdGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -786,7 +933,7 @@ extension PlatformDataQueryFilter
 
   QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
       playerPackageIdLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -802,8 +949,8 @@ extension PlatformDataQueryFilter
 
   QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
       playerPackageIdBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -892,7 +1039,14 @@ extension PlatformDataQueryFilter
 }
 
 extension PlatformDataQueryObject
-    on QueryBuilder<PlatformData, PlatformData, QFilterCondition> {}
+    on QueryBuilder<PlatformData, PlatformData, QFilterCondition> {
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition> gamesElement(
+      FilterQuery<GameData> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'games');
+    });
+  }
+}
 
 extension PlatformDataQueryLinks
     on QueryBuilder<PlatformData, PlatformData, QFilterCondition> {}
@@ -1101,6 +1255,12 @@ extension PlatformDataQueryProperty
     });
   }
 
+  QueryBuilder<PlatformData, List<GameData>, QQueryOperations> gamesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'games');
+    });
+  }
+
   QueryBuilder<PlatformData, DateTime, QQueryOperations> lastUpdateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lastUpdate');
@@ -1113,7 +1273,7 @@ extension PlatformDataQueryProperty
     });
   }
 
-  QueryBuilder<PlatformData, String, QQueryOperations>
+  QueryBuilder<PlatformData, String?, QQueryOperations>
       playerPackageIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'playerPackageId');

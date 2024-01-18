@@ -13,9 +13,11 @@ import 'widgets/settings_widget.dart';
 Route routeBuilder(BuildContext context, RouteSettings settings) {
   return PageRouteBuilder(
     settings: settings,
-    pageBuilder: (_, a1, a2) => ConfigPage(
-      transitionAnimation: a1,
-    ),
+    pageBuilder: (_, a1, a2) {
+      return ConfigPage(
+        transitionAnimation: a1,
+      );
+    },
     transitionsBuilder: (_, a1, a2, child) {
       final curved = CurvedAnimation(
         parent: a1,

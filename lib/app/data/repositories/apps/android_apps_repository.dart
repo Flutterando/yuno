@@ -1,8 +1,9 @@
 import 'package:android_intent_plus/android_intent.dart' as android_intent;
+import 'package:android_intent_plus/flag.dart' as flag;
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart' as installed_apps;
 import 'package:yuno/app/interactor/models/app_model.dart';
-import 'package:yuno/app/interactor/models/player.dart';
+import 'package:yuno/app/interactor/models/embeds/player.dart';
 import 'package:yuno/app/interactor/repositories/apps_repository.dart';
 
 class AndroidAppsRepository implements AppsRepository {
@@ -46,6 +47,10 @@ class AndroidAppsRepository implements AppsRepository {
       package: intent.package,
       componentName: intent.componentName,
       arguments: intent.arguments,
+      flags: <int>[
+        flag.Flag.FLAG_ACTIVITY_NEW_TASK,
+        flag.Flag.FLAG_ACTIVITY_CLEAR_TASK,
+      ],
     );
 
     return newIntent.launch();

@@ -1,8 +1,11 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:routefly/routefly.dart';
 import 'package:yuno/app/core/widgets/animated_floating_action_button.dart';
 import 'package:yuno/app/interactor/atoms/platform_atom.dart';
+
+import '../../../../routes.dart';
 
 class PlatformWidget extends StatelessWidget {
   final Animation<double> transitionAnimation;
@@ -22,6 +25,13 @@ class PlatformWidget extends StatelessWidget {
           itemCount: platforms.length,
           itemBuilder: (_, index) {
             final platform = platforms[index];
+            var playerName = '';
+
+            if (platform.category.id == 'android') {
+              playerName = 'Android';
+            } else {
+              playerName = platform.player?.app.package ?? 'No player';
+            }
             return ListTile(
               leading: CircleAvatar(
                 child: SvgPicture.asset(
@@ -38,7 +48,7 @@ class PlatformWidget extends StatelessWidget {
                     size: 12,
                   ),
                   Text(
-                    platform.player?.app.package ?? 'No player',
+                    playerName,
                     maxLines: 1,
                   ),
                 ],
@@ -52,7 +62,12 @@ class PlatformWidget extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.edit),
-                    onPressed: () async {},
+                    onPressed: () async {
+                      Routefly.push(
+                        routePaths.config.editPlatform,
+                        arguments: platform,
+                      );
+                    },
                   ),
                 ],
               ),
@@ -61,7 +76,9 @@ class PlatformWidget extends StatelessWidget {
           },
         ),
         floatingActionButton: AnimatedFloatingActionButton(
-          onPressed: () async {},
+          onPressed: () async {
+            Routefly.push(routePaths.config.editPlatform);
+          },
           label: 'Add Platform',
           icon: Icons.add,
           animation: transitionAnimation,

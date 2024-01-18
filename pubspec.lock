@@ -281,14 +281,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
-  file_picker:
-    dependency: "direct main"
-    description:
-      name: file_picker
-      sha256: "4e42aacde3b993c5947467ab640882c56947d9d27342a5b6f2895b23956954a6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.1"
   file_selector:
     dependency: "direct main"
     description:
@@ -390,14 +382,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.9"
-  flutter_plugin_android_lifecycle:
-    dependency: transitive
-    description:
-      name: flutter_plugin_android_lifecycle
-      sha256: b068ffc46f82a55844acfa4fdbb61fad72fa2aef0905548419d97f0f95c456da
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.17"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -649,7 +633,7 @@ packages:
     source: hosted
     version: "2.0.1"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: "8829d8a55c13fc0e37127c29fedf290c102f4e40ae94ada574091fe0ff96c917"
@@ -819,10 +803,9 @@ packages:
   routefly:
     dependency: "direct main"
     description:
-      name: routefly
-      sha256: "8d38b9322e253d6d313fc7f311d79beaf99a4425974eedb32f192a77da7a34f0"
-      url: "https://pub.dev"
-    source: hosted
+      path: "/Users/jacob/Projects/routefly"
+      relative: false
+    source: path
     version: "1.0.8"
   sa4_migration_kit:
     dependency: transitive

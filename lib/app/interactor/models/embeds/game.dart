@@ -1,33 +1,30 @@
 import 'dart:ui';
 
-import 'game_category.dart';
-import 'platform_model.dart';
+import 'package:yuno/app/interactor/models/embeds/player.dart';
 
 class Game {
-  final int id;
-  final PlatformModel platform;
-  final PlatformModel? overradedPlatform;
+  final Player? overradedPlayer;
   final String name;
   final String description;
   final String image;
   final Color? imageColor;
   final String path;
-  final Set<GameCategory> categories;
+  final bool isFavorite;
   final String? genre;
+  final bool isSynced;
   final String? publisher;
 
   bool get hasImage => image.isNotEmpty;
 
   Game({
-    required this.id,
-    required this.platform,
-    this.overradedPlatform,
+    this.isFavorite = false,
+    this.overradedPlayer,
+    this.isSynced = false,
     required this.name,
     required this.description,
     required this.image,
     required this.path,
     this.imageColor,
-    this.categories = const {},
     this.genre,
     this.publisher,
   });

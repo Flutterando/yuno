@@ -10,7 +10,6 @@ import '../core/assets/images.dart' as images;
 import '../core/assets/sounds.dart' as sounds;
 import '../core/assets/svgs.dart' as svgs;
 import '../interactor/actions/apps_action.dart' as apps;
-import '../interactor/actions/game_action.dart' as game;
 import '../interactor/actions/platform_action.dart' as platform;
 
 class AppPage extends StatefulWidget {
@@ -26,9 +25,7 @@ class _AppPageState extends State<AppPage> {
     super.didChangeDependencies();
     registerGamepad();
     Future.wait([
-      platform.fetchPlatforms(),
-      apps.fetchApps(),
-      game.firstInitialization(context),
+      sequenceInitialization(),
       svgs.precacheCache(context),
       images.precacheCache(context),
       sounds.precacheCache(),
@@ -37,6 +34,11 @@ class _AppPageState extends State<AppPage> {
       sounds.introSound();
       Routefly.navigate(routePaths.home);
     });
+  }
+
+  Future<void> sequenceInitialization() async {
+    await apps.fetchApps();
+    await platform.firstInitialization(context);
   }
 
   @override

@@ -2,8 +2,9 @@ import 'package:routefly/routefly.dart';
 
 import 'app/(public)/apps_page.dart' as a0;
 import 'app/(public)/config/config_page.dart' as a1;
-import 'app/(public)/home_page.dart' as a2;
-import 'app/(public)/splash_page.dart' as a3;
+import 'app/(public)/config/edit_platform_page.dart' as a2;
+import 'app/(public)/home_page.dart' as a3;
+import 'app/(public)/splash_page.dart' as a4;
 
 List<RouteEntity> get routes => [
   RouteEntity(
@@ -21,9 +22,18 @@ List<RouteEntity> get routes => [
     routeBuilder: a1.routeBuilder,
   ),
   RouteEntity(
+    key: '/config/edit_platform',
+    uri: Uri.parse('/config/edit_platform'),
+    routeBuilder: (ctx, settings) => Routefly.defaultRouteBuilder(
+      ctx,
+      settings,
+      const a2.EditPlatformPage(),
+    ),
+  ),
+  RouteEntity(
     key: '/home',
     uri: Uri.parse('/home'),
-    routeBuilder: a2.routeBuilder,
+    routeBuilder: a3.routeBuilder,
   ),
   RouteEntity(
     key: '/splash',
@@ -31,7 +41,7 @@ List<RouteEntity> get routes => [
     routeBuilder: (ctx, settings) => Routefly.defaultRouteBuilder(
       ctx,
       settings,
-      const a3.AppPage(),
+      const a4.AppPage(),
     ),
   ),
 ];
@@ -39,7 +49,10 @@ List<RouteEntity> get routes => [
 const routePaths = (
   path: '/',
   apps: '/apps',
-  config: '/config',
+  config: (
+    path: '/config',
+    editPlatform: '/config/edit_platform',
+  ),
   home: '/home',
   splash: '/splash',
 );

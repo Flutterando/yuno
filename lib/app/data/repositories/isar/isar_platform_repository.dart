@@ -1,35 +1,38 @@
-import 'package:yuno/app/interactor/dtos/create_platform.dart';
+import 'package:isar/isar.dart';
+import 'package:yuno/app/data/repositories/isar/db/platform_data.dart';
 import 'package:yuno/app/interactor/models/platform_model.dart';
 
 import '../../../interactor/repositories/platform_repository.dart';
+import 'adapters/platform_adapter.dart';
+import 'isar_datasource.dart';
 
 class IsarPlatformRepository extends PlatformRepository {
   @override
-  Future<void> createPlatform(CreatePlatform platform) {
-    // TODO: implement createPlatform
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> deletePlatform(PlatformModel platform) {
-    // TODO: implement deletePlatform
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<PlatformModel>> fetchPlatforms() async {
-    return [];
+    final datas = await IsarDatasource.isar.platformDatas.where().findAll();
+    return datas.map((e) => PlatformAdapter.platformFromData(e)).toList();
   }
 
   @override
-  Future<void> syncPlatform(PlatformModel platform) {
-    // TODO: implement syncPlatform
-    throw UnimplementedError();
+  Future<void> createPlatform(PlatformModel platform) async {
+    final data = PlatformAdapter.platformFromModel(platform);
+    await IsarDatasource.isar.writeTxn(() async {
+      await IsarDatasource.isar.platformDatas.put(data); // insert & update
+    });
   }
 
   @override
-  Future<void> updatePlatform(PlatformModel platform) {
-    // TODO: implement updatePlatform
-    throw UnimplementedError();
+  Future<void> deletePlatform(PlatformModel platform) async {
+    await IsarDatasource.isar.writeTxn(() async {
+      await IsarDatasource.isar.platformDatas.delete(platform.id);
+    });
+  }
+
+  @override
+  Future<void> updatePlatform(PlatformModel platform) async {
+    final data = PlatformAdapter.platformFromModel(platform);
+    await IsarDatasource.isar.writeTxn(() async {
+      await IsarDatasource.isar.platformDatas.put(data); // insert & update
+    });
   }
 }
