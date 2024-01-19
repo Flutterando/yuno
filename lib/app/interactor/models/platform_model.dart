@@ -9,7 +9,7 @@ class PlatformModel {
   final int id;
   final GameCategory category;
   final Player? player;
-  final Directory folder;
+  final String folder;
   final List<Game> games;
 
   final DateTime lastUpdate;
@@ -26,7 +26,7 @@ class PlatformModel {
   static PlatformModel defaultInstance() {
     return PlatformModel(
       id: -1,
-      folder: Directory(''),
+      folder:'',
       lastUpdate: DateTime.now(),
       games: [],
       category: GameCategory(name: '', image: '', id: ''),
@@ -36,7 +36,7 @@ class PlatformModel {
   PlatformModel copyWith(
       {Player? player,
       String? name,
-      Directory? folder,
+      String? folder,
       DateTime? lastUpdate,
       GameCategory? category,
       String? playerArguments,

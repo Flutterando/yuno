@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:media_store_plus/media_store_plus.dart';
 import 'package:yuno/app/interactor/models/platform_model.dart';
 import 'package:yuno/app/interactor/repositories/platform_repository.dart';
 import 'package:yuno/injector.dart';
@@ -55,28 +56,40 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
     return platform.games;
   }
 
+
+
   final games = <Game>[];
-  final directory = Directory(convertContentUriToFilePath(platform.folder.path));
-  final files = directory //
-      .listSync()
-      .whereType<File>()
-      .where(platform.category.checkFileExtension)
+  final media = MediaStore();
+
+  final documents = await media.getDocumentTree(uriString: platform.folder);
+
+  if(documents == null) {
+    return [];
+  }
+
+
+  final files = documents //
+      .children
+      .where((doc){
+    return platform.category.checkFileExtension(doc.name ?? '');
+  })
       .toList();
 
   for (var file in files) {
-    final name = file.path.split('/').last;
     games.add(Game(
-      name: name,
-      path: addFileInUri(
-        platform.folder.path,
-        name,
-      ),
+      name: file.name ?? '',
+      path: file.uriString ?? '',
       description: '',
       image: '',
     ));
   }
 
   return games;
+}
+
+String cleanName(String name) {
+  final index = name.indexOf(RegExp(r'[.(\[]')) - 1;
+  return name.substring(0 , index <= 0 ? name.length : index).trim();
 }
 
 Future<void> updatePlatform(PlatformModel platform) async {
@@ -93,10 +106,6 @@ Future<void> deletePlatform(PlatformModel platform) async {
 
 Future<void> syncPlatform(PlatformModel platform) async {}
 
-String addFileInUri(String path, String file) {
-  String encoded = Uri.encodeComponent('/$file');
-  return '$path$encoded';
-}
 
 String convertContentUriToFilePath(String contentUri) {
   Uri uri = Uri.parse(contentUri);

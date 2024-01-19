@@ -20,7 +20,7 @@ abstract class PlatformAdapter {
 
     data.category = model.category.id;
     data.games = model.games.map((e) => gameFromModel(e)).toList();
-    data.folder = model.folder.path;
+    data.folder = model.folder;
     data.lastUpdate = DateTime.now();
     data.playerPackageId = model.player?.app.package;
     data.playerExtra = model.player?.extra;
@@ -45,7 +45,7 @@ abstract class PlatformAdapter {
   static PlatformModel platformFromData(PlatformData model) {
     return PlatformModel(
       id: model.id,
-      folder: Directory.fromUri(Uri.directory(model.folder)),
+      folder: model.folder,
       lastUpdate: model.lastUpdate,
       category: categorieState.firstWhere((e) => e.id == model.category),
       player: model.playerPackageId == null

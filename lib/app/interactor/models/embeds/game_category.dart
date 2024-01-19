@@ -15,7 +15,7 @@ class GameCategory {
     this.extensions = const [],
   });
 
-  bool checkFileExtension(File element) => true;
+  bool checkFileExtension(String name) => true;
 
   @override
   bool operator ==(covariant GameCategory other) {

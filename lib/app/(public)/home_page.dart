@@ -375,11 +375,8 @@ class _HomePageState extends State<HomePage> {
                             transitionAnimation: widget.transitionAnimation,
                             selected: selectedItemIndex == index,
                             onTap: () {
-                              if (index == selectedItemIndex) {
-                                openGame();
-                              } else {
-                                handlerSelect(index);
-                              }
+                              handlerSelect(index);
+                              openGame();
                             },
                             index: index,
                             gamesLength: games.length,

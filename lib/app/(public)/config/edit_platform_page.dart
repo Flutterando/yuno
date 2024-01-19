@@ -299,14 +299,12 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                         initialValue: beautifyPath(platform.folder),
                         readOnly: true,
                         onTap: () async {
-                          final String? selectedDirectory =
-                              await getDirectoryPath();
+                          final selectedDirectory = await getDirectoryPath();
 
                           if (selectedDirectory != null) {
                             setState(() {
                               platform = platform.copyWith(
-                                folder: Directory.fromUri(
-                                    Uri.directory(selectedDirectory)),
+                                folder:selectedDirectory,
                               );
                             });
                           }
@@ -326,7 +324,12 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
           if (platform.id != -1)
             FloatingActionButton(
               heroTag: 'delete',
-              onPressed: () {},
+              onPressed: () {
+                deletePlatform(platform);
+                if (context.mounted) {
+                  Routefly.pop(context);
+                }
+              },
               child: const Icon(Icons.delete),
             ),
           if (platform.id != -1) const Gap(17),
@@ -338,9 +341,9 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
               } else {
                 createPlatform(platform);
               }
-              // if (context.mounted) {
-              //   Routefly.pop(context);
-              // }
+              if (context.mounted) {
+                Routefly.pop(context);
+              }
             },
             child: const Icon(Icons.save),
           ),
@@ -349,8 +352,8 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
     );
   }
 
-  String beautifyPath(Directory dir) {
-    final path = convertContentUriToFilePath(dir.path);
+  String beautifyPath(String dir) {
+    final path = convertContentUriToFilePath(dir);
     return path.replaceAll('/storage/emulated/0', '');
   }
 }

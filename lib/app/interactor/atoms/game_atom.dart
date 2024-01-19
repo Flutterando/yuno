@@ -60,6 +60,7 @@ List<GameCategory> get categoriesFoSelectState {
 final categorieState = <GameCategory>[
   GameCategory(name: 'Android', image: img.androidSVG, id: 'android'),
   GameCategory(name: 'Nintendo Switch', image: img.switchSVG, id: 'switch'),
+  GameCategory(name: 'Super Nintendo', image: img.switchSVG, id: 'snes'),
   GameCategory(name: 'Playstation 1', image: img.ps1SVG, id: 'ps1'),
   GameCategory(name: 'Playstation 2', image: img.ps2SVG, id: 'ps2'),
   GameCategory(name: 'Playstation Portable', image: img.pspSVG, id: 'psp'),

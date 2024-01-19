@@ -47,6 +47,7 @@ class PlayerIntent {
   final String package;
   final String? componentName;
   final String? data;
+  final String? type;
   final Map<String, dynamic>? arguments;
 
   PlayerIntent({
@@ -55,23 +56,37 @@ class PlayerIntent {
     this.componentName,
     this.data,
     this.arguments,
+    this.type,
   });
 
-  PlayerIntent parse(Player player, Game game) {
+  PlayerIntent parse({String? fileGameUri, String? fileGamePath, String? extra,}) {
     if (arguments == null) {
       return this;
     }
-    var newArguments = replaceVariables(arguments, 'fileGame', game.path);
-    newArguments = replaceVariables(
-      newArguments,
-      'extra',
-      player.extra ?? '',
-    );
+    var newArguments = arguments;
+    var newData = data;
+
+
+    if(fileGameUri != null){
+      newArguments = replaceMap(newArguments, 'fileGameUri', fileGameUri);
+      newData = replaceVariable(newData, 'fileGameUri', fileGameUri);
+      newData = replaceVariable(newData, 'fileGame', fileGameUri);
+    }
+
+    if(fileGamePath != null){
+      newArguments = replaceMap(newArguments, 'fileGamePath', fileGamePath);
+    }
+
+    if(extra != null){
+      newArguments = replaceMap(newArguments, 'extra', extra);
+    }
+
     return PlayerIntent(
       action: action,
       package: package,
       componentName: componentName,
-      data: replaceVariable(data, 'fileGame', game.path),
+      type: type,
+      data: newData,
       arguments: newArguments,
     );
   }
@@ -84,7 +99,7 @@ class PlayerIntent {
     return value.replaceAll(regex, replaceValue);
   }
 
-  Map<String, dynamic> replaceVariables(
+  Map<String, dynamic> replaceMap(
       Map<String, dynamic>? map, String variable, String replaceValue) {
     if (map == null) {
       return {};
