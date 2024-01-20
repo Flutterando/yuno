@@ -19,7 +19,10 @@ abstract class PlatformAdapter {
     }
 
     data.category = model.category.id;
-    data.games = model.games.map((e) => gameFromModel(e)).toList();
+
+    final games = model.games.map((e) => gameFromModel(e)).toList();
+    games.sort((a, b) => a.name.compareTo(b.name));
+    data.games = games;
     data.folder = model.folder;
     data.lastUpdate = DateTime.now();
     data.playerPackageId = model.player?.app.package;

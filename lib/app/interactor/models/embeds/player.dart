@@ -14,6 +14,7 @@ class Player {
     this.extra,
   });
 
+
   Player copyWith({
     AppModel? app,
     String? extra,

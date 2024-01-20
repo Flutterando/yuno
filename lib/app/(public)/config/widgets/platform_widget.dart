@@ -6,6 +6,8 @@ import 'package:yuno/app/core/widgets/animated_floating_action_button.dart';
 import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 
 import '../../../../routes.dart';
+import '../../../core/widgets/animated_sync_button.dart';
+import '../../../interactor/actions/platform_action.dart';
 
 class PlatformWidget extends StatelessWidget {
   final Animation<double> transitionAnimation;
@@ -22,6 +24,7 @@ class PlatformWidget extends StatelessWidget {
 
       return Scaffold(
         body: ListView.builder(
+          padding: const EdgeInsets.only(bottom: 100),
           itemCount: platforms.length,
           itemBuilder: (_, index) {
             final platform = platforms[index];
@@ -56,13 +59,21 @@ class PlatformWidget extends StatelessWidget {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.sync),
-                    onPressed: () async {},
+                  AnimatedSyncButton(
+                    isSyncing: platformSyncState.value.contains(platform.id),
+                    onPressed: () async {
+                      if(isPlatformSyncing) {
+                        return;
+                      }
+                        await syncPlatform(platform);
+                    },
                   ),
                   IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () async {
+                      if(isPlatformSyncing) {
+                        return;
+                      }
                       Routefly.push(
                         routePaths.config.editPlatform,
                         arguments: platform,

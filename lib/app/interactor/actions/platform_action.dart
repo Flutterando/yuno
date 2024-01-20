@@ -1,36 +1,18 @@
 // ignore_for_file: use_build_context_synchronously
 
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:yuno/app/interactor/models/platform_model.dart';
 import 'package:yuno/app/interactor/repositories/platform_repository.dart';
+import 'package:yuno/app/interactor/repositories/sync_repository.dart';
 import 'package:yuno/injector.dart';
 
 import '../atoms/platform_atom.dart';
 import '../models/embeds/game.dart';
 import 'game_action.dart';
-
-// igdp 1o179i97b6l23szlizbu6hdknrg9so
-
-// > POST /v4/games HTTP/2
-// > Host: api.igdb.com
-// > cookie: __cf_bm=xO7z4BfO.LCPPT_pEgqUYYtKcOVWVUBxl3P.jWEVYJY-1705531429-1-ARyT4iQbBQJYySOWqftllPZL9zE+kTmThYfHMqkmO6koa5Xzts+qtg/4q1WLKx0X56SwKAF85f1s2f/bxYZcAXQ=
-// > content-type: text/plain
-// > user-agent: insomnia/2023.5.8
-// > client-id: tmj9jsx0fuamcftxqecvsybnoh59lm
-// > authorization: Bearer 1o179i97b6l23szlizbu6hdknrg9so
-// > accept: */*
-// > content-length: 114
-// fields artworks,collection,cover.*, first_release_date,genres.*,name,summary; search "super mario world"; limit 1;
-
-// rawg 09c741277de347b79d8cbb55ec394b54
-
-//GET /api/games?key=09c741277de347b79d8cbb55ec394b54&search=Super%20mario%20odyssey HTTP/2
-//> Host: api.rawg.io
-//> user-agent: insomnia/2023.5.8
-//> accept: */*
 
 Future<void> firstInitialization(BuildContext context) async {
   await fetchPlatforms();
@@ -46,7 +28,6 @@ Future<void> createPlatform(PlatformModel platform) async {
   final repository = injector<PlatformRepository>();
   final games = await _getGames(platform);
   platform = platform.copyWith(games: games);
-
   await repository.createPlatform(platform);
   await fetchPlatforms();
 }
@@ -55,8 +36,6 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
   if (platform.category.id == 'android') {
     return platform.games;
   }
-
-
 
   final games = <Game>[];
   final media = MediaStore();
@@ -67,7 +46,6 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
     return [];
   }
 
-
   final files = documents //
       .children
       .where((doc){
@@ -77,7 +55,7 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
 
   for (var file in files) {
     games.add(Game(
-      name: file.name ?? '',
+      name: cleanName(file.name ?? ''),
       path: file.uriString ?? '',
       description: '',
       image: '',
@@ -85,6 +63,47 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
   }
 
   return games;
+}
+
+Future<void> syncPlatform(PlatformModel platform) async {
+  if(isPlatformSyncing) {
+    return;
+  }
+
+  platformSyncState.value = {...platformSyncState.value, platform.id};
+
+  final repository = injector<SyncRepository>();
+
+  for (var i = 0; i < platform.games.length; i++) {
+    if (platform.games[i].isSynced) continue;
+    if (platform.games[i].image.isNotEmpty) {
+      final color = await getDominatingColor(platform.games[i].image);
+      platform.games[i] = platform.games[i].copyWith(imageColor: color);
+    } else {
+      try {
+        var metaGame = await repository.syncIGDB(platform.games[i]);
+        final color = await getDominatingColor(metaGame.image);
+        metaGame = metaGame.copyWith(imageColor: color);
+        platform.games[i] = metaGame;
+      } catch (e) {
+        continue;
+      }
+    }
+  }
+
+  await updatePlatform(platform);
+  platformSyncState.value.remove(platform.id);
+  platformSyncState();
+}
+
+Future<Color?> getDominatingColor(String imagePath) async {
+  final imageFile = File(imagePath);
+  if(!imageFile.existsSync()){
+    return null;
+  }
+  final scheme = await ColorScheme.fromImageProvider(provider: FileImage(imageFile),
+  brightness: Brightness.dark,);
+  return scheme.primary;
 }
 
 String cleanName(String name) {
@@ -103,8 +122,6 @@ Future<void> deletePlatform(PlatformModel platform) async {
   await repository.deletePlatform(platform);
   await fetchPlatforms();
 }
-
-Future<void> syncPlatform(PlatformModel platform) async {}
 
 
 String convertContentUriToFilePath(String contentUri) {

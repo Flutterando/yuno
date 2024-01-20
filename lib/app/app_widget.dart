@@ -21,6 +21,9 @@ class AppWidget extends StatelessWidget {
         routerConfig: Routefly.routerConfig(
           routes: routes,
           initialPath: routePaths.splash,
+          observers: [
+            HeroController(),
+          ],
           routeBuilder: (context, settings, child) {
             return PageRouteBuilder(
               settings: settings,

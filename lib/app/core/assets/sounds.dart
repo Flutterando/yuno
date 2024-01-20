@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
 
-final _pool = Soundpool.fromOptions(options: const SoundpoolOptions(streamType: StreamType.notification));
+final _pool = Soundpool.fromOptions(options: const SoundpoolOptions(streamType: StreamType.music));
 
 const _clickSound = 'assets/sounds/click.mp3';
 int _clickSoundId = 0;

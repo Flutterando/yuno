@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:routefly/routefly.dart';
 import 'package:yuno/app/interactor/atoms/app_atom.dart';
 import 'package:yuno/app/interactor/atoms/game_atom.dart';
+import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 import 'package:yuno/app/interactor/models/app_model.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 
@@ -304,7 +305,7 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                           if (selectedDirectory != null) {
                             setState(() {
                               platform = platform.copyWith(
-                                folder:selectedDirectory,
+                                folder: selectedDirectory,
                               );
                             });
                           }
@@ -335,14 +336,27 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
           if (platform.id != -1) const Gap(17),
           FloatingActionButton(
             heroTag: 'save',
-            onPressed: () {
+            onPressed: () async {
+
+              final result = platform.validator();
+              if (result != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(result),
+                  ),
+                );
+                return;
+              }
+
+
+              Routefly.pop(context);
+
               if (isEditing) {
                 updatePlatform(platform);
               } else {
-                createPlatform(platform);
-              }
-              if (context.mounted) {
-                Routefly.pop(context);
+                  await createPlatform(platform);
+                  platform = platformsState.value.firstWhere((e) => e.category == platform.category);
+                  await syncPlatform(platform);
               }
             },
             child: const Icon(Icons.save),
