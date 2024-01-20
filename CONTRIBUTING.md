@@ -74,9 +74,14 @@ Next, at the root of your locally cloned repository run the `use` command to swi
 puro use yuno
 ```
 
-And finally get all project dependencies:
+Get all project dependencies:
 ```bash
 flutter pub get
+```
+
+And finally, run the project:
+```bash
+flutter run --flavor dev --dart-define-from-file=.env
 ```
 
 ### Performing changes
