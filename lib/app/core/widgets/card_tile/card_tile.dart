@@ -31,32 +31,30 @@ class CardTile extends StatelessWidget {
 
   Widget noImage() {
     final player = game.overradedPlayer;
-    Widget image = const Icon(Icons.image_not_supported_outlined);
     if (player != null) {
-      image = SizedBox(
-        width: 48,
-        child: Image.memory(
-          player.app.icon,
-          fit: BoxFit.cover,
+      return Image.memory(
+        player.app.icon,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Container(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(Icons.image_not_supported_outlined),
+            const Gap(8),
+            Text(
+              game.name,
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       );
     }
 
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          image,
-          const Gap(8),
-          Text(
-            game.name,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
+
   }
 
   Widget withImage() {

@@ -31,9 +31,6 @@ class _AnimatedSyncButtonState extends State<AnimatedSyncButton>
       setState(() {});
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      animate();
-    });
   }
 
   @override

@@ -148,6 +148,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void favorite() {
+    if(selectedItemIndex == -1){
+      return;
+    }
+
     final game = games[selectedItemIndex];
     final newGame = game.copyWith(
       isFavorite: !game.isFavorite,
@@ -336,7 +340,7 @@ class _HomePageState extends State<HomePage> {
             actions: [
               TextButton(
                 onPressed: () {
-                  updateGame(game, game.copyWith(image: ''));
+                  updateGame(game, game.copyWith(image: '', isSynced: false));
                   Navigator.pop(context);
                 },
                 child: Text('Remove'),
