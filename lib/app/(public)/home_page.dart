@@ -12,6 +12,7 @@ import 'package:yuno/app/interactor/models/embeds/game.dart';
 import 'package:yuno/routes.dart';
 
 import '../core/assets/sounds.dart' as sounds;
+import '../core/assets/svgs.dart';
 import '../core/widgets/animated_menu_leading.dart';
 import '../core/widgets/animated_search.dart';
 import '../core/widgets/animated_title_app_bart.dart';
@@ -99,7 +100,7 @@ class _HomePageState extends State<HomePage> {
             : selectedItemIndex);
       case GamepadButton.dpadLeft || GamepadButton.leftStickLeft:
         handlerSelect(
-            selectedItemIndex > 0 ? selectedItemIndex - 1 : selectedItemIndex);
+            selectedItemIndex > 0  ? selectedItemIndex - 1 : selectedItemIndex);
       case GamepadButton.dpadRight || GamepadButton.leftStickRight:
         handlerSelect((selectedItemIndex + 1) % games.length);
       case GamepadButton.LB:
@@ -539,12 +540,12 @@ class _HomePageState extends State<HomePage> {
                               controller: menuScrollController,
                               index: i,
                               key: ValueKey(i),
-                              child: SvgPicture.asset(
-                                availableCategoriesState[i].image,
+                              child: SvgPicture(
+                                getLoader(availableCategoriesState[i].image),
                                 width: 28,
                               ),
                             ),
-                            label: Text(availableCategoriesState[i].name),
+                            label: Text(availableCategoriesState[i].shortName),
                           ),
                       ],
                       selectedIndex: selectedDestinationIndex,
@@ -586,24 +587,21 @@ class _HomePageState extends State<HomePage> {
                           index: index,
                           key: ValueKey(index),
                           controller: scrollController,
-                          child: Hero(
-                            tag: games[index].name,
-                            child: CardTile(
-                              game: games[index],
-                              colorSelect: colorScheme.primary,
-                              transitionAnimation: widget.transitionAnimation,
-                              selected: selectedItemIndex == index,
-                              onTap: () {
-                                handlerSelect(index);
-                                openGame();
-                              },
-                              onLongPressed: () {
-                                handlerSelect(index);
-                                gameMenu();
-                              },
-                              index: index,
-                              gamesLength: games.length,
-                            ),
+                          child: CardTile(
+                            game: games[index],
+                            colorSelect: colorScheme.primary,
+                            transitionAnimation: widget.transitionAnimation,
+                            selected: selectedItemIndex == index,
+                            onTap: () {
+                              handlerSelect(index);
+                              openGame();
+                            },
+                            onLongPressed: () {
+                              handlerSelect(index);
+                              gameMenu();
+                            },
+                            index: index,
+                            gamesLength: games.length,
                           ),
                         );
                       },
