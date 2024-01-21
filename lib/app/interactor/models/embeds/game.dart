@@ -29,6 +29,20 @@ class Game {
     this.publisher,
   });
 
+  Game removeOverridedPlayer() {
+    return Game(
+      name: name,
+      imageColor: imageColor,
+      description: description,
+      image: image,
+      path: path,
+      isFavorite: isFavorite,
+      genre: genre,
+      isSynced: isSynced,
+      publisher: publisher,
+    );
+  }
+
   Game copyWith({
     Player? overradedPlayer,
     String? name,

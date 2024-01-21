@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -21,7 +20,8 @@ Future<void> firstInitialization(BuildContext context) async {
 
 Future<void> fetchPlatforms() async {
   final repository = injector<PlatformRepository>();
-  platformsState.value = await repository.fetchPlatforms();
+  final platforms = await repository.fetchPlatforms();
+  platformsState.value = platforms;
 }
 
 Future<void> createPlatform(PlatformModel platform) async {
@@ -42,16 +42,15 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
 
   final documents = await media.getDocumentTree(uriString: platform.folder);
 
-  if(documents == null) {
+  if (documents == null) {
     return [];
   }
 
   final files = documents //
       .children
-      .where((doc){
+      .where((doc) {
     return platform.category.checkFileExtension(doc.name ?? '');
-  })
-      .toList();
+  }).toList();
 
   for (var file in files) {
     games.add(Game(
@@ -66,7 +65,7 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
 }
 
 Future<void> syncPlatform(PlatformModel platform) async {
-  if(isPlatformSyncing) {
+  if (isPlatformSyncing) {
     return;
   }
 
@@ -98,17 +97,19 @@ Future<void> syncPlatform(PlatformModel platform) async {
 
 Future<Color?> getDominatingColor(String imagePath) async {
   final imageFile = File(imagePath);
-  if(!imageFile.existsSync()){
+  if (!imageFile.existsSync()) {
     return null;
   }
-  final scheme = await ColorScheme.fromImageProvider(provider: FileImage(imageFile),
-  brightness: Brightness.dark,);
+  final scheme = await ColorScheme.fromImageProvider(
+    provider: FileImage(imageFile),
+    brightness: Brightness.dark,
+  );
   return scheme.primary;
 }
 
 String cleanName(String name) {
   final index = name.indexOf(RegExp(r'[.(\[]')) - 1;
-  return name.substring(0 , index <= 0 ? name.length : index).trim();
+  return name.substring(0, index <= 0 ? name.length : index).trim();
 }
 
 Future<void> updatePlatform(PlatformModel platform) async {
@@ -122,7 +123,6 @@ Future<void> deletePlatform(PlatformModel platform) async {
   await repository.deletePlatform(platform);
   await fetchPlatforms();
 }
-
 
 String convertContentUriToFilePath(String contentUri) {
   Uri uri = Uri.parse(contentUri);

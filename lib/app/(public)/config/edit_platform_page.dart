@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -8,15 +5,14 @@ import 'package:routefly/routefly.dart';
 import 'package:yuno/app/interactor/atoms/app_atom.dart';
 import 'package:yuno/app/interactor/atoms/game_atom.dart';
 import 'package:yuno/app/interactor/atoms/platform_atom.dart';
-import 'package:yuno/app/interactor/models/app_model.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 
-import '../../core/constants/retroarch_cores.dart';
 import '../../core/widgets/animated_title_app_bart.dart';
 import '../../interactor/actions/platform_action.dart';
 import '../../interactor/models/embeds/game_category.dart';
 import '../../interactor/models/embeds/player.dart';
 import '../../interactor/models/platform_model.dart';
+import 'widgets/player_select.dart';
 
 class EditPlatformPage extends StatefulWidget {
   const EditPlatformPage({super.key});
@@ -159,160 +155,35 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                     ),
                   ),
                 if (platform.category.id != 'android')
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      DropdownButtonFormField<AppModel>(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Player app',
-                        ),
-                        value: platform.player?.app,
-                        selectedItemBuilder: (BuildContext context) {
-                          return appsState.value.map((AppModel value) {
-                            return Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CircleAvatar(
-                                  backgroundImage: MemoryImage(
-                                    value.icon,
-                                  ),
-                                ),
-                                const Gap(5),
-                                Text(
-                                  value.name.substring(
-                                    0,
-                                    min(value.name.length, 30),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }).toList();
-                        },
-                        onChanged: (AppModel? newValue) {
-                          if (newValue != null) {
-                            setState(() {
-                              final player =
-                                  platform.player?.copyWith(app: newValue) ??
-                                      Player(app: newValue);
-
-                              platform = platform.copyWith(
-                                player: player,
-                              );
-                            });
-                          }
-                        },
-                        items: appsState.value.map((AppModel value) {
-                          return DropdownMenuItem<AppModel>(
-                            value: value,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 5,
-                                vertical: 9,
-                              ),
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundImage: MemoryImage(
-                                      value.icon,
-                                    ),
-                                  ),
-                                  const Gap(12),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                        value.name.substring(
-                                          0,
-                                          min(value.name.length, 30),
-                                        ),
-                                      ),
-                                      Text(
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                        ),
-                                        value.package.substring(
-                                          0,
-                                          min(value.package.length, 30),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      if (platform.player?.app.package
-                              .startsWith('com.retroarch') ==
-                          true)
-                        const Gap(17),
-                      if (platform.player?.app.package
-                              .startsWith('com.retroarch') ==
-                          true)
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 300,
-                              child: DropdownButtonFormField<String>(
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Retroarch Core',
-                                ),
-                                value: platform.player?.extra,
-                                onChanged: (String? newValue) {
-                                  if (newValue != null) {
-                                    setState(() {
-                                      platform = platform.copyWith(
-                                        player: platform.player
-                                            ?.copyWith(extra: newValue),
-                                      );
-                                    });
-                                  }
-                                },
-                                items: retroarchCores.map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.info_outline),
-                            )
-                          ],
-                        ),
-                      const Gap(17),
-                      TextFormField(
-                        key: Key(beautifyPath(platform.folder)),
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Folder',
-                        ),
-                        initialValue: beautifyPath(platform.folder),
-                        readOnly: true,
-                        onTap: () async {
-                          final selectedDirectory = await getDirectoryPath();
-
-                          if (selectedDirectory != null) {
-                            setState(() {
-                              platform = platform.copyWith(
-                                folder: selectedDirectory,
-                              );
-                            });
-                          }
-                        },
-                      ),
-                    ],
+                  PlayerSelect(
+                    player: platform.player,
+                    onChanged: (p) {
+                      setState(() {
+                        platform = platform.copyWith(player: p);
+                      });
+                    },
                   ),
+                const Gap(17),
+                TextFormField(
+                  key: Key(beautifyPath(platform.folder)),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Folder',
+                  ),
+                  initialValue: beautifyPath(platform.folder),
+                  readOnly: true,
+                  onTap: () async {
+                    final selectedDirectory = await getDirectoryPath();
+
+                    if (selectedDirectory != null) {
+                      setState(() {
+                        platform = platform.copyWith(
+                          folder: selectedDirectory,
+                        );
+                      });
+                    }
+                  },
+                ),
                 const Gap(50),
               ],
             ),
@@ -337,7 +208,6 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
           FloatingActionButton(
             heroTag: 'save',
             onPressed: () async {
-
               final result = platform.validator();
               if (result != null) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -348,15 +218,15 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                 return;
               }
 
-
               Routefly.pop(context);
 
               if (isEditing) {
                 updatePlatform(platform);
               } else {
-                  await createPlatform(platform);
-                  platform = platformsState.value.firstWhere((e) => e.category == platform.category);
-                  await syncPlatform(platform);
+                await createPlatform(platform);
+                platform = platformsState.value
+                    .firstWhere((e) => e.category == platform.category);
+                await syncPlatform(platform);
               }
             },
             child: const Icon(Icons.save),

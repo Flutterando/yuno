@@ -23,6 +23,7 @@ import '../interactor/actions/platform_action.dart';
 import '../interactor/atoms/gamepad_atom.dart';
 import '../interactor/atoms/platform_atom.dart';
 import '../interactor/services/gamepad_service.dart';
+import 'config/widgets/player_select.dart';
 
 Route routeBuilder(BuildContext context, RouteSettings settings) {
   return PageRouteBuilder(
@@ -80,10 +81,10 @@ class _HomePageState extends State<HomePage> {
         DateTime.now().difference(_lastOpenGameAt!).inSeconds > 1;
   }
 
-
-
   void handleKey(GamepadButton? event) {
-    if (Routefly.currentOriginalPath != routePaths.home || event == null || _dialogContext?.mounted == true) {
+    if (Routefly.currentOriginalPath != routePaths.home ||
+        event == null ||
+        _dialogContext?.mounted == true) {
       return;
     }
 
@@ -261,13 +262,13 @@ class _HomePageState extends State<HomePage> {
       builder: (context) {
         _dialogContext = context;
         return AlertDialog(
-          title: Text('Change title'),
+          title: const Text('Change title'),
           content: TextFormField(
             initialValue: game.name,
             onChanged: (value) {
               newTitle = value;
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Title',
             ),
@@ -364,13 +365,55 @@ class _HomePageState extends State<HomePage> {
     await syncPlatform(platform);
   }
 
+  Future<void> overridePlatform() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        _dialogContext = context;
+        return RxBuilder(builder: (context) {
+          final game = games[selectedItemIndex];
+          final overradedPlayer = game.overradedPlayer;
+          return AlertDialog(
+            title: const Text('Override Player'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Gap(10),
+                PlayerSelect(
+                  player: overradedPlayer,
+                  onChanged: (player) {
+                    updateGame(game, game.copyWith(overradedPlayer: player));
+                  },
+                ),
+                const Gap(10),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  updateGame(game, game.removeOverridedPlayer());
+                },
+                child: Text('Remove'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
   Future<void> gameMenu() async {
     final game = games[selectedItemIndex];
     showDialog(
       context: context,
       builder: (context) {
         _dialogContext = context;
-
         return AlertDialog(
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -379,12 +422,6 @@ class _HomePageState extends State<HomePage> {
                   title: Text('Play'),
                   onTap: () {
                     openGame();
-                    Navigator.pop(context);
-                  }),
-              ListTile(
-                  title: Text(game.isFavorite ? 'Unfavorite' : 'Favorite'),
-                  onTap: () {
-                    favorite();
                     Navigator.pop(context);
                   }),
               ListTile(
@@ -406,6 +443,14 @@ class _HomePageState extends State<HomePage> {
                   resync();
                 },
               ),
+              if (getPlatformFromGame(game).category.id != 'android')
+                ListTile(
+                  title: const Text('Override Player'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    overridePlatform();
+                  },
+                ),
             ],
           ),
         );
