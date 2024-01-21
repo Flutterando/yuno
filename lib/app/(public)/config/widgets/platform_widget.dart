@@ -2,6 +2,7 @@ import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:routefly/routefly.dart';
+import 'package:yuno/app/core/assets/svgs.dart';
 import 'package:yuno/app/core/widgets/animated_floating_action_button.dart';
 import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 
@@ -37,8 +38,8 @@ class PlatformWidget extends StatelessWidget {
             }
             return ListTile(
               leading: CircleAvatar(
-                child: SvgPicture.asset(
-                  platform.category.image,
+                child: SvgPicture(
+                  getLoader(platform.category.image),
                   width: 24,
                 ),
               ),
