@@ -1,11 +1,11 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
 class AnimatedSyncButton extends StatefulWidget {
   final bool isSyncing;
   final VoidCallback? onPressed;
+
   const AnimatedSyncButton({
     required this.isSyncing,
     required this.onPressed,
@@ -19,6 +19,7 @@ class AnimatedSyncButton extends StatefulWidget {
 class _AnimatedSyncButtonState extends State<AnimatedSyncButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController controller;
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +32,9 @@ class _AnimatedSyncButtonState extends State<AnimatedSyncButton>
       setState(() {});
     });
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      animate(true);
+    });
   }
 
   @override
@@ -42,11 +46,15 @@ class _AnimatedSyncButtonState extends State<AnimatedSyncButton>
     }
   }
 
-  void animate(){
+  void animate([bool first = false]) {
     if (widget.isSyncing) {
       controller.repeat();
     } else {
-      controller.forward();
+      if (first) {
+        controller.reset();
+      } else {
+        controller.forward();
+      }
     }
   }
 

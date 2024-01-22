@@ -10,13 +10,31 @@ import '../../../../routes.dart';
 import '../../../core/widgets/animated_sync_button.dart';
 import '../../../interactor/actions/platform_action.dart';
 
-class PlatformWidget extends StatelessWidget {
+class PlatformWidget extends StatefulWidget {
   final Animation<double> transitionAnimation;
 
   const PlatformWidget({
     super.key,
     required this.transitionAnimation,
   });
+
+  @override
+  State<PlatformWidget> createState() => _PlatformWidgetState();
+}
+
+class _PlatformWidgetState extends State<PlatformWidget> {
+  bool checkPlatformSyncing() {
+    if (platformSyncState.value.isNotEmpty) {
+      const snackbar = SnackBar(
+        content: Text('Syncing platform...'),
+        duration: Duration(seconds: 2),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
+      return true;
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,16 +81,16 @@ class PlatformWidget extends StatelessWidget {
                   AnimatedSyncButton(
                     isSyncing: platformSyncState.value.contains(platform.id),
                     onPressed: () async {
-                      if(isPlatformSyncing) {
+                      if (checkPlatformSyncing()) {
                         return;
                       }
-                        await syncPlatform(platform);
+                      await syncPlatform(platform);
                     },
                   ),
                   IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () async {
-                      if(isPlatformSyncing) {
+                      if (checkPlatformSyncing()) {
                         return;
                       }
                       Routefly.push(
@@ -89,11 +107,14 @@ class PlatformWidget extends StatelessWidget {
         ),
         floatingActionButton: AnimatedFloatingActionButton(
           onPressed: () async {
+            if (checkPlatformSyncing()) {
+              return;
+            }
             Routefly.push(routePaths.config.editPlatform);
           },
           label: 'Add Platform',
           icon: Icons.add,
-          animation: transitionAnimation,
+          animation: widget.transitionAnimation,
         ),
       );
     });

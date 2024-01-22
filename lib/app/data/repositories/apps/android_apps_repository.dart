@@ -1,5 +1,6 @@
 import 'package:android_intent_plus/android_intent.dart' as android_intent;
 import 'package:android_intent_plus/flag.dart' as flag;
+import 'package:install_or_uninstall_app_listener/install_or_uninstall_app_listener.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart' as installed_apps;
 import 'package:yuno/app/interactor/models/app_model.dart';
@@ -57,5 +58,10 @@ class AndroidAppsRepository implements AppsRepository {
     );
 
     return newIntent.launch();
+  }
+
+  @override
+  Stream<String> installAndUninstallListener() {
+    return InstallOrUninstallAppListener.onAppInstallUninstall;
   }
 }

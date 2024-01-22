@@ -104,6 +104,7 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Nintendo - Game Boy',
+    shortName: 'Game Boy',
     image: img.gameboySVG,
     id: 'nintendo-game-boy',
     extensions: ['gb', 'gbc', 'gbs'],
@@ -111,18 +112,21 @@ final categorieState = [
   GameCategory(
     name: 'Nintendo - Game Boy Advance',
     image: img.gameboyadvanceSVG,
+    shortName: 'Game Boy Advance',
     id: 'nintendo-gba',
     extensions: ['bin', 'gba', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Nintendo - Game Boy Color',
     image: img.gameboycolorSVG,
+    shortName: 'Game Boy Color',
     id: 'nintendo-gbc',
     extensions: ['gb', 'gbc', 'gbs', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Nintendo - GameCube',
     image: img.gamecubeSVG,
+    shortName: 'GameCube',
     id: 'nintendo-gamecube',
     extensions: [
       'ciao',
@@ -140,12 +144,14 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Nintendo - Switch',
+    shortName: 'Switch',
     image: img.switchSVG,
     id: 'switch',
     extensions: ['nro', 'nso', 'nca', 'xci', 'nsp'],
   ),
   GameCategory(
     name: 'Nintendo - Wii',
+    shortName: 'Wii',
     image: img.wiiSVG,
     id: 'nintendo-wii',
     extensions: [

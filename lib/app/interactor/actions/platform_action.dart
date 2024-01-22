@@ -108,8 +108,12 @@ Future<Color?> getDominatingColor(String imagePath) async {
 }
 
 String cleanName(String name) {
-  final index = name.indexOf(RegExp(r'[.(\[]')) - 1;
-  return name.substring(0, index <= 0 ? name.length : index).trim();
+  var nameWithoutExt = name.replaceAll(RegExp(r'\.[^.]*$'), '');
+  nameWithoutExt =
+      nameWithoutExt.replaceAll(RegExp(r'\s*\(.*?\)\s*|\s*\[.*?\]\s*'), '');
+  nameWithoutExt = nameWithoutExt.replaceAll(RegExp(r'\sv.*'), '');
+
+  return nameWithoutExt.trim();
 }
 
 Future<void> updatePlatform(PlatformModel platform) async {

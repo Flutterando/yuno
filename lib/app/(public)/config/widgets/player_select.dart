@@ -135,29 +135,26 @@ class PlayerSelect extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Retroarch Cores'),
-                              content: const Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Retroarch Cores are the emulators that Retroarch uses to run games. '
-                                    'You can download them from the Retroarch app.',
-                                  ),
-                                ],
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Retroarch Cores'),
+                            content: const Text(
+                              'Retroarch Cores are the emulators\n'
+                              'that Retroarch uses to run games.\n'
+                              'You can download them from the Retroarch app.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Ok'),
                               ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('Ok'),
-                                ),
-                              ],
-                            );
-                          });
+                            ],
+                          );
+                        },
+                      );
                     },
                     icon: const Icon(Icons.info_outline),
                   )

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:yuno/app/interactor/models/embeds/player.dart';
 
@@ -21,7 +23,23 @@ Future<void> fetchApps() async {
   }
   appsState.value.removeWhere((item) => !models.contains(item));
 
+  appsState.value.sort((a, b) => a.name.compareTo(b.name));
+
   appsState();
+}
+
+StreamSubscription<String>? _installAndUninstallAppListener;
+
+Future<void> registerInstallAndUninstallAppListener() async {
+  _installAndUninstallAppListener?.cancel();
+  final repository = injector.get<AppsRepository>();
+  _installAndUninstallAppListener =
+      repository.installAndUninstallListener().listen(
+    (event) {
+      print(event);
+      fetchApps();
+    },
+  );
 }
 
 Future<void> openApp(AppModel app) async {

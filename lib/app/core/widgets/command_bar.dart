@@ -48,12 +48,15 @@ class NavigationCommand extends StatelessWidget {
             textColor: colorScheme.background,
           ),
           const Spacer(),
-         if(isSyncing)
+          if (isSyncing)
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AnimatedSyncButton(isSyncing: true, onPressed: (){},),
-                Text('Syncing...'),
+                AnimatedSyncButton(
+                  isSyncing: true,
+                  onPressed: () {},
+                ),
+                const Text('Syncing...'),
               ],
             ),
           const Spacer(),
