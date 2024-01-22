@@ -46,6 +46,7 @@ class AndroidAppsRepository implements AppsRepository {
       action: intent.action,
       package: intent.package,
       componentName: intent.componentName,
+      category: intent.category,
       data: intent.data,
       type: intent.type,
       arguments: intent.arguments,
