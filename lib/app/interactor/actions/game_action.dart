@@ -2,9 +2,13 @@
 
 import 'dart:io';
 
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:yuno/app/interactor/actions/platform_action.dart';
 import 'package:yuno/app/interactor/actions/player_action.dart';
 import 'package:yuno/app/interactor/atoms/platform_atom.dart';
+import 'package:yuno/app/interactor/models/platform_model.dart';
 
 import '../atoms/game_atom.dart';
 import '../models/embeds/game.dart';
@@ -27,11 +31,64 @@ Future<void> precacheGameImages(BuildContext context) async {
   }
 }
 
-Future<void> openGameWithPlayer(Game game) async {
-  final platform =
-      platformsState.value.firstWhere((p) => p.games.contains(game)).player;
+PlatformModel getPlatformFromGame(Game game) {
+  return platformsState.value.firstWhere((p) => p.games.contains(game));
+}
 
-  final selectedPlayer = game.overradedPlayer ?? platform;
+Future<PlatformModel> updateGame(Game game, Game newGame) async {
+  final platform = getPlatformFromGame(game);
+
+  final index = platform.games.indexOf(game);
+  platform.games[index] = newGame;
+  await updatePlatform(platform);
+  return platform;
+}
+
+Future<void> selectCover(Game game) async {
+  const XTypeGroup typeGroup = XTypeGroup(
+    label: 'images',
+    extensions: <String>['jpg', 'png'],
+  );
+  final file = await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+
+  if (file == null) {
+    return;
+  }
+
+  final extension = getExtensionFromMimeType(file.mimeType!);
+  final name = '${DateTime.now().millisecondsSinceEpoch}.$extension';
+  final divide = Platform.pathSeparator;
+
+  final imagePath =
+      '${(await pathProvider.getApplicationDocumentsDirectory()).path}${divide}images${divide}${name}';
+  print(imagePath);
+
+  final bytes = await file.readAsBytes();
+  final imageFile = File(imagePath);
+  await imageFile.create(recursive: true);
+  await imageFile.writeAsBytes(bytes);
+
+  final color = await getDominatingColor(imagePath);
+
+  await updateGame(game, game.copyWith(image: imagePath, imageColor: color));
+}
+
+String getExtensionFromMimeType(String mimeType) {
+  switch (mimeType) {
+    case 'image/jpeg':
+    case 'image/jpg':
+      return 'jpg';
+    case 'image/png':
+      return 'png';
+    default:
+      return 'unknown';
+  }
+}
+
+Future<void> openGameWithPlayer(Game game) async {
+  final player = getPlatformFromGame(game).player;
+
+  final selectedPlayer = game.overradedPlayer ?? player;
   if (selectedPlayer == null) {
     return;
   }

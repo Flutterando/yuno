@@ -33,8 +33,13 @@ jobs:
       env:
         KEYSTORE: ${{ secrets.KEYSTORE }}
 
+    - name: Decode .env
+      run: echo "${{ secrets.FLUTTER_ENV }}" > ${{ github.workspace }}/.env
+      env:
+        FLUTTER_ENV: ${{ secrets.FLUTTER_ENV }}
+
     - name: Build APK
-      run: flutter build apk --release --split-per-abi --flavor prod
+      run: flutter build apk --dart-define-from-file=.env --release --split-per-abi --flavor prod
       env:
         KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWD }}
         KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}

@@ -9,7 +9,7 @@ class PlatformModel {
   final int id;
   final GameCategory category;
   final Player? player;
-  final Directory folder;
+  final String folder;
   final List<Game> games;
 
   final DateTime lastUpdate;
@@ -23,10 +23,37 @@ class PlatformModel {
     required this.games,
   });
 
+  String? validator() {
+    if (category.name.isEmpty) {
+      return 'You must select a category';
+    }
+    if (category.id == 'android' && games.isEmpty) {
+      return 'You must select at least one app';
+    }
+
+    if (category.id != 'android' && player == null) {
+      return 'Select a player';
+    }
+
+    if (category.id != 'android' //
+        &&
+        player != null &&
+        player!.app.package.startsWith('com.retroarch') &&
+        player!.extra == null) {
+      return 'Select a Retroarch Core';
+    }
+
+    if (category.id != 'android' && folder.isEmpty) {
+      return 'Folder cannot be empty';
+    }
+
+    return null;
+  }
+
   static PlatformModel defaultInstance() {
     return PlatformModel(
       id: -1,
-      folder: Directory(''),
+      folder: '',
       lastUpdate: DateTime.now(),
       games: [],
       category: GameCategory(name: '', image: '', id: ''),
@@ -36,7 +63,7 @@ class PlatformModel {
   PlatformModel copyWith(
       {Player? player,
       String? name,
-      Directory? folder,
+      String? folder,
       DateTime? lastUpdate,
       GameCategory? category,
       String? playerArguments,

@@ -1,10 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'dart:io';
-
 class GameCategory {
   final String id;
   final String name;
+  late final shortName;
   final String image;
   final List<String> extensions;
 
@@ -12,10 +11,19 @@ class GameCategory {
     required this.id,
     required this.name,
     required this.image,
+    String? shortName,
     this.extensions = const [],
-  });
+  }){
+    this.shortName = shortName ?? name;
+  }
 
-  bool checkFileExtension(File element) => true;
+  bool checkFileExtension(String name) {
+    if (extensions.isEmpty) {
+      return true;
+    }
+    return extensions //
+      .any((extension) => name.toLowerCase().endsWith(extension));
+  }
 
   @override
   bool operator ==(covariant GameCategory other) {

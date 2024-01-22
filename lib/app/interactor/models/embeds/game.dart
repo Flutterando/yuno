@@ -28,4 +28,44 @@ class Game {
     this.genre,
     this.publisher,
   });
+
+  Game removeOverridedPlayer() {
+    return Game(
+      name: name,
+      imageColor: imageColor,
+      description: description,
+      image: image,
+      path: path,
+      isFavorite: isFavorite,
+      genre: genre,
+      isSynced: isSynced,
+      publisher: publisher,
+    );
+  }
+
+  Game copyWith({
+    Player? overradedPlayer,
+    String? name,
+    String? description,
+    String? image,
+    String? path,
+    bool? isFavorite,
+    Color? imageColor,
+    String? genre,
+    bool? isSynced,
+    String? publisher,
+  }) {
+    return Game(
+      overradedPlayer: overradedPlayer ?? this.overradedPlayer,
+      name: name ?? this.name,
+      imageColor: imageColor ?? this.imageColor,
+      description: description ?? this.description,
+      image: image ?? this.image,
+      path: path ?? this.path,
+      isFavorite: isFavorite ?? this.isFavorite,
+      genre: genre ?? this.genre,
+      isSynced: isSynced ?? this.isSynced,
+      publisher: publisher ?? this.publisher,
+    );
+  }
 }

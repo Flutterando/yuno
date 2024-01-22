@@ -15,6 +15,11 @@ YuNO is a minimalist, open-source retro gaming frontend designed to deliver a no
 - **Open source**: Free to use, modify and distribute, see the [license](LICENSE). Contributions are welcome!
 - **Customizable**: Options to personalize the experience according to your preferences.
 
+## Inspiration
+
+YuNO took inspiration from Steamdeck and Beacon.
+We also used IGDB images for the games and a good amount of Daijishou emulator execution patterns.
+
 ## Showcase 🎥
 
 

@@ -2,7 +2,9 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:yuno/app/interactor/atoms/game_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 
 class CardTile extends StatelessWidget {
@@ -13,6 +15,7 @@ class CardTile extends StatelessWidget {
   final bool selected;
   final Game game;
   final Color colorSelect;
+  final void Function() onLongPressed;
 
   const CardTile({
     super.key,
@@ -23,36 +26,35 @@ class CardTile extends StatelessWidget {
     required this.colorSelect,
     this.onTap,
     this.selected = false,
+    required this.onLongPressed,
   });
 
   Widget noImage() {
     final player = game.overradedPlayer;
-    Widget image = const Icon(Icons.image_not_supported_outlined);
     if (player != null) {
-      image = SizedBox(
-        width: 48,
-        child: Image.memory(
-          player.app.icon,
-          fit: BoxFit.cover,
+      return Image.memory(
+        player.app.icon,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Container(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(Icons.image_not_supported_outlined),
+            const Gap(8),
+            Text(
+              game.name,
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       );
     }
 
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          image,
-          const Gap(8),
-          Text(
-            game.name,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
+
   }
 
   Widget withImage() {
@@ -97,6 +99,7 @@ class CardTile extends StatelessWidget {
                   borderRadius: borderRadius,
                 ),
                 child: InkWell(
+                  onLongPress: onLongPressed,
                   borderRadius: borderRadius,
                   onTap: onTap,
                   child: AnimatedContainer(
@@ -114,7 +117,28 @@ class CardTile extends StatelessWidget {
                             )
                           : null,
                     ),
-                    child: game.hasImage ? null : noImage(),
+                    child: Stack(
+                      children: [
+                        if (!game.hasImage) Center(child: noImage()),
+                        if (game.isFavorite)
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                             shape: BoxShape.circle,
+                              color: Colors.red,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(7.0),
+                              child: SvgPicture.asset(
+                                defaultCategoryFavorite.image,
+                                width: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

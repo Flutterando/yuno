@@ -12,6 +12,7 @@ import 'package:yuno/app/interactor/models/embeds/game.dart';
 import 'package:yuno/routes.dart';
 
 import '../core/assets/sounds.dart' as sounds;
+import '../core/assets/svgs.dart';
 import '../core/widgets/animated_menu_leading.dart';
 import '../core/widgets/animated_search.dart';
 import '../core/widgets/animated_title_app_bart.dart';
@@ -19,8 +20,11 @@ import '../core/widgets/background/background.dart';
 import '../core/widgets/card_tile/card_tile.dart';
 import '../core/widgets/command_bar.dart';
 import '../interactor/actions/game_action.dart';
+import '../interactor/actions/platform_action.dart';
 import '../interactor/atoms/gamepad_atom.dart';
+import '../interactor/atoms/platform_atom.dart';
 import '../interactor/services/gamepad_service.dart';
+import 'config/widgets/player_select.dart';
 
 Route routeBuilder(BuildContext context, RouteSettings settings) {
   return PageRouteBuilder(
@@ -65,6 +69,8 @@ class _HomePageState extends State<HomePage> {
 
   late RxDisposer _disposer;
 
+  BuildContext? _dialogContext;
+
   @override
   void initState() {
     super.initState();
@@ -77,7 +83,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void handleKey(GamepadButton? event) {
-    if (Routefly.currentOriginalPath != routePaths.home || event == null) {
+    if (Routefly.currentOriginalPath != routePaths.home ||
+        event == null ||
+        _dialogContext?.mounted == true) {
       return;
     }
 
@@ -92,7 +100,7 @@ class _HomePageState extends State<HomePage> {
             : selectedItemIndex);
       case GamepadButton.dpadLeft || GamepadButton.leftStickLeft:
         handlerSelect(
-            selectedItemIndex > 0 ? selectedItemIndex - 1 : selectedItemIndex);
+            selectedItemIndex > 0  ? selectedItemIndex - 1 : selectedItemIndex);
       case GamepadButton.dpadRight || GamepadButton.leftStickRight:
         handlerSelect((selectedItemIndex + 1) % games.length);
       case GamepadButton.LB:
@@ -114,13 +122,13 @@ class _HomePageState extends State<HomePage> {
   void bayx(GamepadButton event) {
     switch (event) {
       case GamepadButton.buttonA:
-        openApps();
-      case GamepadButton.buttonB:
         openGame();
+      case GamepadButton.buttonB:
+        openApps();
       case GamepadButton.buttonX:
-        openSettings();
-      case GamepadButton.buttonY:
         favorite();
+      case GamepadButton.buttonY:
+        openSettings();
       default:
     }
   }
@@ -128,18 +136,28 @@ class _HomePageState extends State<HomePage> {
   void abxy(GamepadButton event) {
     switch (event) {
       case GamepadButton.buttonA:
-        openGame();
-      case GamepadButton.buttonB:
         openApps();
+      case GamepadButton.buttonB:
+        openGame();
       case GamepadButton.buttonX:
-        favorite();
-      case GamepadButton.buttonY:
         openSettings();
+      case GamepadButton.buttonY:
+        favorite();
       default:
     }
   }
 
-  void favorite() {}
+  void favorite() {
+    if(selectedItemIndex == -1){
+      return;
+    }
+
+    final game = games[selectedItemIndex];
+    final newGame = game.copyWith(
+      isFavorite: !game.isFavorite,
+    );
+    updateGame(game, newGame);
+  }
 
   void resetConfig() {
     setState(() {
@@ -241,6 +259,210 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> changeTitle() async {
+    final game = games[selectedItemIndex];
+    var newTitle = game.name;
+    await showDialog<String>(
+      context: context,
+      builder: (context) {
+        _dialogContext = context;
+        return AlertDialog(
+          title: const Text('Change title'),
+          content: TextFormField(
+            initialValue: game.name,
+            onChanged: (value) {
+              newTitle = value;
+            },
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Title',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (newTitle.isEmpty) {
+                  return;
+                }
+                updateGame(
+                  game,
+                  game.copyWith(name: newTitle),
+                );
+                Navigator.pop(context);
+                setState(() {
+                  title = newTitle;
+                });
+              },
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> changeCover() async {
+    await showDialog<String>(
+      context: context,
+      builder: (_) {
+        return RxBuilder(builder: (context) {
+          _dialogContext = context;
+
+          final game = games[selectedItemIndex];
+          return AlertDialog(
+            title: Text('Change cover'),
+            content: Align(
+              child: AspectRatio(
+                aspectRatio: 3 / 4,
+                //height: 250,
+                //width: 188,
+                child: Hero(
+                  tag: game.name,
+                  child: CardTile(
+                    game: game,
+                    colorSelect: Colors.transparent,
+                    transitionAnimation: widget.transitionAnimation,
+                    selected: true,
+                    onTap: () {},
+                    onLongPressed: () {},
+                    index: 0,
+                    gamesLength: 1,
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  updateGame(game, game.copyWith(image: '', isSynced: false));
+                  Navigator.pop(context);
+                },
+                child: Text('Remove'),
+              ),
+              TextButton(
+                onPressed: () {
+                  selectCover(game);
+                },
+                child: Text('Select'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
+  Future<void> resync() async {
+    final game = games[selectedItemIndex];
+    final platform = await updateGame(game, game.copyWith(isSynced: false));
+    await syncPlatform(platform);
+  }
+
+  Future<void> overridePlatform() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        _dialogContext = context;
+        return RxBuilder(builder: (context) {
+          final game = games[selectedItemIndex];
+          final overradedPlayer = game.overradedPlayer;
+          return AlertDialog(
+            title: const Text('Override Player'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Gap(10),
+                PlayerSelect(
+                  player: overradedPlayer,
+                  onChanged: (player) {
+                    updateGame(game, game.copyWith(overradedPlayer: player));
+                  },
+                ),
+                const Gap(10),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  updateGame(game, game.removeOverridedPlayer());
+                },
+                child: Text('Remove'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
+  Future<void> gameMenu() async {
+    final game = games[selectedItemIndex];
+    showDialog(
+      context: context,
+      builder: (context) {
+        _dialogContext = context;
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                  title: Text('Play'),
+                  onTap: () {
+                    openGame();
+                    Navigator.pop(context);
+                  }),
+              ListTile(
+                  title: Text('Change title'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    changeTitle();
+                  }),
+              ListTile(
+                  title: Text('Change Cover'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    changeCover();
+                  }),
+              ListTile(
+                title: Text('Resync'),
+                onTap: () {
+                  Navigator.pop(context);
+                  resync();
+                },
+              ),
+              if (getPlatformFromGame(game).category.id != 'android')
+                ListTile(
+                  title: const Text('Override Player'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    overridePlatform();
+                  },
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     scrollController.dispose();
@@ -322,12 +544,12 @@ class _HomePageState extends State<HomePage> {
                               controller: menuScrollController,
                               index: i,
                               key: ValueKey(i),
-                              child: SvgPicture.asset(
-                                availableCategoriesState[i].image,
+                              child: SvgPicture(
+                                getLoader(availableCategoriesState[i].image),
                                 width: 28,
                               ),
                             ),
-                            label: Text(availableCategoriesState[i].name),
+                            label: Text(availableCategoriesState[i].shortName),
                           ),
                       ],
                       selectedIndex: selectedDestinationIndex,
@@ -361,7 +583,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.only(bottom: 120),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: crossAxisCount,
-                        childAspectRatio: 3 / 5,
+                        childAspectRatio: 3 / 4,
                       ),
                       itemCount: games.length,
                       itemBuilder: (context, index) {
@@ -375,11 +597,12 @@ class _HomePageState extends State<HomePage> {
                             transitionAnimation: widget.transitionAnimation,
                             selected: selectedItemIndex == index,
                             onTap: () {
-                              if (index == selectedItemIndex) {
-                                openGame();
-                              } else {
-                                handlerSelect(index);
-                              }
+                              handlerSelect(index);
+                              openGame();
+                            },
+                            onLongPressed: () {
+                              handlerSelect(index);
+                              gameMenu();
                             },
                             index: index,
                             gamesLength: games.length,
@@ -392,6 +615,7 @@ class _HomePageState extends State<HomePage> {
             ),
             bottomNavigationBar: NavigationCommand(
               colorScheme: colorScheme,
+              isSyncing: isPlatformSyncing,
               onApps: openApps,
               onSettings: openSettings,
               onFavorite: () {

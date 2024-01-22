@@ -9,7 +9,7 @@ import 'isar_datasource.dart';
 class IsarPlatformRepository extends PlatformRepository {
   @override
   Future<List<PlatformModel>> fetchPlatforms() async {
-    final datas = await IsarDatasource.isar.platformDatas.where().findAll();
+    final datas = await IsarDatasource.isar.platformDatas.where().sortByCategory().findAll();
     return datas.map((e) => PlatformAdapter.platformFromData(e)).toList();
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:yuno/app/core/widgets/animated_sync_button.dart';
 
 class NavigationCommand extends StatelessWidget {
   final VoidCallback? onApps;
@@ -7,6 +8,7 @@ class NavigationCommand extends StatelessWidget {
   final VoidCallback? onFavorite;
   final VoidCallback? onSettings;
   final ColorScheme colorScheme;
+  final bool isSyncing;
 
   const NavigationCommand({
     super.key,
@@ -14,6 +16,7 @@ class NavigationCommand extends StatelessWidget {
     this.onFavorite,
     this.onSettings,
     this.onPlay,
+    this.isSyncing = false,
     required this.colorScheme,
   });
 
@@ -44,6 +47,15 @@ class NavigationCommand extends StatelessWidget {
             background: colorScheme.onBackground,
             textColor: colorScheme.background,
           ),
+          const Spacer(),
+         if(isSyncing)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AnimatedSyncButton(isSyncing: true, onPressed: (){},),
+                Text('Syncing...'),
+              ],
+            ),
           const Spacer(),
           LabelButton(
             label: 'Favorite',
