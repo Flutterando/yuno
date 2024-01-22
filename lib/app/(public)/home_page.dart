@@ -19,6 +19,7 @@ import '../core/widgets/animated_title_app_bart.dart';
 import '../core/widgets/background/background.dart';
 import '../core/widgets/card_tile/card_tile.dart';
 import '../core/widgets/command_bar.dart';
+import '../core/widgets/no_items_widget.dart';
 import '../interactor/actions/game_action.dart';
 import '../interactor/actions/platform_action.dart';
 import '../interactor/atoms/gamepad_atom.dart';
@@ -100,7 +101,7 @@ class _HomePageState extends State<HomePage> {
             : selectedItemIndex);
       case GamepadButton.dpadLeft || GamepadButton.leftStickLeft:
         handlerSelect(
-            selectedItemIndex > 0  ? selectedItemIndex - 1 : selectedItemIndex);
+            selectedItemIndex > 0 ? selectedItemIndex - 1 : selectedItemIndex);
       case GamepadButton.dpadRight || GamepadButton.leftStickRight:
         handlerSelect((selectedItemIndex + 1) % games.length);
       case GamepadButton.LB:
@@ -148,7 +149,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void favorite() {
-    if(selectedItemIndex == -1){
+    if (selectedItemIndex == -1) {
       return;
     }
 
@@ -557,21 +558,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 if (games.isEmpty)
-                  Expanded(
+                  const Expanded(
                     child: Center(
-                      child: Container(
-                        height: 90,
-                        width: 220,
-                        alignment: Alignment.center,
-                        color: colorScheme.surfaceVariant.withOpacity(0.5),
-                        child: const Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text('No games found'),
-                            Gap(3),
-                            Icon(Icons.gamepad_outlined),
-                          ],
-                        ),
+                      child: NoItemWidget(
+                        title: 'No games found',
                       ),
                     ),
                   ),
