@@ -1,5 +1,9 @@
 # YuNO Architecture
 
+This architecture aims to clearly separate responsibilities into layers, making code maintenance, testability, and scalability easier. Each layer has a specific purpose, and dependencies are organized so that business logic is not tightly coupled to technical implementation, allowing flexibility and ease of system evolution.
+
+<img src="assets/images/YuNO-Arch.png" width="512" alt="Achitecture diagram"/>
+
 ## 1. Public
 
 Encompasses all pages and subpages of the application.
@@ -42,5 +46,3 @@ Encompasses global data for the application.
   - Reusable components that can be used in different parts of the application.
 - **Other Global Data:**
   - Includes other elements essential for the global operation of the application.
-
-This architecture aims to clearly separate responsibilities into layers, making code maintenance, testability, and scalability easier. Each layer has a specific purpose, and dependencies are organized so that business logic is not tightly coupled to technical implementation, allowing flexibility and ease of system evolution.
