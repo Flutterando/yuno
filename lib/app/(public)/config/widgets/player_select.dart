@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:yuno/app/core/widgets/searchable_dropdown.dart';
 import 'package:yuno/app/interactor/models/embeds/player.dart';
 
 import '../../../core/constants/retroarch_cores.dart';
@@ -113,23 +114,15 @@ class PlayerSelect extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: 300,
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Retroarch Core',
-                      ),
-                      value: player?.extra,
-                      onChanged: (String? newValue) {
+                    child: SearchableDropdown(
+                      onSearchTextChanged: (newValue) {
                         if (newValue != null) {
                           onChanged(player?.copyWith(extra: newValue));
                         }
                       },
-                      items: retroarchCores.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      label: 'Retroarch Core',
+                      item: player?.extra,
+                      items: retroarchCores,
                     ),
                   ),
                   IconButton(

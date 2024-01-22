@@ -169,6 +169,7 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Folder',
+                    suffixIcon: Icon(Icons.folder),
                   ),
                   initialValue: beautifyPath(platform.folder),
                   readOnly: true,
