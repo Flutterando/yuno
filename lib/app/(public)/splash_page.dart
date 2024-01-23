@@ -10,6 +10,7 @@ import '../core/assets/images.dart' as images;
 import '../core/assets/sounds.dart' as sounds;
 import '../core/assets/svgs.dart' as svgs;
 import '../interactor/actions/apps_action.dart' as apps;
+import '../interactor/actions/apps_action.dart';
 import '../interactor/actions/platform_action.dart' as platform;
 
 class AppPage extends StatefulWidget {
@@ -25,6 +26,7 @@ class _AppPageState extends State<AppPage> {
     super.didChangeDependencies();
     registerGamepad();
     Future.wait([
+      registerInstallAndUninstallAppListener(),
       sequenceInitialization(),
       svgs.precacheCache(context),
       images.precacheCache(context),

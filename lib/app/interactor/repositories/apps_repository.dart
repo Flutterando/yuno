@@ -12,4 +12,6 @@ abstract class AppsRepository {
   Future<void> openConfiguration();
 
   Future<void> openIntent(PlayerIntent intent);
+
+  Stream<String> installAndUninstallListener();
 }

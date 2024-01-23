@@ -73,6 +73,12 @@ Future<void> syncPlatform(PlatformModel platform) async {
 
   final repository = injector<SyncRepository>();
 
+  final folderGames = await _getGames(platform);
+  final currentGames = platform.games;
+  final games = syncGames(currentGames, folderGames);
+
+  platform = platform.copyWith(games: games);
+
   for (var i = 0; i < platform.games.length; i++) {
     if (platform.games[i].isSynced) continue;
     if (platform.games[i].image.isNotEmpty) {
@@ -95,6 +101,24 @@ Future<void> syncPlatform(PlatformModel platform) async {
   platformSyncState();
 }
 
+List<Game> syncGames(List<Game> currentGames, List<Game> folderGames) {
+  final games = <Game>[];
+
+  for (var i = 0; i < folderGames.length; i++) {
+    final folderGame = folderGames[i];
+    final currentGame = currentGames.firstWhere(
+      (game) => game.path == folderGame.path,
+      orElse: () => folderGame,
+    );
+    games.add(currentGame);
+  }
+
+  games.removeWhere((game) {
+    return folderGames.every((folderGame) => folderGame.path != game.path);
+  });
+  return games;
+}
+
 Future<Color?> getDominatingColor(String imagePath) async {
   final imageFile = File(imagePath);
   if (!imageFile.existsSync()) {
@@ -108,8 +132,12 @@ Future<Color?> getDominatingColor(String imagePath) async {
 }
 
 String cleanName(String name) {
-  final index = name.indexOf(RegExp(r'[.(\[]')) - 1;
-  return name.substring(0, index <= 0 ? name.length : index).trim();
+  var nameWithoutExt = name.replaceAll(RegExp(r'\.[^.]*$'), '');
+  nameWithoutExt =
+      nameWithoutExt.replaceAll(RegExp(r'\s*\(.*?\)\s*|\s*\[.*?\]\s*'), '');
+  nameWithoutExt = nameWithoutExt.replaceAll(RegExp(r'\sv.*'), '');
+
+  return nameWithoutExt.trim();
 }
 
 Future<void> updatePlatform(PlatformModel platform) async {

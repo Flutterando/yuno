@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:yuno/app/core/widgets/searchable_dropdown.dart';
 import 'package:yuno/app/interactor/models/embeds/player.dart';
 
 import '../../../core/constants/retroarch_cores.dart';
@@ -113,51 +114,40 @@ class PlayerSelect extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: 300,
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Retroarch Core',
-                      ),
-                      value: player?.extra,
-                      onChanged: (String? newValue) {
+                    child: SearchableDropdown(
+                      onSearchTextChanged: (newValue) {
                         if (newValue != null) {
                           onChanged(player?.copyWith(extra: newValue));
                         }
                       },
-                      items: retroarchCores.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      label: 'Retroarch Core',
+                      item: player?.extra,
+                      items: retroarchCores,
                     ),
                   ),
                   IconButton(
                     onPressed: () {
                       showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Retroarch Cores'),
-                              content: const Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Retroarch Cores are the emulators that Retroarch uses to run games. '
-                                    'You can download them from the Retroarch app.',
-                                  ),
-                                ],
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Retroarch Cores'),
+                            content: const Text(
+                              'Retroarch Cores are the emulators\n'
+                              'that Retroarch uses to run games.\n'
+                              'You can download them from the Retroarch app.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Ok'),
                               ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('Ok'),
-                                ),
-                              ],
-                            );
-                          });
+                            ],
+                          );
+                        },
+                      );
                     },
                     icon: const Icon(Icons.info_outline),
                   )

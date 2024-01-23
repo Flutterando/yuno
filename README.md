@@ -8,6 +8,12 @@
 
 YuNO is a minimalist, open-source retro gaming frontend designed to deliver a nostalgic and efficient gaming experience. This project aims to create a simplified interface for accessing and playing your favorite retro games.
 
+<br />
+<div Align="Center">
+<img src="assets/print1.jpg" width="300" alt="Print1 yuno"/>
+<img src="assets/print2.jpg" width="300" alt="Print1 yuno"/>
+</div>
+
 ## Characteristics
 
 - **Minimalist**: Clean and simple user interface, focused on gameplay.

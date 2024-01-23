@@ -29,10 +29,6 @@ class _AppsPageState extends State<AppsPage> with WidgetsBindingObserver {
       }
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      fetchApps();
-    });
-
     WidgetsBinding.instance.addObserver(this);
   }
 
