@@ -50,7 +50,77 @@ Encompasses global data for the application.
 - **Other Global Data:**
   - Includes other elements essential for the global operation of the application.
 
-## 2. Tests
+## 2. Nomenclatures
+
+This section outlines the naming conventions for different components of our application including widgets, actions, atoms, repositories, and services.
+
+### 2.1 Widgets
+
+### Guidelines for Widget Naming
+
+- **Suffix "Widget":** All widget classes should consistently use the "Widget" suffix. This makes it easier to identify them in the codebase.
+- **Clarity and Consistency:** The name should clearly reflect the widget's functionality.
+- **Example:** `login_button_widget.dart`
+
+```dart
+class LoginButtonWidget extends StatelessWidget { }
+```
+
+### 2.2 Actions
+
+### Guidelines for Action Naming
+
+- **Verb-Noun Format:** Names of actions should typically follow a verb-noun format, indicating what the action does.
+- **Descriptive:** Ensure the name gives a clear indication of its purpose.
+- **Example:** `config_action.dart`
+
+```dart
+Future<T> fetchConfig() {}
+Future<T> saveConfig() {}
+```
+
+### 2.3 Atoms
+
+### Guidelines for Atom Naming
+
+- **Descriptive and Concise:** Atom names should be concise yet descriptive enough to indicate their role and usage.
+- **Component Specific:** Name atoms based on their functionality or the data they handle.
+- **Example:**
+`config_atom.dart`
+
+```dart
+final configState = Atom<T>();
+```
+
+### 2.4 Repositories
+
+### Guidelines for Repository Naming
+
+- **Noun Format:** Repository names should be clear, concise nouns.
+- **Reflect Data Model:** They should closely reflect the data model or resource they are associated with.
+- **Example:**
+`game_repository.dart`
+
+```dart
+  class GameRepository { }
+```
+
+### 2.5 Services
+
+### Guidelines for Service Naming
+
+- **Noun or Verb-Noun Format:** Service names can be nouns or verb-noun combinations, indicating the service provided.
+- **Purpose-Clear:** The name should clearly reflect the functionality or the domain of the service.
+- **Example:**
+`authentication_service.dart`
+
+```dart
+  class AuthenticationService { }
+```
+
+This structured approach provides a clear and organized set of naming conventions across different elements of the application, ensuring consistency and clarity in the codebase.
+
+## 3. Tests
 
 Testing is a crucial part of software development. It ensures code quality and functionality, and helps in maintaining the software over time. Our testing approach adheres to the triple-A pattern (Arrange, Act, Assert) for its clarity and structure.
 
@@ -74,7 +144,7 @@ test('should execute a sum correctly', () {
 });
 ```
 
-### 2.1 Test Description
+### 3.1 Test Description
 
 The description of each test should clearly articulate the expected outcome based on the specific action or condition being tested. Avoid generic or obvious descriptions. Instead, focus on what is being verified in each test case.
 
@@ -89,7 +159,7 @@ The description of each test should clearly articulate the expected outcome base
 - Correct: "should return the sum of two numbers when both inputs are positive".
 - Avoid: "Should return a result".
 
-### 2.2 Test Grouping
+### 3.2 Test Grouping
 
 Grouping tests is essential for organization and readability, especially in large codebases. Group names should correspond to the class or functionality they are testing, with an optional method name if applicable. Use " | " (space, pipe, space) at the end of each group name for clarity.
 
@@ -115,7 +185,7 @@ group('AndroidAppsRepository.openAppSettings | ', () {
 });
 ```
 
-## 2.3 Additional Best Practices
+## 3.3 Additional Best Practices
 
 - **Test Isolation:** Ensure each test is independent and can run alone.
 - **Code Coverage:** Aim for high test coverage, but prioritize meaningful tests over merely inflating coverage metrics.
