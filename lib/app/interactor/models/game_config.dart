@@ -1,22 +1,25 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:yuno/app/core/widgets/background/background.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
+
+import 'language_model.dart';
 
 class GameConfig {
   final ThemeMode themeMode;
   final BackgroundType backgroundType;
   final bool swapABXY;
   final bool menuSounds;
-  final Locale locale;
+  final LanguageModel? language;
 
   GameConfig({
     this.themeMode = ThemeMode.system,
     this.swapABXY = false,
     this.menuSounds = true,
-    this.locale = const Locale('en', 'US'),
+    this.language,
     this.backgroundType = BackgroundType.bubble,
   });
 
@@ -25,12 +28,12 @@ class GameConfig {
     BackgroundType? backgroundType,
     bool? swapABXY,
     bool? menuSounds,
-    Locale? locale,
+    LanguageModel? language,
   }) {
     return GameConfig(
       themeMode: themeMode ?? this.themeMode,
       backgroundType: backgroundType ?? this.backgroundType,
-      locale: locale ?? this.locale,
+      language: language ?? this.language,
       swapABXY: swapABXY ?? this.swapABXY,
       menuSounds: menuSounds ?? this.menuSounds,
     );
@@ -42,7 +45,7 @@ class GameConfig {
       'backgroundType': backgroundType.name,
       'swapABXY': swapABXY,
       'menuSounds': menuSounds,
-      'locale': locale.toString(),
+      if (language != null) 'locale': language!.locale.toString(),
     };
   }
 
@@ -56,9 +59,8 @@ class GameConfig {
         (e) => e.name == map['backgroundType'],
         orElse: () => BackgroundType.bubble,
       ),
-      locale: supportedLocales.firstWhere(
-        (e) => e.toString() == map['locale'],
-        orElse: () => const Locale('en', 'US'),
+      language: languagesState.firstWhereOrNull(
+        (e) => e.locale.toString() == map['locale'],
       ),
       swapABXY: map['swapABXY'] as bool,
       menuSounds: map['menuSounds'] as bool,
@@ -67,5 +69,6 @@ class GameConfig {
 
   String toJson() => json.encode(toMap());
 
-  factory GameConfig.fromJson(String source) => GameConfig.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory GameConfig.fromJson(String source) =>
+      GameConfig.fromMap(json.decode(source) as Map<String, dynamic>);
 }

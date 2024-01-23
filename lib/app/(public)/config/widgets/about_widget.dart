@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:localization/localization.dart';
 import 'package:yuno/app/core/widgets/channel_card.dart';
 import 'package:yuno/app/interactor/actions/config_action.dart';
 
@@ -18,17 +19,17 @@ class AboutWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Yuno is a minimalist, open-source retro gaming frontend designed to deliver a nostalgic and efficient gaming experience. This project aims to create a simplified interface for accessing and playing your favorite retro games.',
+          Text(
+            'about_long_text'.i18n(),
             textAlign: TextAlign.justify,
           ),
           TextButton(
             onPressed: _seeMoreLaunchUrl,
-            child: const Text('See more'),
+            child: Text('see_more'.i18n()),
           ),
           const Gap(12),
           Text(
-            'Sponsors',
+            'supporters'.i18n(),
             style: theme.textTheme.titleMedium,
           ),
           const Gap(12),
@@ -48,7 +49,7 @@ class AboutWidget extends StatelessWidget {
           ),
           const Gap(14),
           Text(
-            'Channels',
+            'channels'.i18n(),
             style: theme.textTheme.titleMedium,
           ),
           const Gap(12),
@@ -68,22 +69,26 @@ class AboutWidget extends StatelessWidget {
   }
 
   final Uri _url = Uri.https('github.com', '/Flutterando/yuno');
+
   Future<void> _seeMoreLaunchUrl() {
     return openUrl(_url);
   }
 
   final Uri _urlFluterrandoSite = Uri.https('flutterando.com.br');
+
   Future<void> _goToFluterrandoSite() {
     return openUrl(_urlFluterrandoSite);
   }
 
   final Uri _urlFteamSite = Uri.https('fteam.dev');
+
   Future<void> _goToFteamSite() {
     return openUrl(_urlFteamSite);
   }
 
   final Uri _urlFlutterandoCanal =
       Uri.https('youtube.com', '/channel/UCplT2lzN6MHlVHHLt6so39A');
+
   Future<void> _goToFlutterandoChannel() {
     return openUrl(_urlFlutterandoCanal);
   }

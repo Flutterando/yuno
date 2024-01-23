@@ -64,6 +64,7 @@ class _ConfigPageState extends State<ConfigPage> {
 
   @override
   Widget build(BuildContext context) {
+    Localizations.localeOf(context);
     return Scaffold(
       appBar: AnimatedTitleAppBar(
         title: 'settings'.i18n(),
@@ -74,7 +75,7 @@ class _ConfigPageState extends State<ConfigPage> {
             children: [
               NavigationRail(
                 extended: true,
-                destinations:  [
+                destinations: [
                   NavigationRailDestination(
                     icon: const Icon(Icons.gamepad),
                     label: Text('platforms'.i18n()),

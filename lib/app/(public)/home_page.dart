@@ -269,15 +269,15 @@ class _HomePageState extends State<HomePage> {
       builder: (context) {
         _dialogContext = context;
         return AlertDialog(
-          title: const Text('Change title'),
+          title: Text('change_title'.i18n()),
           content: TextFormField(
             initialValue: game.name,
             onChanged: (value) {
               newTitle = value;
             },
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Title',
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              labelText: 'title'.i18n(),
             ),
           ),
           actions: [
@@ -285,7 +285,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Cancel'),
+              child: Text('cancel'.i18n()),
             ),
             TextButton(
               onPressed: () {
@@ -301,7 +301,7 @@ class _HomePageState extends State<HomePage> {
                   title = newTitle;
                 });
               },
-              child: const Text('Ok'),
+              child: Text('ok'.i18n()),
             ),
           ],
         );
@@ -318,7 +318,7 @@ class _HomePageState extends State<HomePage> {
 
           final game = games[selectedItemIndex];
           return AlertDialog(
-            title: const Text('Change cover'),
+            title: Text('change_cover'.i18n()),
             content: Align(
               child: AspectRatio(
                 aspectRatio: 3 / 4,
@@ -345,19 +345,19 @@ class _HomePageState extends State<HomePage> {
                   updateGame(game, game.copyWith(image: '', isSynced: false));
                   Navigator.pop(context);
                 },
-                child: const Text('Remove'),
+                child: Text('remove'.i18n()),
               ),
               TextButton(
                 onPressed: () {
                   selectCover(game);
                 },
-                child: const Text('Select'),
+                child: Text('select'.i18n()),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Ok'),
+                child: Text('ok'.i18n()),
               ),
             ],
           );
@@ -381,7 +381,7 @@ class _HomePageState extends State<HomePage> {
           final game = games[selectedItemIndex];
           final overradedPlayer = game.overradedPlayer;
           return AlertDialog(
-            title: const Text('Override Player'),
+            title: Text('replace_player'.i18n()),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -400,13 +400,13 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   updateGame(game, game.removeOverridedPlayer());
                 },
-                child: const Text('Remove'),
+                child: Text('remove'.i18n()),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Ok'),
+                child: Text('ok'.i18n()),
               ),
             ],
           );
@@ -426,25 +426,25 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                  title: const Text('Play'),
+                  title: Text('play'.i18n()),
                   onTap: () {
                     openGame();
                     Navigator.pop(context);
                   }),
               ListTile(
-                  title: const Text('Change title'),
+                  title: Text('change_title'.i18n()),
                   onTap: () {
                     Navigator.pop(context);
                     changeTitle();
                   }),
               ListTile(
-                  title: const Text('Change Cover'),
+                  title: Text('change_cover'.i18n()),
                   onTap: () {
                     Navigator.pop(context);
                     changeCover();
                   }),
               ListTile(
-                title: const Text('Resync'),
+                title: Text('resync'.i18n()),
                 onTap: () {
                   Navigator.pop(context);
                   resync();
@@ -452,7 +452,7 @@ class _HomePageState extends State<HomePage> {
               ),
               if (getPlatformFromGame(game).category.id != 'android')
                 ListTile(
-                  title: const Text('Override Player'),
+                  title: Text('replace_player'.i18n()),
                   onTap: () {
                     Navigator.pop(context);
                     overridePlatform();
@@ -559,7 +559,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 if (games.isEmpty)
-                   Expanded(
+                  Expanded(
                     child: Center(
                       child: NoItemWidget(
                         title: 'no_games_found'.i18n(),
@@ -609,9 +609,7 @@ class _HomePageState extends State<HomePage> {
               isSyncing: isPlatformSyncing,
               onApps: openApps,
               onSettings: openSettings,
-              onFavorite: () {
-                debugPrint('onFavorite');
-              },
+              onFavorite: favorite,
               onPlay: openGame,
             ),
           ),

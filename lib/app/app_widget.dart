@@ -14,6 +14,7 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RxBuilder(builder: (_) {
+      LocalJsonLocalization.delegate.directories = ['assets/i18n'];
       return MaterialApp.router(
         title: 'YuNO',
         debugShowCheckedModeBanner: false,
@@ -26,19 +27,9 @@ class AppWidget extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
           LocalJsonLocalization.delegate,
         ],
-        locale: gameConfigState.value.locale,
+        locale: gameConfigState.value.language?.locale,
         supportedLocales: supportedLocales,
-        localeResolutionCallback: (locale, supportedLocales) {
-          if (supportedLocales.contains(locale)) {
-            return locale;
-          }
-
-          if (locale?.languageCode == 'pt') {
-            return const Locale('pt', 'BR');
-          }
-
-          return const Locale('en', 'US');
-        },
+        localeResolutionCallback: localeResolution,
         routerConfig: Routefly.routerConfig(
           routes: routes,
           initialPath: routePaths.splash,
