@@ -1,6 +1,7 @@
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:localization/localization.dart';
 import 'package:routefly/routefly.dart';
 import 'package:yuno/app/interactor/atoms/app_atom.dart';
 import 'package:yuno/app/interactor/atoms/game_atom.dart';
@@ -33,7 +34,7 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
 
   @override
   Widget build(BuildContext context) {
-    final title = platform.id == -1 ? 'New platform' : 'Edit platform';
+    final title = (platform.id == -1 ? 'new_platform' : 'edit_platform').i18n();
     final mediaQuery = MediaQuery.of(context);
     final size = mediaQuery.size;
     final isEditing = platform.id != -1;
@@ -62,7 +63,7 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                   decoration: InputDecoration(
                     enabled: !isEditing,
                     border: const OutlineInputBorder(),
-                    labelText: 'Platform Category',
+                    labelText: 'platform_category'.i18n(),
                   ),
                   value:
                       platform.category.name.isEmpty ? null : platform.category,
@@ -166,9 +167,9 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                 const Gap(17),
                 TextFormField(
                   key: Key(beautifyPath(platform.folder)),
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Folder',
+                  decoration:  InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: 'folder'.i18n(),
                     suffixIcon: Icon(Icons.folder),
                   ),
                   initialValue: beautifyPath(platform.folder),

@@ -1,6 +1,7 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:localization/localization.dart';
 import 'package:routefly/routefly.dart';
 import 'package:yuno/app/core/assets/svgs.dart';
 import 'package:yuno/app/core/widgets/animated_floating_action_button.dart';
@@ -26,9 +27,9 @@ class PlatformWidget extends StatefulWidget {
 class _PlatformWidgetState extends State<PlatformWidget> {
   bool checkPlatformSyncing() {
     if (platformSyncState.value.isNotEmpty) {
-      const snackbar = SnackBar(
-        content: Text('Syncing platform...'),
-        duration: Duration(seconds: 2),
+      final snackbar = SnackBar(
+        content: Text('syncing_platform'.i18n()),
+        duration: const Duration(seconds: 2),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
@@ -44,10 +45,10 @@ class _PlatformWidgetState extends State<PlatformWidget> {
 
       return Scaffold(
         body: platforms.isEmpty
-            ? const Material(
+            ?  Material(
                 child: Center(
                   child: NoItemWidget(
-                    title: 'No platforms found',
+                    title: 'no_platforms_found'.i18n(),
                   ),
                 ),
               )
@@ -61,7 +62,7 @@ class _PlatformWidgetState extends State<PlatformWidget> {
                   if (platform.category.id == 'android') {
                     playerName = 'Android';
                   } else {
-                    playerName = platform.player?.app.package ?? 'No player';
+                    playerName = platform.player?.app.package ?? 'no_player'.i18n();
                   }
                   return ListTile(
                     leading: CircleAvatar(
@@ -122,7 +123,7 @@ class _PlatformWidgetState extends State<PlatformWidget> {
             }
             Routefly.push(routePaths.config.editPlatform);
           },
-          label: 'Add Platform',
+          label: 'add_platorm'.i18n(),
           icon: Icons.add,
           animation: widget.transitionAnimation,
         ),

@@ -1,5 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 import '../../core/widgets/animated_title_app_bart.dart';
 import '../../interactor/atoms/config_atom.dart';
@@ -65,7 +66,7 @@ class _ConfigPageState extends State<ConfigPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AnimatedTitleAppBar(
-        title: 'Config',
+        title: 'settings'.i18n(),
       ),
       body: Row(
         children: [
@@ -73,22 +74,22 @@ class _ConfigPageState extends State<ConfigPage> {
             children: [
               NavigationRail(
                 extended: true,
-                destinations: const [
+                destinations:  [
                   NavigationRailDestination(
-                    icon: Icon(Icons.gamepad),
-                    label: Text('Platforms'),
+                    icon: const Icon(Icons.gamepad),
+                    label: Text('platforms'.i18n()),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.settings),
-                    label: Text('Preferences'),
+                    icon: const Icon(Icons.settings),
+                    label: Text('preferences'.i18n()),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.chat_outlined),
-                    label: Text('Feedback'),
+                    icon: const Icon(Icons.chat_outlined),
+                    label: Text('feedback'.i18n()),
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.info_outline),
-                    label: Text('About'),
+                    label: Text('about'.i18n()),
                   ),
                 ],
                 selectedIndex: selectedItemIndex,

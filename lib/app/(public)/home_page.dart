@@ -4,6 +4,7 @@ import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:localization/localization.dart';
 import 'package:routefly/routefly.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
@@ -57,7 +58,7 @@ class _HomePageState extends State<HomePage> {
   var selectedItemIndex = -1;
   var selectedDestinationIndex = 0;
   var crossAxisCount = 0;
-  var title = 'Home';
+  String? title;
   final scrollController = AutoScrollController();
   final menuScrollController = AutoScrollController();
 
@@ -162,7 +163,7 @@ class _HomePageState extends State<HomePage> {
 
   void resetConfig() {
     setState(() {
-      title = 'Home';
+      title = null;
       newColorScheme = null;
       selectedItemIndex = -1;
     });
@@ -195,7 +196,7 @@ class _HomePageState extends State<HomePage> {
       return;
     }
     selectedDestinationIndex = index;
-    title = 'Home';
+    title = null;
     newColorScheme = null;
     selectedItemIndex = -1;
     gamesCategoryState.value = availableCategoriesState[index];
@@ -516,7 +517,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onPressed: switchRail,
               ),
-              title: title,
+              title: title ?? 'home'.i18n(),
               actions: [
                 AnimatedSearch(onChanged: (value) {
                   gameSearchState.value = value;
@@ -558,10 +559,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 if (games.isEmpty)
-                  const Expanded(
+                   Expanded(
                     child: Center(
                       child: NoItemWidget(
-                        title: 'No games found',
+                        title: 'no_games_found'.i18n(),
                       ),
                     ),
                   ),

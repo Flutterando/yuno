@@ -3,17 +3,20 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:yuno/app/core/widgets/background/background.dart';
+import 'package:yuno/app/interactor/atoms/config_atom.dart';
 
 class GameConfig {
   final ThemeMode themeMode;
   final BackgroundType backgroundType;
   final bool swapABXY;
   final bool menuSounds;
+  final Locale locale;
 
   GameConfig({
     this.themeMode = ThemeMode.system,
     this.swapABXY = false,
     this.menuSounds = true,
+    this.locale = const Locale('en', 'US'),
     this.backgroundType = BackgroundType.bubble,
   });
 
@@ -22,10 +25,12 @@ class GameConfig {
     BackgroundType? backgroundType,
     bool? swapABXY,
     bool? menuSounds,
+    Locale? locale,
   }) {
     return GameConfig(
       themeMode: themeMode ?? this.themeMode,
       backgroundType: backgroundType ?? this.backgroundType,
+      locale: locale ?? this.locale,
       swapABXY: swapABXY ?? this.swapABXY,
       menuSounds: menuSounds ?? this.menuSounds,
     );
@@ -37,6 +42,7 @@ class GameConfig {
       'backgroundType': backgroundType.name,
       'swapABXY': swapABXY,
       'menuSounds': menuSounds,
+      'locale': locale.toString(),
     };
   }
 
@@ -49,6 +55,10 @@ class GameConfig {
       backgroundType: BackgroundType.values.firstWhere(
         (e) => e.name == map['backgroundType'],
         orElse: () => BackgroundType.bubble,
+      ),
+      locale: supportedLocales.firstWhere(
+        (e) => e.toString() == map['locale'],
+        orElse: () => const Locale('en', 'US'),
       ),
       swapABXY: map['swapABXY'] as bool,
       menuSounds: map['menuSounds'] as bool,

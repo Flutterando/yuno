@@ -72,6 +72,35 @@ class SettingsWidget extends StatelessWidget {
               ),
               const Gap(18),
               Text(
+                'Locale',
+                style: theme.textTheme.titleMedium,
+              ),
+              const Gap(12),
+              SizedBox(
+                width: 300,
+                child: DropdownButtonFormField<Locale>(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Locale',
+                  ),
+                  value: gameConfigState.value.locale,
+                  onChanged: (Locale? newValue) {
+                    if (newValue != null) {
+                      saveConfig(
+                        gameConfigState.value.copyWith(locale: newValue),
+                      );
+                    }
+                  },
+                  items: supportedLocales.map<DropdownMenuItem<Locale>>((Locale value) {
+                    return DropdownMenuItem<Locale>(
+                      value: value,
+                      child: Text(value.toString()),
+                    );
+                  }).toList(),
+                ),
+              ),
+              const Gap(18),
+              Text(
                 'Sounds',
                 style: theme.textTheme.titleMedium,
               ),

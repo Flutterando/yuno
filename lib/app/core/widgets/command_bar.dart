@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:localization/localization.dart';
 import 'package:yuno/app/core/widgets/animated_sync_button.dart';
 
 class NavigationCommand extends StatelessWidget {
@@ -33,7 +34,7 @@ class NavigationCommand extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           LabelButton(
-            label: 'Apps',
+            label: 'apps'.i18n(),
             buttonText: 'B',
             onTap: onApps,
             background: colorScheme.onBackground,
@@ -41,7 +42,7 @@ class NavigationCommand extends StatelessWidget {
           ),
           const Gap(17),
           LabelButton(
-            label: 'Settings',
+            label: 'settings'.i18n(),
             buttonText: 'Y',
             onTap: onSettings,
             background: colorScheme.onBackground,
@@ -56,12 +57,12 @@ class NavigationCommand extends StatelessWidget {
                   isSyncing: true,
                   onPressed: () {},
                 ),
-                const Text('Syncing...'),
+                Text('${'syncing'.i18n()}...'),
               ],
             ),
           const Spacer(),
           LabelButton(
-            label: 'Favorite',
+            label: 'favorite'.i18n(),
             buttonText: 'X',
             onTap: onFavorite,
             background: colorScheme.onBackground,
@@ -69,7 +70,7 @@ class NavigationCommand extends StatelessWidget {
           ),
           const Gap(17),
           LabelButton(
-            label: 'Play',
+            label: 'play'.i18n(),
             buttonText: 'A',
             onTap: onPlay,
             background: colorScheme.onBackground,

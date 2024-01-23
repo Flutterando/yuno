@@ -1,5 +1,7 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:localization/localization.dart';
 import 'package:routefly/routefly.dart';
 import 'package:yuno/app/core/themes/theme.dart';
 import 'package:yuno/routes.dart';
@@ -18,6 +20,25 @@ class AppWidget extends StatelessWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: gameConfigState.value.themeMode,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          LocalJsonLocalization.delegate,
+        ],
+        locale: gameConfigState.value.locale,
+        supportedLocales: supportedLocales,
+        localeResolutionCallback: (locale, supportedLocales) {
+          if (supportedLocales.contains(locale)) {
+            return locale;
+          }
+
+          if (locale?.languageCode == 'pt') {
+            return const Locale('pt', 'BR');
+          }
+
+          return const Locale('en', 'US');
+        },
         routerConfig: Routefly.routerConfig(
           routes: routes,
           initialPath: routePaths.splash,
