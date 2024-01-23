@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
-import 'package:routefly/routefly.dart';
 
 class SearchableDropdown extends StatefulWidget {
   final void Function(String? searchText) onSearchTextChanged;
@@ -72,7 +70,8 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
                 ),
               );
             },
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               return FadeTransition(
                 opacity: animation,
                 child: child,
@@ -81,11 +80,10 @@ class _SearchableDropdownState extends State<SearchableDropdown> {
           ),
         );
 
-        if(item is String){
+        if (item is String) {
           widget.onSearchTextChanged(item);
           _searchController.text = item;
         }
-
       },
     );
   }

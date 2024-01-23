@@ -284,7 +284,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -300,7 +300,7 @@ class _HomePageState extends State<HomePage> {
                   title = newTitle;
                 });
               },
-              child: Text('Ok'),
+              child: const Text('Ok'),
             ),
           ],
         );
@@ -317,7 +317,7 @@ class _HomePageState extends State<HomePage> {
 
           final game = games[selectedItemIndex];
           return AlertDialog(
-            title: Text('Change cover'),
+            title: const Text('Change cover'),
             content: Align(
               child: AspectRatio(
                 aspectRatio: 3 / 4,
@@ -344,19 +344,19 @@ class _HomePageState extends State<HomePage> {
                   updateGame(game, game.copyWith(image: '', isSynced: false));
                   Navigator.pop(context);
                 },
-                child: Text('Remove'),
+                child: const Text('Remove'),
               ),
               TextButton(
                 onPressed: () {
                   selectCover(game);
                 },
-                child: Text('Select'),
+                child: const Text('Select'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('Ok'),
+                child: const Text('Ok'),
               ),
             ],
           );
@@ -399,13 +399,13 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   updateGame(game, game.removeOverridedPlayer());
                 },
-                child: Text('Remove'),
+                child: const Text('Remove'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('Ok'),
+                child: const Text('Ok'),
               ),
             ],
           );
@@ -425,25 +425,25 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                  title: Text('Play'),
+                  title: const Text('Play'),
                   onTap: () {
                     openGame();
                     Navigator.pop(context);
                   }),
               ListTile(
-                  title: Text('Change title'),
+                  title: const Text('Change title'),
                   onTap: () {
                     Navigator.pop(context);
                     changeTitle();
                   }),
               ListTile(
-                  title: Text('Change Cover'),
+                  title: const Text('Change Cover'),
                   onTap: () {
                     Navigator.pop(context);
                     changeCover();
                   }),
               ListTile(
-                title: Text('Resync'),
+                title: const Text('Resync'),
                 onTap: () {
                   Navigator.pop(context);
                   resync();

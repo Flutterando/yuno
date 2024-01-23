@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:yuno/app/interactor/atoms/app_atom.dart';
 
 import '../app_model.dart';
-import 'game.dart';
 
 class Player {
   final AppModel app;
@@ -13,7 +12,6 @@ class Player {
     required this.app,
     this.extra,
   });
-
 
   Player copyWith({
     AppModel? app,
