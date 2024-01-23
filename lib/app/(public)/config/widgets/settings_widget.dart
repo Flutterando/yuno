@@ -1,7 +1,9 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:localization/localization.dart';
 import 'package:yuno/app/interactor/actions/config_action.dart';
+import 'package:yuno/app/interactor/models/language_model.dart';
 
 import '../../../core/widgets/background/background.dart';
 import '../../../interactor/atoms/config_atom.dart';
@@ -19,16 +21,16 @@ class SettingsWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Theme',
+                'theme'.i18n(),
                 style: theme.textTheme.titleMedium,
               ),
               const Gap(12),
               SizedBox(
                 width: 300,
                 child: DropdownButtonFormField<ThemeMode>(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Theme',
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: 'theme'.i18n(),
                   ),
                   value: gameConfigState.value.themeMode,
                   onChanged: (ThemeMode? newValue) {
@@ -38,7 +40,8 @@ class SettingsWidget extends StatelessWidget {
                       );
                     }
                   },
-                  items: ThemeMode.values.map<DropdownMenuItem<ThemeMode>>((ThemeMode value) {
+                  items: ThemeMode.values
+                      .map<DropdownMenuItem<ThemeMode>>((ThemeMode value) {
                     return DropdownMenuItem<ThemeMode>(
                       value: value,
                       child: Text(value.name),
@@ -50,19 +53,22 @@ class SettingsWidget extends StatelessWidget {
               SizedBox(
                 width: 300,
                 child: DropdownButtonFormField<BackgroundType>(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Background type',
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: 'background_type'.i18n(),
                   ),
                   value: gameConfigState.value.backgroundType,
                   onChanged: (BackgroundType? newValue) {
                     if (newValue != null) {
                       saveConfig(
-                        gameConfigState.value.copyWith(backgroundType: newValue),
+                        gameConfigState.value
+                            .copyWith(backgroundType: newValue),
                       );
                     }
                   },
-                  items: BackgroundType.values.map<DropdownMenuItem<BackgroundType>>((BackgroundType value) {
+                  items: BackgroundType.values
+                      .map<DropdownMenuItem<BackgroundType>>(
+                          (BackgroundType value) {
                     return DropdownMenuItem<BackgroundType>(
                       value: value,
                       child: Text(value.name),
@@ -72,41 +78,42 @@ class SettingsWidget extends StatelessWidget {
               ),
               const Gap(18),
               Text(
-                'Locale',
+                'language'.i18n(),
                 style: theme.textTheme.titleMedium,
               ),
               const Gap(12),
               SizedBox(
                 width: 300,
-                child: DropdownButtonFormField<Locale>(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Locale',
+                child: DropdownButtonFormField<LanguageModel>(
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: 'language'.i18n(),
                   ),
-                  value: gameConfigState.value.locale,
-                  onChanged: (Locale? newValue) {
+                  value: gameConfigState.value.language,
+                  onChanged: (LanguageModel? newValue) {
                     if (newValue != null) {
                       saveConfig(
-                        gameConfigState.value.copyWith(locale: newValue),
+                        gameConfigState.value.copyWith(language: newValue),
                       );
                     }
                   },
-                  items: supportedLocales.map<DropdownMenuItem<Locale>>((Locale value) {
-                    return DropdownMenuItem<Locale>(
+                  items: languagesState.map<DropdownMenuItem<LanguageModel>>(
+                      (LanguageModel value) {
+                    return DropdownMenuItem<LanguageModel>(
                       value: value,
-                      child: Text(value.toString()),
+                      child: Text(value.title),
                     );
                   }).toList(),
                 ),
               ),
               const Gap(18),
               Text(
-                'Sounds',
+                'sounds'.i18n(),
                 style: theme.textTheme.titleMedium,
               ),
               const Gap(12),
               SwitchListTile(
-                title: const Text('Menu Sounds'),
+                title: Text('menu_sounds'.i18n()),
                 value: gameConfigState.value.menuSounds,
                 onChanged: (value) {
                   saveConfig(
@@ -116,12 +123,12 @@ class SettingsWidget extends StatelessWidget {
               ),
               const Gap(18),
               Text(
-                'Controller',
+                'controller'.i18n(),
                 style: theme.textTheme.titleMedium,
               ),
               const Gap(12),
               SwitchListTile(
-                title: const Text('Swap ABXY'),
+                title: Text('swap_abxy'.i18n()),
                 value: gameConfigState.value.swapABXY,
                 onChanged: (value) {
                   saveConfig(

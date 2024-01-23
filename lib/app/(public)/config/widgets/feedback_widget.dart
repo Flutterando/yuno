@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 import 'package:yuno/app/interactor/actions/config_action.dart';
 
 class FeedbackWidget extends StatelessWidget {
@@ -17,17 +18,17 @@ class FeedbackWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "We appreciate your feedback and contributions to improving YuNO! If you encountered a bug while using YuNO or have an idea for a new feature or improvement, help us improve by creating an issue and describing the problem/improvement in as much detail as possible, don't forget to follow the contribution guide.",
+          Text(
+            "feedback_long_text".i18n(),
             textAlign: TextAlign.justify,
           ),
           TextButton(
             onPressed: _goToContribution,
-            child: const Text('Report a bug'),
+            child: Text('report_bug'.i18n()),
           ),
           TextButton(
             onPressed: _goToContribution,
-            child: const Text('Request a feature'),
+            child: Text('request_feature'.i18n()),
           ),
         ],
       ),
