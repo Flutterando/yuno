@@ -2,7 +2,7 @@
 
 This architecture aims to clearly separate responsibilities into layers, making code maintenance, testability, and scalability easier. Each layer has a specific purpose, and dependencies are organized so that business logic is not tightly coupled to technical implementation, allowing flexibility and ease of system evolution.
 
-<img src="assets/images/YuNO-Arch.png" width="512" alt="Achitecture diagram"/>
+<img src="assets/YuNO-Arch.png" width="512" alt="Achitecture diagram"/>
 
 ## 1. Layers
 
@@ -192,3 +192,62 @@ group('AndroidAppsRepository.openAppSettings | ', () {
 - **Mocking and Stubbing:** Use mocks and stubs where necessary to isolate the unit of test.
 
 Remember, good tests not only check for correct outcomes but also contribute to the overall quality and maintainability of the software.
+
+## 4. Localizations
+
+Localization is key to making an application accessible and user-friendly to a global audience. This section provides guidelines and best practices for implementing localizations.
+
+### 4.1 Implementing Localizations
+
+### Steps for Implementation
+
+#### 4.1.1 Defining localization files
+
+ Create a JSON file in the i18n folder, this file should be named `xx.json` where xx should be replaced with the locale, for example: en_US.json. These files must contain key-value pairs for strings in different languages.
+
+**Example of content to pt_BR.json file:**
+
+```json
+{
+  "home": "Início",
+  "apps": "Apps",
+  "settings": "Configurações",
+  "favorite": "Favoritar",
+  "play": "Jogar",
+  "syncing": "Sincronizando",
+  "search_a_game": "Pesquise um jogo",
+  "platforms": "Plataformas",
+  "preferences": "Preferencias",
+  "feedback": "Feedback",
+  "about": "Sobre",
+  "add_platorm": "Adicionar Plataforma"
+}
+```
+
+#### 4.1.2 Locale Configuration
+
+Configure the list of supported locales in the app_widget.dart file.
+
+#### 4.1.3 Loading Localized Data
+
+We use the `localization` package to load and retrieve localized data based on the current locale.
+
+#### 4.1.4 Dynamic Text Replacement
+
+Implement dynamic text replacement in the UI using localized strings.
+
+#### 4.1.5 Fallback Locale
+
+Set up a fallback locale for scenarios where the user's locale doesn't match any supported locales.
+
+### 4.2 Best Practices for Localizations
+
+- **Key Consistency:** Ensure consistency in the naming of keys across different localization files.
+
+- **Regular Updates:** Regularly update localization files whenever there are changes in the text of the application.
+
+- **Testing for Different Locales:** Test the application in different languages to ensure that the translations fit well in the UI and are contextually accurate.
+
+- **Cultural Considerations:** Pay attention to cultural nuances in translations to avoid misunderstandings or offense.
+
+- **Automated Tools and Human Review:** Consider using automated translation tools for efficiency, but always have translations reviewed by native speakers for accuracy and context.
