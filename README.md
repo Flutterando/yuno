@@ -3,7 +3,6 @@
 <img src="assets/logo-prod.png" width="100" alt="Logo yuno"/>
 </div>
 
-
 # YuNO
 
 YuNO is a minimalist, open-source retro gaming frontend designed to deliver a nostalgic and efficient gaming experience. This project aims to create a simplified interface for accessing and playing your favorite retro games.
@@ -28,7 +27,6 @@ We also used IGDB images for the games and a good amount of Daijishou emulator e
 
 ## Showcase 🎥
 
-
 ## Prerequisites ⚙️
 
 Before installing Yuno, make sure you have the following requirements:
@@ -37,9 +35,11 @@ Before installing Yuno, make sure you have the following requirements:
 - Compatible emulators and ROMs for the games you want to play.
 
 ## Installation 🕹️
-See [Realeses](https://github.com/Flutterando/yuno/releases) 
+
+See [Realeses](https://github.com/Flutterando/yuno/releases)
 
 ## Contribute 👩‍💻🧑‍💻
+
 I am happy that you are looking to improve bruno. Please check out the [contributing guide](CONTRIBUTING.md)
 
 Even if you are not able to make contributions via code, please don't hesitate to file bugs and feature requests that need to be implemented to solve your use case.

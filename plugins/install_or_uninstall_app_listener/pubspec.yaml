@@ -1,7 +1,7 @@
 name: install_or_uninstall_app_listener
 description: "A new Flutter plugin project."
 version: 0.0.1
-homepage:
+# homepage:
 
 environment:
   sdk: '>=3.2.4 <4.0.0'
