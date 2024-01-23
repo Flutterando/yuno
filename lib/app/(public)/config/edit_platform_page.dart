@@ -167,10 +167,10 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                 const Gap(17),
                 TextFormField(
                   key: Key(beautifyPath(platform.folder)),
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     labelText: 'folder'.i18n(),
-                    suffixIcon: Icon(Icons.folder),
+                    suffixIcon: const Icon(Icons.folder),
                   ),
                   initialValue: beautifyPath(platform.folder),
                   readOnly: true,

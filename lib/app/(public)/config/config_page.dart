@@ -9,7 +9,7 @@ import '../../interactor/services/gamepad_service.dart';
 import 'widgets/about_widget.dart';
 import 'widgets/feedback_widget.dart';
 import 'widgets/platform_widget.dart';
-import 'widgets/settings_widget.dart';
+import 'widgets/preferences_widget.dart';
 
 Route routeBuilder(BuildContext context, RouteSettings settings) {
   return PageRouteBuilder(
@@ -89,7 +89,7 @@ class _ConfigPageState extends State<ConfigPage> {
                     label: Text('feedback'.i18n()),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.info_outline),
+                    icon: const Icon(Icons.info_outline),
                     label: Text('about'.i18n()),
                   ),
                 ],
@@ -113,7 +113,7 @@ class _ConfigPageState extends State<ConfigPage> {
               index: selectedItemIndex,
               children: [
                 PlatformWidget(transitionAnimation: widget.transitionAnimation),
-                const SettingsWidget(),
+                const PreferencesWidget(),
                 FeedbackWidget(),
                 AboutWidget(),
               ],

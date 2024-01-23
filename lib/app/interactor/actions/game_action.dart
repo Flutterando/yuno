@@ -60,7 +60,7 @@ Future<void> selectCover(Game game) async {
   final divide = Platform.pathSeparator;
 
   final imagePath =
-      '${(await pathProvider.getApplicationDocumentsDirectory()).path}${divide}images${divide}${name}';
+      '${(await pathProvider.getApplicationDocumentsDirectory()).path}${divide}images$divide$name';
   print(imagePath);
 
   final bytes = await file.readAsBytes();

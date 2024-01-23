@@ -8,8 +8,8 @@ import 'package:yuno/app/interactor/models/language_model.dart';
 import '../../../core/widgets/background/background.dart';
 import '../../../interactor/atoms/config_atom.dart';
 
-class SettingsWidget extends StatelessWidget {
-  const SettingsWidget({super.key});
+class PreferencesWidget extends StatelessWidget {
+  const PreferencesWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

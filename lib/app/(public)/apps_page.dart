@@ -28,10 +28,7 @@ class _AppsPageState extends State<AppsPage> {
         Navigator.of(context).pop();
       }
     });
-
   }
-
-
 
   @override
   void dispose() {

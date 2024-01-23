@@ -2,7 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
 
-final _pool = Soundpool.fromOptions(options: const SoundpoolOptions(streamType: StreamType.music));
+final _pool = Soundpool.fromOptions(
+    options: const SoundpoolOptions(streamType: StreamType.music));
 
 const _clickSound = 'assets/sounds/click.mp3';
 int _clickSoundId = 0;
@@ -43,7 +44,8 @@ Future<void> precacheCache() async {
   _clickSoundId = await rootBundle.load(_clickSound).then((ByteData soundData) {
     return _pool.load(soundData);
   });
-  _doubleSoundId = await rootBundle.load(_doubleSound).then((ByteData soundData) {
+  _doubleSoundId =
+      await rootBundle.load(_doubleSound).then((ByteData soundData) {
     return _pool.load(soundData);
   });
   _enterSoundId = await rootBundle.load(_enterSound).then((ByteData soundData) {
@@ -53,7 +55,8 @@ Future<void> precacheCache() async {
     return _pool.load(soundData);
   });
 
-  _openRailId = await rootBundle.load(_openRailSound).then((ByteData soundData) {
+  _openRailId =
+      await rootBundle.load(_openRailSound).then((ByteData soundData) {
     return _pool.load(soundData);
   });
 }

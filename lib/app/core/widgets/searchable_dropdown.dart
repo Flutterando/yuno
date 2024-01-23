@@ -93,7 +93,7 @@ class _SeachItems extends StatefulWidget {
   final List<String> items;
   final String? label;
 
-  const _SeachItems({super.key, required this.items, this.label});
+  const _SeachItems({required this.items, this.label});
 
   @override
   State<_SeachItems> createState() => _SeachItemsState();

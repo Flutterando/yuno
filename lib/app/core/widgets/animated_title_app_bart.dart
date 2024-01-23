@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AnimatedTitleAppBar extends StatefulWidget implements PreferredSizeWidget {
+class AnimatedTitleAppBar extends StatefulWidget
+    implements PreferredSizeWidget {
   final String title;
   final Widget? leading;
   final List<Widget> actions;
@@ -26,7 +27,8 @@ class AnimatedTitleAppBar extends StatefulWidget implements PreferredSizeWidget 
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class _CustomAppBarState extends State<AnimatedTitleAppBar> with SingleTickerProviderStateMixin {
+class _CustomAppBarState extends State<AnimatedTitleAppBar>
+    with SingleTickerProviderStateMixin {
   late final AnimationController controller;
   late TextEditingController textEditingController;
   var title = '';
@@ -40,7 +42,8 @@ class _CustomAppBarState extends State<AnimatedTitleAppBar> with SingleTickerPro
       vsync: this,
     );
     controller.addListener(() {
-      var textoParcial = widget.title.substring(0, (widget.title.length * controller.value).round());
+      var textoParcial = widget.title
+          .substring(0, (widget.title.length * controller.value).round());
 
       if (textoParcial != widget.title) {
         textoParcial += getRandomCharacter();

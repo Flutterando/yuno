@@ -13,7 +13,7 @@ class GameCategory {
     required this.image,
     String? shortName,
     this.extensions = const [],
-  }){
+  }) {
     this.shortName = shortName ?? name;
   }
 
@@ -22,7 +22,7 @@ class GameCategory {
       return true;
     }
     return extensions //
-      .any((extension) => name.toLowerCase().endsWith(extension));
+        .any((extension) => name.toLowerCase().endsWith(extension));
   }
 
   @override

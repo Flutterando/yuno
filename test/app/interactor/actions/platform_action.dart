@@ -18,30 +18,74 @@ void main() {
 
   test('Sync games add', () {
     final currentGames = [
-      Game(name: 'game 1', description: 'aaa', image: '', path: '/path1',),
-      Game(name: 'game 2', description: 'aaa', image: '', path: '/path2',),
+      Game(
+        name: 'game 1',
+        description: 'aaa',
+        image: '',
+        path: '/path1',
+      ),
+      Game(
+        name: 'game 2',
+        description: 'aaa',
+        image: '',
+        path: '/path2',
+      ),
     ];
     final folderGames = [
-      Game(name: 'game 1', description: '', image: '', path: '/path1',),
-      Game(name: 'game 2', description: '', image: '', path: '/path2',),
-      Game(name: 'game 3', description: '', image: '', path: '/path3',),
+      Game(
+        name: 'game 1',
+        description: '',
+        image: '',
+        path: '/path1',
+      ),
+      Game(
+        name: 'game 2',
+        description: '',
+        image: '',
+        path: '/path2',
+      ),
+      Game(
+        name: 'game 3',
+        description: '',
+        image: '',
+        path: '/path3',
+      ),
     ];
 
     final games = syncGames(currentGames, folderGames);
     expect(games.length, 3);
     expect(games[0].description, 'aaa');
     expect(games[1].description, 'aaa');
-
   });
 
   test('Sync games remove', () {
     final currentGames = [
-      Game(name: 'game 1', description: 'aaa', image: '', path: '/path1',),
-      Game(name: 'game 2', description: 'aaa', image: '', path: '/path2',),
+      Game(
+        name: 'game 1',
+        description: 'aaa',
+        image: '',
+        path: '/path1',
+      ),
+      Game(
+        name: 'game 2',
+        description: 'aaa',
+        image: '',
+        path: '/path2',
+      ),
     ];
     final folderGames = [
-      Game(name: 'game 1', description: '', image: '', path: '/path1',),
-      Game(name: 'game 3', description: '', image: '', path: '/path3',),
+      Game(
+        name: 'game 1',
+        description: '',
+        image: '',
+        path: '/path1',
+      ),
+      Game(
+        name: 'game 3',
+        description: '',
+        image: '',
+        path: '/path3',
+      ),
     ];
 
     final games = syncGames(currentGames, folderGames);
@@ -49,6 +93,5 @@ void main() {
     expect(games[0].description, 'aaa');
     expect(games[1].description, '');
     expect(games[1].name, 'game 3');
-
   });
 }

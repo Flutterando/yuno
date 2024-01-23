@@ -15,19 +15,21 @@ class UnoSyncRepository implements SyncRepository {
 
   @override
   Future<Game> syncIGDB(Game game) async {
-
-    final response = await uno.post('https://api.igdb.com/v4/games',
-        headers: {
-          'content-type': 'text/plain',
-          'client-id': igdbClientId,
-          'authorization': 'Bearer $igdbToken',
-        },
-        data: 'fields artworks,collection,cover.*, first_release_date,genres.*,name,summary; search "${game.name}"; limit 2;',);
+    final response = await uno.post(
+      'https://api.igdb.com/v4/games',
+      headers: {
+        'content-type': 'text/plain',
+        'client-id': igdbClientId,
+        'authorization': 'Bearer $igdbToken',
+      },
+      data:
+          'fields artworks,collection,cover.*, first_release_date,genres.*,name,summary; search "${game.name}"; limit 2;',
+    );
 
     // prevent multiples calls
     await Future.delayed(const Duration(seconds: 1));
 
-    if(response.data.isEmpty) {
+    if (response.data.isEmpty) {
       return game;
     }
 
@@ -39,13 +41,13 @@ class UnoSyncRepository implements SyncRepository {
     final dirPath = await pathProvider.getApplicationDocumentsDirectory();
     final imageName = basename(image);
     final pathSeparator = Platform.pathSeparator;
-    final imageFile = File('${dirPath.path}${pathSeparator}$imageName');
+    final imageFile = File('${dirPath.path}$pathSeparator$imageName');
 
-    if(!imageFile.existsSync()) {
-      final imageData = await uno.get(image, responseType: ResponseType.arraybuffer);
+    if (!imageFile.existsSync()) {
+      final imageData =
+          await uno.get(image, responseType: ResponseType.arraybuffer);
       await imageFile.writeAsBytes(imageData.data);
     }
-
 
     final metaGame = game.copyWith(
       isSynced: true,

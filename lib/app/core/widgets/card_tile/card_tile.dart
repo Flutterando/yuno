@@ -53,8 +53,6 @@ class CardTile extends StatelessWidget {
         ),
       );
     }
-
-
   }
 
   Widget withImage() {
@@ -121,22 +119,22 @@ class CardTile extends StatelessWidget {
                       children: [
                         if (!game.hasImage) Center(child: noImage()),
                         if (game.isFavorite)
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                             shape: BoxShape.circle,
-                              color: Colors.red,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(7.0),
-                              child: SvgPicture.asset(
-                                defaultCategoryFavorite.image,
-                                width: 20,
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.red,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(7.0),
+                                child: SvgPicture.asset(
+                                  defaultCategoryFavorite.image,
+                                  width: 20,
+                                ),
                               ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),

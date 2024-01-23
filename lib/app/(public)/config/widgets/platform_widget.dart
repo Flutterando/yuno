@@ -45,7 +45,7 @@ class _PlatformWidgetState extends State<PlatformWidget> {
 
       return Scaffold(
         body: platforms.isEmpty
-            ?  Material(
+            ? Material(
                 child: Center(
                   child: NoItemWidget(
                     title: 'no_platforms_found'.i18n(),
@@ -62,7 +62,8 @@ class _PlatformWidgetState extends State<PlatformWidget> {
                   if (platform.category.id == 'android') {
                     playerName = 'Android';
                   } else {
-                    playerName = platform.player?.app.package ?? 'no_player'.i18n();
+                    playerName =
+                        platform.player?.app.package ?? 'no_player'.i18n();
                   }
                   return ListTile(
                     leading: CircleAvatar(
