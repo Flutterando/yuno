@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:localization/localization.dart';
 
 class AnimatedSearch extends StatefulWidget {
   final void Function(String value) onChanged;
@@ -112,8 +113,8 @@ class _AnimatedSearchState extends State<AnimatedSearch>
             child: TextField(
               focusNode: _focusNode,
               onChanged: widget.onChanged,
-              decoration: const InputDecoration(
-                hintText: 'Search a Game',
+              decoration: InputDecoration(
+                hintText: 'search_a_game'.i18n(),
                 border: InputBorder.none,
               ),
             ),

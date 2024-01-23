@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:localization/localization.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:yuno/injector.dart';
@@ -16,6 +17,7 @@ void main() async {
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);
+  LocalJsonLocalization.delegate.directories = ['assets/i18n'];
   GoogleFonts.lemon();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   WakelockPlus.enable();

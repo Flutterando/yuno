@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:localization/localization.dart';
 import 'package:yuno/app/core/widgets/searchable_dropdown.dart';
 import 'package:yuno/app/interactor/models/embeds/player.dart';
 
@@ -28,9 +29,9 @@ class PlayerSelect extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<AppModel>(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Player app',
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: 'player_app'.i18n(),
               ),
               value: player?.app,
               selectedItemBuilder: (BuildContext context) {
@@ -120,7 +121,7 @@ class PlayerSelect extends StatelessWidget {
                           onChanged(player?.copyWith(extra: newValue));
                         }
                       },
-                      label: 'Retroarch Core',
+                      label: 'retroarch_cores'.i18n(),
                       item: player?.extra,
                       items: retroarchCores,
                     ),
@@ -131,18 +132,16 @@ class PlayerSelect extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text('Retroarch Cores'),
-                            content: const Text(
-                              'Retroarch Cores are the emulators\n'
-                              'that Retroarch uses to run games.\n'
-                              'You can download them from the Retroarch app.',
+                            title: Text('retroarch_cores'.i18n()),
+                            content: Text(
+                              'retroarch_cores_content'.i18n(),
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: const Text('Ok'),
+                                child: Text('ok'.i18n()),
                               ),
                             ],
                           );

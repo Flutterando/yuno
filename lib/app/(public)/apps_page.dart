@@ -15,7 +15,7 @@ class AppsPage extends StatefulWidget {
   State<AppsPage> createState() => _AppsPageState();
 }
 
-class _AppsPageState extends State<AppsPage> with WidgetsBindingObserver {
+class _AppsPageState extends State<AppsPage> {
   late RxDisposer _disposer;
 
   @override
@@ -29,19 +29,12 @@ class _AppsPageState extends State<AppsPage> with WidgetsBindingObserver {
       }
     });
 
-    WidgetsBinding.instance.addObserver(this);
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      fetchApps();
-    }
-  }
+
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     _disposer();
     super.dispose();
   }
