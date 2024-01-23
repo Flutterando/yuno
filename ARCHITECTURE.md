@@ -44,6 +44,7 @@ Encompasses global data for the application.
   - Defines visual styles and themes for the application.
 - **Assets:**
   - Stores static resources such as images, icons, etc.
+  - Every type of asset requires a specific file, with its names listed and pre-cached in a function.
 - **Widgets:**
   - Reusable components that can be used in different parts of the application.
 - **Other Global Data:**
