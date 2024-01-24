@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:battery_plus/battery_plus.dart';
+import 'package:intl/intl.dart';
+import 'package:yuno/app/interactor/models/battery_model.dart';
 import 'package:yuno/app/interactor/models/game_config.dart';
 import 'package:yuno/injector.dart';
 
@@ -18,4 +23,27 @@ Future<void> fetchConfig() async {
 Future<void> openUrl(Uri uri) async {
   final repository = injector.get<ConfigRepository>();
   await repository.openUrl(uri);
+}
+
+final _battery = Battery();
+StreamSubscription<BatteryState>? _batterySubscription;
+
+Future<void> registerBatteryListener() async {
+  _batterySubscription?.cancel();
+  _batterySubscription = _battery.onBatteryStateChanged.listen(
+    (BatteryState state) async {
+      batteryState.value = BatteryModel(
+        batteryLevel: await _battery.batteryLevel,
+        batteryState: state,
+      );
+    },
+  );
+}
+
+Timer? timer;
+
+Future<void> registerHourListener() async {
+  timer ??= Timer.periodic(const Duration(seconds: 1), (timer) {
+    hoursState.value = DateFormat('HH:mm').format(DateTime.now());
+  });
 }

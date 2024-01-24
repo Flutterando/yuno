@@ -1,13 +1,21 @@
 import 'dart:ui';
 
 import 'package:asp/asp.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:yuno/app/interactor/models/language_model.dart';
 
+import '../models/battery_model.dart';
 import '../models/game_config.dart';
 
 final gameConfigState = Atom<GameConfig>(GameConfig());
 
 final buildNumberState = Atom<String>('');
+
+final batteryState = Atom<BatteryModel>(BatteryModel(
+  batteryLevel: 0,
+  batteryState: BatteryState.unknown,
+));
+final hoursState = Atom<String>('00:00');
 
 Locale? localeResolution(Locale? locale, Iterable<Locale> supportedLocales) {
   if (supportedLocales.contains(locale)) {

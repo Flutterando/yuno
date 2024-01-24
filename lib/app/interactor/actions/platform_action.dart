@@ -73,11 +73,12 @@ Future<void> syncPlatform(PlatformModel platform) async {
 
   final repository = injector<SyncRepository>();
 
-  final folderGames = await _getGames(platform);
-  final currentGames = platform.games;
-  final games = syncGames(currentGames, folderGames);
-
-  platform = platform.copyWith(games: games);
+  if (platform.category.id != 'android') {
+    final folderGames = await _getGames(platform);
+    final currentGames = platform.games;
+    final games = syncGames(currentGames, folderGames);
+    platform = platform.copyWith(games: games);
+  }
 
   for (var i = 0; i < platform.games.length; i++) {
     if (platform.games[i].isSynced) continue;

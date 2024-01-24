@@ -1,7 +1,14 @@
+import 'dart:math';
+
+import 'package:asp/asp.dart';
+import 'package:based_battery_indicator/based_battery_indicator.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:localization/localization.dart';
 import 'package:yuno/app/core/widgets/animated_sync_button.dart';
+
+import '../../interactor/atoms/config_atom.dart';
 
 class NavigationCommand extends StatelessWidget {
   final VoidCallback? onApps;
@@ -60,6 +67,15 @@ class NavigationCommand extends StatelessWidget {
                 Text('${'syncing'.i18n()}...'),
               ],
             ),
+          if (!isSyncing)
+            const Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _BatteryIcon(),
+                _HourIcon(),
+              ],
+            ),
           const Spacer(),
           LabelButton(
             label: 'favorite'.i18n(),
@@ -79,6 +95,58 @@ class NavigationCommand extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _HourIcon extends StatelessWidget {
+  const _HourIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return RxBuilder(
+      builder: (context) {
+        return Text(
+          hoursState.value,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _BatteryIcon extends StatelessWidget {
+  const _BatteryIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return RxBuilder(builder: (_) {
+      final model = batteryState.value;
+      var type = BasedBatteryStatusType.normal;
+      if (model.batteryState == BatteryState.charging) {
+        type = BasedBatteryStatusType.charging;
+      }
+
+      return Transform.translate(
+        offset: const Offset(0, -2),
+        child: Transform.rotate(
+          angle: -pi / 2,
+          alignment: Alignment.center,
+          child: BasedBatteryIndicator(
+            status: BasedBatteryStatus(
+              value: model.batteryLevel,
+              type: type,
+            ),
+            trackHeight: 8.0,
+            trackAspectRatio: 2.0,
+            curve: Curves.ease,
+            duration: const Duration(seconds: 1),
+          ),
+        ),
+      );
+    });
   }
 }
 
