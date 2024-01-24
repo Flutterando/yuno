@@ -40,7 +40,7 @@ See [Realeses](https://github.com/Flutterando/yuno/releases)
 
 ## Contribute 👩‍💻🧑‍💻
 
-I am happy that you are looking to improve bruno. Please check out the [contributing guide](CONTRIBUTING.md)
+I am happy that you are looking to improve YuNO. Please check out the [contributing guide](CONTRIBUTING.md)
 
 Even if you are not able to make contributions via code, please don't hesitate to file bugs and feature requests that need to be implemented to solve your use case.
 
