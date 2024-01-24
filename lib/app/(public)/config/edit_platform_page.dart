@@ -24,12 +24,14 @@ class EditPlatformPage extends StatefulWidget {
 
 class _EditPlatformPageState extends State<EditPlatformPage> {
   late PlatformModel platform;
+  late PlatformModel oldPlatform;
 
   @override
   void initState() {
     super.initState();
     platform = (Routefly.query.arguments as PlatformModel?)?.copyWith() ??
         PlatformModel.defaultInstance();
+    oldPlatform = platform.copyWith();
   }
 
   @override
@@ -128,12 +130,12 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                                     if (isChecked == true) {
                                       games.add(
                                         Game(
-                                            name: app.name,
-                                            description: '',
-                                            image: '',
-                                            isSynced: true,
-                                            overradedPlayer: Player(app: app),
-                                            path: ''),
+                                          name: app.name,
+                                          description: '',
+                                          image: '',
+                                          overradedPlayer: Player(app: app),
+                                          path: app.package,
+                                        ),
                                       );
                                     } else {
                                       games.removeWhere((e) =>
@@ -165,27 +167,28 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                     },
                   ),
                 const Gap(17),
-                TextFormField(
-                  key: Key(beautifyPath(platform.folder)),
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    labelText: 'folder'.i18n(),
-                    suffixIcon: const Icon(Icons.folder),
-                  ),
-                  initialValue: beautifyPath(platform.folder),
-                  readOnly: true,
-                  onTap: () async {
-                    final selectedDirectory = await getDirectoryPath();
+                if (platform.category.id != 'android')
+                  TextFormField(
+                    key: Key(beautifyPath(platform.folder)),
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: 'folder'.i18n(),
+                      suffixIcon: const Icon(Icons.folder),
+                    ),
+                    initialValue: beautifyPath(platform.folder),
+                    readOnly: true,
+                    onTap: () async {
+                      final selectedDirectory = await getDirectoryPath();
 
-                    if (selectedDirectory != null) {
-                      setState(() {
-                        platform = platform.copyWith(
-                          folder: selectedDirectory,
-                        );
-                      });
-                    }
-                  },
-                ),
+                      if (selectedDirectory != null) {
+                        setState(() {
+                          platform = platform.copyWith(
+                            folder: selectedDirectory,
+                          );
+                        });
+                      }
+                    },
+                  ),
                 const Gap(50),
               ],
             ),
@@ -220,16 +223,22 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                 return;
               }
 
+              if (oldPlatform.category.id == platform.category.id &&
+                  platform.category.id == 'android') {
+                final games = syncGames(oldPlatform.games, platform.games);
+                platform = platform.copyWith(games: games);
+              }
+
               Routefly.pop(context);
 
               if (isEditing) {
-                updatePlatform(platform);
+                await updatePlatform(platform);
               } else {
                 await createPlatform(platform);
                 platform = platformsState.value
                     .firstWhere((e) => e.category == platform.category);
-                await syncPlatform(platform);
               }
+              await syncPlatform(platform);
             },
             child: const Icon(Icons.save),
           ),
