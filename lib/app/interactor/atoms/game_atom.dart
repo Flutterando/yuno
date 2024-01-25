@@ -130,6 +130,7 @@ final categorieState = [
     id: 'nintendo-gamecube',
     extensions: [
       'ciao',
+      'ciso',
       'dff',
       'dol',
       'elf',
@@ -237,7 +238,7 @@ final categorieState = [
     name: 'Sega Dreamcast',
     image: img.dreamcastSVG,
     id: 'sega-dreamcast',
-    extensions: ['cdi', 'gdi'],
+    extensions: ['cdi', 'chd', 'gdi'],
   ),
   GameCategory(
     name: 'Sega Game Gear',
@@ -322,7 +323,7 @@ final categorieState = [
     name: 'Sony - PlayStation 2',
     image: img.ps2SVG,
     id: 'ps2',
-    extensions: ['bin', 'cue', 'iso', 'chd'],
+    extensions: ['bin', 'chd', 'cso', 'cue', 'gz', 'iso', 'chd'],
   ),
   GameCategory(
     name: 'Sony - PlayStation Portable',
