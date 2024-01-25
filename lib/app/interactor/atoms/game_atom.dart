@@ -107,7 +107,7 @@ final categorieState = [
     shortName: 'Game Boy',
     image: img.gameboySVG,
     id: 'nintendo-game-boy',
-    extensions: ['gb', 'gbc', 'gbs'],
+    extensions: ['gb', 'gbc', 'gbs', '7z', 'zip'],
   ),
   GameCategory(
     name: 'Nintendo - Game Boy Advance',
@@ -238,13 +238,13 @@ final categorieState = [
     name: 'Sega Dreamcast',
     image: img.dreamcastSVG,
     id: 'sega-dreamcast',
-    extensions: ['cdi', 'chd', 'gdi'],
+    extensions: ['cdi', 'chd', 'gdi', 'bin', 'dat', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Sega Game Gear',
     image: img.segagamegearSVG,
     id: 'sega-game-gear',
-    extensions: ['bin', 'bms', 'col', 'gg', 'rom', 'sg', 'sms'],
+    extensions: ['bin', 'bms', 'col', 'gg', 'rom', 'sg', 'sms', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Sega Genesis',
@@ -268,6 +268,8 @@ final categorieState = [
       'sgd',
       'smd',
       'sms',
+      '7z',
+      'zip'
     ],
   ),
   GameCategory(
@@ -292,13 +294,15 @@ final categorieState = [
       'sgd',
       'smd',
       'sms',
+      '7z',
+      'zip'
     ],
   ),
   GameCategory(
     name: 'Sega Saturn',
     image: img.segasaturnSVG,
     id: 'sega-saturn',
-    extensions: ['bin', 'ccd', 'chd', 'cue', 'iso', 'm3u', 'mds', 'toc', 'zip'],
+    extensions: ['bin', 'ccd', 'chd', 'cue', 'iso', 'm3u', 'mds', 'toc', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Sony - PlayStation',
@@ -358,6 +362,7 @@ final categorieState = [
       'st',
       'swc',
       'zip',
+      '7z'
     ],
   ),
   GameCategory(
