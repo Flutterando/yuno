@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:yuno/app/interactor/actions/platform_action.dart';
 import 'package:yuno/app/interactor/atoms/game_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 
