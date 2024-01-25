@@ -2,8 +2,11 @@
 
 import 'dart:io';
 
+import 'package:collection/collection.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:media_store_plus/media_store_plus.dart';
+import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/models/platform_model.dart';
 import 'package:yuno/app/interactor/repositories/platform_repository.dart';
 import 'package:yuno/app/interactor/repositories/sync_repository.dart';
@@ -86,14 +89,24 @@ Future<void> syncPlatform(PlatformModel platform) async {
       final color = await getDominatingColor(platform.games[i].image);
       platform.games[i] = platform.games[i].copyWith(imageColor: color);
     } else {
-      try {
-        var metaGame = await repository.syncIGDB(platform.games[i]);
-        final color = await getDominatingColor(metaGame.image);
-        metaGame = metaGame.copyWith(imageColor: color);
-        platform.games[i] = metaGame;
-      } catch (e) {
-        continue;
+      Game metaGame = platform.games[i];
+
+      if (gameConfigState.value.coverFolder != null) {
+        metaGame = await repository.syncLocalFolder(
+          metaGame,
+          gameConfigState.value.coverFolder!,
+        );
       }
+
+      if (gameConfigState.value.enableIGDB && metaGame.image.isEmpty) {
+        metaGame = await repository.syncIGDB(
+          platform.games[i],
+        );
+      }
+
+      final color = await getDominatingColor(metaGame.image);
+      metaGame = metaGame.copyWith(imageColor: color);
+      platform.games[i] = metaGame;
     }
   }
 

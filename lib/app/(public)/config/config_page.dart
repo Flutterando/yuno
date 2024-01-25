@@ -86,6 +86,10 @@ class _ConfigPageState extends State<ConfigPage> {
                     label: Text('preferences'.i18n()),
                   ),
                   NavigationRailDestination(
+                    icon: const Icon(Icons.image),
+                    label: Text('cover'.i18n()),
+                  ),
+                  NavigationRailDestination(
                     icon: const Icon(Icons.chat_outlined),
                     label: Text('feedback'.i18n()),
                   ),

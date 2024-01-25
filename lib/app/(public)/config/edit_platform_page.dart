@@ -9,6 +9,7 @@ import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 
 import '../../core/widgets/animated_title_app_bart.dart';
+import '../../interactor/actions/config_action.dart';
 import '../../interactor/actions/platform_action.dart';
 import '../../interactor/models/embeds/game_category.dart';
 import '../../interactor/models/embeds/player.dart';
@@ -247,8 +248,4 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
     );
   }
 
-  String beautifyPath(String dir) {
-    final path = convertContentUriToFilePath(dir);
-    return path.replaceAll('/storage/emulated/0', '');
-  }
 }
