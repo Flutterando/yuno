@@ -36,7 +36,7 @@ Before installing Yuno, make sure you have the following requirements:
 
 ## Installation 🕹️
 
-See [Realeses](https://github.com/Flutterando/yuno/releases)
+See [Releases](https://github.com/Flutterando/yuno/releases)
 
 ## Contribute 👩‍💻🧑‍💻
 
