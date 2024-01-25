@@ -46,7 +46,7 @@ class UnoSyncRepository implements SyncRepository {
 
       final file = files.firstWhereOrNull((doc) {
         final name = doc.name!.toLowerCase();
-        return name.startsWith(game.name.toLowerCase());
+        return name.startsWith('${game.name.toLowerCase()}.');
       });
 
       if (file == null) {

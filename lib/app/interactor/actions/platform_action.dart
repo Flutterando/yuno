@@ -43,6 +43,7 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
   final games = <Game>[];
   final media = MediaStore();
 
+
   final documents = await media.getDocumentTree(uriString: platform.folder);
 
   if (documents == null) {
@@ -91,14 +92,19 @@ Future<void> syncPlatform(PlatformModel platform) async {
     } else {
       Game metaGame = platform.games[i];
 
-      if (gameConfigState.value.coverFolder != null) {
+      metaGame = await repository.syncLocalFolder(
+        metaGame,
+        platform.folderCover ?? platform.folder,
+      );
+
+      if (gameConfigState.value.coverFolder != null && !metaGame.isSynced) {
         metaGame = await repository.syncLocalFolder(
           metaGame,
           gameConfigState.value.coverFolder!,
         );
       }
 
-      if (gameConfigState.value.enableIGDB && metaGame.image.isEmpty) {
+      if (gameConfigState.value.enableIGDB && !metaGame.isSynced) {
         metaGame = await repository.syncIGDB(
           platform.games[i],
         );

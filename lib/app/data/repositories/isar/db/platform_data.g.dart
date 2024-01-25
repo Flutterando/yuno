@@ -27,24 +27,29 @@ const PlatformDataSchema = CollectionSchema(
       name: r'folder',
       type: IsarType.string,
     ),
-    r'games': PropertySchema(
+    r'folderCover': PropertySchema(
       id: 2,
+      name: r'folderCover',
+      type: IsarType.string,
+    ),
+    r'games': PropertySchema(
+      id: 3,
       name: r'games',
       type: IsarType.objectList,
       target: r'GameData',
     ),
     r'lastUpdate': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'lastUpdate',
       type: IsarType.dateTime,
     ),
     r'playerExtra': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'playerExtra',
       type: IsarType.string,
     ),
     r'playerPackageId': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'playerPackageId',
       type: IsarType.string,
     )
@@ -71,6 +76,12 @@ int _platformDataEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.category.length * 3;
   bytesCount += 3 + object.folder.length * 3;
+  {
+    final value = object.folderCover;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.games.length * 3;
   {
     final offsets = allOffsets[GameData]!;
@@ -102,15 +113,16 @@ void _platformDataSerialize(
 ) {
   writer.writeString(offsets[0], object.category);
   writer.writeString(offsets[1], object.folder);
+  writer.writeString(offsets[2], object.folderCover);
   writer.writeObjectList<GameData>(
-    offsets[2],
+    offsets[3],
     allOffsets,
     GameDataSchema.serialize,
     object.games,
   );
-  writer.writeDateTime(offsets[3], object.lastUpdate);
-  writer.writeString(offsets[4], object.playerExtra);
-  writer.writeString(offsets[5], object.playerPackageId);
+  writer.writeDateTime(offsets[4], object.lastUpdate);
+  writer.writeString(offsets[5], object.playerExtra);
+  writer.writeString(offsets[6], object.playerPackageId);
 }
 
 PlatformData _platformDataDeserialize(
@@ -122,17 +134,18 @@ PlatformData _platformDataDeserialize(
   final object = PlatformData();
   object.category = reader.readString(offsets[0]);
   object.folder = reader.readString(offsets[1]);
+  object.folderCover = reader.readStringOrNull(offsets[2]);
   object.games = reader.readObjectList<GameData>(
-        offsets[2],
+        offsets[3],
         GameDataSchema.deserialize,
         allOffsets,
         GameData(),
       ) ??
       [];
   object.id = id;
-  object.lastUpdate = reader.readDateTime(offsets[3]);
-  object.playerExtra = reader.readStringOrNull(offsets[4]);
-  object.playerPackageId = reader.readStringOrNull(offsets[5]);
+  object.lastUpdate = reader.readDateTime(offsets[4]);
+  object.playerExtra = reader.readStringOrNull(offsets[5]);
+  object.playerPackageId = reader.readStringOrNull(offsets[6]);
   return object;
 }
 
@@ -148,6 +161,8 @@ P _platformDataDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readStringOrNull(offset)) as P;
+    case 3:
       return (reader.readObjectList<GameData>(
             offset,
             GameDataSchema.deserialize,
@@ -155,11 +170,11 @@ P _platformDataDeserializeProp<P>(
             GameData(),
           ) ??
           []) as P;
-    case 3:
-      return (reader.readDateTime(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 5:
+      return (reader.readStringOrNull(offset)) as P;
+    case 6:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -526,6 +541,160 @@ extension PlatformDataQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'folder',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'folderCover',
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'folderCover',
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'folderCover',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'folderCover',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'folderCover',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'folderCover',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'folderCover',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'folderCover',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'folderCover',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'folderCover',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'folderCover',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterFilterCondition>
+      folderCoverIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'folderCover',
         value: '',
       ));
     });
@@ -1077,6 +1246,19 @@ extension PlatformDataQuerySortBy
     });
   }
 
+  QueryBuilder<PlatformData, PlatformData, QAfterSortBy> sortByFolderCover() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folderCover', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterSortBy>
+      sortByFolderCoverDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folderCover', Sort.desc);
+    });
+  }
+
   QueryBuilder<PlatformData, PlatformData, QAfterSortBy> sortByLastUpdate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastUpdate', Sort.asc);
@@ -1141,6 +1323,19 @@ extension PlatformDataQuerySortThenBy
   QueryBuilder<PlatformData, PlatformData, QAfterSortBy> thenByFolderDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'folder', Sort.desc);
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterSortBy> thenByFolderCover() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folderCover', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PlatformData, PlatformData, QAfterSortBy>
+      thenByFolderCoverDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'folderCover', Sort.desc);
     });
   }
 
@@ -1213,6 +1408,13 @@ extension PlatformDataQueryWhereDistinct
     });
   }
 
+  QueryBuilder<PlatformData, PlatformData, QDistinct> distinctByFolderCover(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'folderCover', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<PlatformData, PlatformData, QDistinct> distinctByLastUpdate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lastUpdate');
@@ -1252,6 +1454,12 @@ extension PlatformDataQueryProperty
   QueryBuilder<PlatformData, String, QQueryOperations> folderProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'folder');
+    });
+  }
+
+  QueryBuilder<PlatformData, String?, QQueryOperations> folderCoverProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'folderCover');
     });
   }
 
