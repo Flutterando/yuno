@@ -327,7 +327,7 @@ final categorieState = [
     name: 'Sony - PlayStation 2',
     image: img.ps2SVG,
     id: 'ps2',
-    extensions: ['bin', 'chd', 'cso', 'cue', 'gz', 'iso', 'chd'],
+    extensions: ['bin', 'chd', 'cso', 'cue', 'gz', 'iso'],
   ),
   GameCategory(
     name: 'Sony - PlayStation Portable',
