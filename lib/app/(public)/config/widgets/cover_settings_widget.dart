@@ -1,12 +1,12 @@
 import 'dart:ffi';
 
 import 'package:asp/asp.dart';
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:localization/localization.dart';
 
 import '../../../interactor/actions/config_action.dart';
+import '../../../interactor/actions/platform_action.dart';
 import '../../../interactor/atoms/config_atom.dart';
 
 class CoverSettingsWidget extends StatelessWidget {
@@ -51,7 +51,7 @@ class CoverSettingsWidget extends StatelessWidget {
                     beautifyPath(gameConfigState.value.coverFolder ?? ''),
                 readOnly: true,
                 onTap: () async {
-                  final selectedDirectory = await getDirectoryPath();
+                  final selectedDirectory = await getDirectory();
 
                   if (selectedDirectory != null) {
                     saveConfig(

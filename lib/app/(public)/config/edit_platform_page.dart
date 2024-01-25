@@ -1,4 +1,3 @@
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:localization/localization.dart';
@@ -179,7 +178,7 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                     initialValue: beautifyPath(platform.folder),
                     readOnly: true,
                     onTap: () async {
-                      final selectedDirectory = await getDirectoryPath();
+                      final selectedDirectory = await getDirectory();
 
                       if (selectedDirectory != null) {
                         setState(() {
@@ -202,7 +201,7 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                     initialValue: beautifyPath(platform.folderCover ?? platform.folder),
                     readOnly: true,
                     onTap: () async {
-                      final selectedDirectory = await getDirectoryPath();
+                      final selectedDirectory = await getDirectory();
 
                       if (selectedDirectory != null) {
                         setState(() {
