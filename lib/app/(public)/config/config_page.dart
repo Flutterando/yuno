@@ -7,6 +7,7 @@ import '../../interactor/atoms/config_atom.dart';
 import '../../interactor/atoms/gamepad_atom.dart';
 import '../../interactor/services/gamepad_service.dart';
 import 'widgets/about_widget.dart';
+import 'widgets/cover_settings_widget.dart';
 import 'widgets/feedback_widget.dart';
 import 'widgets/platform_widget.dart';
 import 'widgets/preferences_widget.dart';
@@ -114,6 +115,7 @@ class _ConfigPageState extends State<ConfigPage> {
               children: [
                 PlatformWidget(transitionAnimation: widget.transitionAnimation),
                 const PreferencesWidget(),
+                const CoverSettingsWidget(),
                 FeedbackWidget(),
                 AboutWidget(),
               ],
