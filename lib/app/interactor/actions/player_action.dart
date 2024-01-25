@@ -38,9 +38,9 @@ final _defaultAppIntent = <String, IntentFunction>{
       arguments: {
         'ROM': convertContentUriToFilePath(g.path),
         'LIBRETRO':
-        '/data/data/com.retroarch/cores/${p.extra}_libretro_android.so',
+            '/data/data/com.retroarch/cores/${p.extra}_libretro_android.so',
         'CONFIGFILE':
-        '/storage/emulated/0/Android/data/com.retroarch/files/retroarch.cfg',
+            '/storage/emulated/0/Android/data/com.retroarch/files/retroarch.cfg',
         'DATADIR': '/data/data/com.retroarch',
         'APK': '/data/app/com.retroarch-1/base.apk',
         'SDCARD': '/storage/emulated/0',

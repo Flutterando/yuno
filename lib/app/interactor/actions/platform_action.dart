@@ -2,8 +2,10 @@
 
 import 'dart:io';
 
+import 'package:shared_storage/shared_storage.dart' as shared_storage;
 import 'package:flutter/material.dart';
 import 'package:media_store_plus/media_store_plus.dart';
+import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/models/platform_model.dart';
 import 'package:yuno/app/interactor/repositories/platform_repository.dart';
 import 'package:yuno/app/interactor/repositories/sync_repository.dart';
@@ -32,6 +34,12 @@ Future<void> createPlatform(PlatformModel platform) async {
   await fetchPlatforms();
 }
 
+Future<String?> getDirectory([String? initialFolder]) async {
+  final uri = await shared_storage.openDocumentTree(
+      initialUri: initialFolder == null ? null : Uri.parse(initialFolder));
+  return uri?.toString();
+}
+
 Future<List<Game>> _getGames(PlatformModel platform) async {
   if (platform.category.id == 'android') {
     return platform.games;
@@ -39,6 +47,13 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
 
   final games = <Game>[];
   final media = MediaStore();
+
+  await shared_storage.persistedUriPermissions();
+
+  final canRead = await shared_storage.canRead(Uri.parse(platform.folder));
+  if (canRead != true) {
+    await getDirectory(platform.folder);
+  }
 
   final documents = await media.getDocumentTree(uriString: platform.folder);
 
@@ -86,14 +101,41 @@ Future<void> syncPlatform(PlatformModel platform) async {
       final color = await getDominatingColor(platform.games[i].image);
       platform.games[i] = platform.games[i].copyWith(imageColor: color);
     } else {
-      try {
-        var metaGame = await repository.syncIGDB(platform.games[i]);
-        final color = await getDominatingColor(metaGame.image);
-        metaGame = metaGame.copyWith(imageColor: color);
-        platform.games[i] = metaGame;
-      } catch (e) {
-        continue;
+      Game metaGame = platform.games[i];
+
+      final coverFolder = platform.folderCover ?? platform.folder;
+
+      var canRead = await shared_storage.canRead(Uri.parse(coverFolder));
+      if (canRead != true) {
+        await getDirectory(coverFolder);
       }
+
+      metaGame = await repository.syncLocalFolder(
+        metaGame,
+        coverFolder,
+      );
+
+      if (gameConfigState.value.coverFolder != null && !metaGame.isSynced) {
+        canRead = await shared_storage
+            .canRead(Uri.parse(gameConfigState.value.coverFolder!));
+        if (canRead != true) {
+          await getDirectory(gameConfigState.value.coverFolder!);
+        }
+        metaGame = await repository.syncLocalFolder(
+          metaGame,
+          gameConfigState.value.coverFolder!,
+        );
+      }
+
+      if (gameConfigState.value.enableIGDB && !metaGame.isSynced) {
+        metaGame = await repository.syncIGDB(
+          platform.games[i],
+        );
+      }
+
+      final color = await getDominatingColor(metaGame.image);
+      metaGame = metaGame.copyWith(imageColor: color);
+      platform.games[i] = metaGame;
     }
   }
 
