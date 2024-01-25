@@ -10,6 +10,7 @@ class PlatformData {
   late String category;
   String? playerPackageId;
   String? playerExtra;
+  String? folderCover;
   late String folder;
   late DateTime lastUpdate;
   List<GameData> games = [];
