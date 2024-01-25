@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:path/path.dart';
 import 'package:uno/uno.dart';
+import 'package:yuno/app/interactor/actions/platform_action.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 
 import '../../core/constants/env.dart';
@@ -35,7 +36,7 @@ class UnoSyncRepository implements SyncRepository {
             return false;
           }
           return name.endsWith('.png') ||
-              name.endsWith('.jgp') ||
+              name.endsWith('.jpg') ||
               name.endsWith('.jpeg');
         },
       ).toList();
@@ -44,9 +45,11 @@ class UnoSyncRepository implements SyncRepository {
         return game;
       }
 
+      final gameName = basenameWithoutExtension(convertContentUriToFilePath(game.path));
+
       final file = files.firstWhereOrNull((doc) {
-        final name = doc.name!.toLowerCase();
-        return name.startsWith('${game.name.toLowerCase()}.');
+        final name = doc.name!;
+        return name.startsWith('${gameName}.');
       });
 
       if (file == null) {
