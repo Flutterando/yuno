@@ -62,7 +62,7 @@ class UnoSyncRepository implements SyncRepository {
       }
       await media.readFileUsingUri(
           uriString: file.uriString, tempFilePath: imageFile.path);
-      return game.copyWith(image: imageFile.path);
+      return game.copyWith(image: imageFile.path, isSynced: true);
     } catch (e) {
       debugPrint(e.toString());
       return game;

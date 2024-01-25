@@ -247,5 +247,4 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
       ),
     );
   }
-
 }
