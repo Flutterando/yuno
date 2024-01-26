@@ -9,8 +9,6 @@ import 'package:yuno/injector.dart';
 
 class PlatformRepositoryMock extends Mock implements PlatformRepository {}
 
-class PlatformModelFake extends Fake implements PlatformModel {}
-
 void main() {
   group('PlatformAction |', () {
     test('Uri to path', () {
@@ -108,7 +106,7 @@ void main() {
     test('Should fetch platform', () async {
       // Arrange
       final repository = PlatformRepositoryMock();
-      final platform = PlatformModelFake();
+      final platform = PlatformModel.defaultInstance();
       when(() => repository.fetchPlatforms())
           .thenAnswer((_) => Future.value([platform]));
       injector.replaceInstance<PlatformRepository>(repository);
@@ -120,7 +118,7 @@ void main() {
     });
     test('Should update platform', () {
       // Arrange
-      final platform = PlatformModelFake();
+      final platform = PlatformModel.defaultInstance();
       final repository = PlatformRepositoryMock();
       when(() => repository.updatePlatform(platform))
           .thenAnswer((_) => Future.value());
@@ -135,7 +133,7 @@ void main() {
     });
     test('Should delete platform', () {
       // Arrange
-      final platform = PlatformModelFake();
+      final platform = PlatformModel.defaultInstance();
       final repository = PlatformRepositoryMock();
       when(() => repository.deletePlatform(platform))
           .thenAnswer((_) => Future.value());
@@ -145,7 +143,7 @@ void main() {
       //Act
       final result = deletePlatform(platform);
       //Assert
-      expectLater(result, completes);
+      expect(result, completes);
     });
   });
 }

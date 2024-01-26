@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_injector/auto_injector.dart';
 import 'package:uno/uno.dart';
 import 'package:yuno/app/data/repositories/apps/android_apps_repository.dart';
@@ -20,13 +18,10 @@ final injector = AutoInjector(
     i.addSingleton<SyncRepository>(UnoSyncRepository.new);
     i.addSingleton<ConfigRepository>(SharedPreferenceConfigRepository.new);
     i.addSingleton<PlatformRepository>(IsarPlatformRepository.new);
-
-    _androidConfig(i);
   },
 );
 
-void _androidConfig(Injector i) {
-  if (!Platform.isAndroid) return;
+void registerInjectAndroidConfig(Injector i) {
   i.addSingleton<AppsRepository>(AndroidAppsRepository.new);
   i.addSingleton<GamepadService>(AndroidGamepadService.new);
 }

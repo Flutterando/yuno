@@ -47,3 +47,4 @@ app.*.map.json
 pubspec_overrides.yaml
 pubspec.lock
 !.puro.json
+coverage/lcov.info

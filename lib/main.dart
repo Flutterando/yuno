@@ -19,6 +19,7 @@ void main() async {
   GoogleFonts.lemon();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   WakelockPlus.enable();
+  registerInjectAndroidConfig(injector);
   injector.commit();
 
   await fetchConfig();

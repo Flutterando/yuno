@@ -38,7 +38,7 @@ void main() {
       expect(result, completes);
     });
 
-    test('Should Open Url', () {
+    test('Should Open Url', () async {
       //Arrange
       final uri = Uri.https('localhost.com', '/home');
       final repository = ConfigRepositoryMock();
@@ -47,7 +47,8 @@ void main() {
       //Act
       final result = openUrl(uri);
       //Assert
-      expectLater(result, completes);
+      await expectLater(result, completes);
+      verify(() => repository.openUrl(uri)).called(1);
     });
   });
 }
