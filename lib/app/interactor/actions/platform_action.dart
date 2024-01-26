@@ -2,9 +2,7 @@
 
 import 'dart:io';
 
-import 'package:shared_storage/shared_storage.dart' as shared_storage;
 import 'package:flutter/material.dart';
-import 'package:media_store_plus/media_store_plus.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/models/platform_model.dart';
 import 'package:yuno/app/interactor/repositories/platform_repository.dart';
@@ -13,6 +11,7 @@ import 'package:yuno/injector.dart';
 
 import '../atoms/platform_atom.dart';
 import '../models/embeds/game.dart';
+import '../repositories/storage_repository.dart';
 import 'game_action.dart';
 
 Future<void> firstInitialization(BuildContext context) async {
@@ -35,8 +34,8 @@ Future<void> createPlatform(PlatformModel platform) async {
 }
 
 Future<String?> getDirectory([String? initialFolder]) async {
-  final uri = await shared_storage.openDocumentTree(
-      initialUri: initialFolder == null ? null : Uri.parse(initialFolder));
+  final repository = injector<StorageRepository>();
+  final uri = await repository.getDirectoryUri(initialFolder);
   return uri?.toString();
 }
 
@@ -46,23 +45,18 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
   }
 
   final games = <Game>[];
-  final media = MediaStore();
+  final storageRepository = injector<StorageRepository>();
 
-  await shared_storage.persistedUriPermissions();
+  await storageRepository.persistedUriPermissions();
 
-  final canRead = await shared_storage.canRead(Uri.parse(platform.folder));
-  if (canRead != true) {
+  final canRead = await storageRepository.canReadFileByUri(Uri.parse(platform.folder));
+  if (canRead) {
     await getDirectory(platform.folder);
   }
 
-  final documents = await media.getDocumentTree(uriString: platform.folder);
-
-  if (documents == null) {
-    return [];
-  }
+  final documents = await storageRepository.getDocumentTree(platform.folder);
 
   final files = documents //
-      .children
       .where((doc) {
     return platform.category.checkFileExtension(doc.name ?? '');
   }).toList();
@@ -87,6 +81,7 @@ Future<void> syncPlatform(PlatformModel platform) async {
   platformSyncState.value = {...platformSyncState.value, platform.id};
 
   final repository = injector<SyncRepository>();
+  final storageRepository = injector<StorageRepository>();
 
   if (platform.category.id != 'android') {
     final folderGames = await _getGames(platform);
@@ -105,8 +100,8 @@ Future<void> syncPlatform(PlatformModel platform) async {
 
       final coverFolder = platform.folderCover ?? platform.folder;
 
-      var canRead = await shared_storage.canRead(Uri.parse(coverFolder));
-      if (canRead != true) {
+      var canRead = await storageRepository.canReadFileByUri(Uri.parse(coverFolder));
+      if (canRead) {
         await getDirectory(coverFolder);
       }
 
@@ -116,8 +111,7 @@ Future<void> syncPlatform(PlatformModel platform) async {
       );
 
       if (gameConfigState.value.coverFolder != null && !metaGame.isSynced) {
-        canRead = await shared_storage
-            .canRead(Uri.parse(gameConfigState.value.coverFolder!));
+        canRead = await storageRepository.canReadFileByUri(Uri.parse(gameConfigState.value.coverFolder!));
         if (canRead != true) {
           await getDirectory(gameConfigState.value.coverFolder!);
         }

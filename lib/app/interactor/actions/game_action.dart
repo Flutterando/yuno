@@ -2,17 +2,17 @@
 
 import 'dart:io';
 
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:yuno/app/interactor/actions/platform_action.dart';
 import 'package:yuno/app/interactor/actions/player_action.dart';
 import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 import 'package:yuno/app/interactor/models/platform_model.dart';
+import 'package:yuno/injector.dart';
 
 import '../atoms/game_atom.dart';
 import '../models/embeds/game.dart';
-import 'apps_action.dart' as appsAction;
+import '../repositories/storage_repository.dart';
+import 'apps_action.dart' as apps_action;
 
 Future<void> precacheGameImages(BuildContext context) async {
   for (var game in gamesState) {
@@ -45,25 +45,22 @@ Future<PlatformModel> updateGame(Game game, Game newGame) async {
 }
 
 Future<void> selectCover(Game game) async {
-  const XTypeGroup typeGroup = XTypeGroup(
-    label: 'images',
-    extensions: <String>['jpg', 'png'],
-  );
-  final file = await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+  final storageRepository = injector.get<StorageRepository>();
+
+  final file = await storageRepository.selectFile(<String>['jpg', 'jpeg', 'png']);
 
   if (file == null) {
     return;
   }
 
-  final extension = getExtensionFromMimeType(file.mimeType!);
-  final name = '${DateTime.now().millisecondsSinceEpoch}.$extension';
+
+  final bytes = await file.getBytes?.call();
+  if(bytes == null) return;
+
   final divide = Platform.pathSeparator;
 
-  final imagePath =
-      '${(await pathProvider.getApplicationDocumentsDirectory()).path}${divide}images$divide$name';
-  print(imagePath);
+  final imagePath = '${await storageRepository.getApplicationImagesDirectory()}$divide${file.name}';
 
-  final bytes = await file.readAsBytes();
   final imageFile = File(imagePath);
   await imageFile.create(recursive: true);
   await imageFile.writeAsBytes(bytes);
@@ -94,8 +91,8 @@ Future<void> openGameWithPlayer(Game game) async {
   }
   final intent = getAppIntent(game, selectedPlayer);
   if (intent == null) {
-    await appsAction.openApp(selectedPlayer.app);
+    await apps_action.openApp(selectedPlayer.app);
   } else {
-    appsAction.openIntent(intent);
+    apps_action.openIntent(intent);
   }
 }

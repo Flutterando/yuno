@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:battery_plus/battery_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:yuno/app/interactor/models/battery_model.dart';
 import 'package:yuno/app/interactor/models/game_config.dart';
@@ -8,6 +7,7 @@ import 'package:yuno/injector.dart';
 
 import '../atoms/config_atom.dart';
 import '../repositories/config_repository.dart';
+import '../repositories/device_repository.dart';
 import 'platform_action.dart';
 
 Future<void> saveConfig(GameConfig config) async {
@@ -31,19 +31,12 @@ String beautifyPath(String dir) {
   return path.replaceAll('/storage/emulated/0', '');
 }
 
-final _battery = Battery();
-StreamSubscription<BatteryState>? _batterySubscription;
+StreamSubscription<BatteryModel>? _batterySubscription;
 
 Future<void> registerBatteryListener() async {
+  final repository = injector.get<DeviceRepository>();
   _batterySubscription?.cancel();
-  _batterySubscription = _battery.onBatteryStateChanged.listen(
-    (BatteryState state) async {
-      batteryState.value = BatteryModel(
-        batteryLevel: await _battery.batteryLevel,
-        batteryState: state,
-      );
-    },
-  );
+  _batterySubscription = repository.batteryStatus().listen(batteryState.setValue);
 }
 
 Timer? timer;
