@@ -8,6 +8,7 @@ import 'package:yuno/injector.dart';
 
 import '../atoms/config_atom.dart';
 import '../repositories/config_repository.dart';
+import 'platform_action.dart';
 
 Future<void> saveConfig(GameConfig config) async {
   final repository = injector.get<ConfigRepository>();
@@ -23,6 +24,11 @@ Future<void> fetchConfig() async {
 Future<void> openUrl(Uri uri) async {
   final repository = injector.get<ConfigRepository>();
   await repository.openUrl(uri);
+}
+
+String beautifyPath(String dir) {
+  final path = convertContentUriToFilePath(dir);
+  return path.replaceAll('/storage/emulated/0', '');
 }
 
 final _battery = Battery();

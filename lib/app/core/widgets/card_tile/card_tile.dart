@@ -32,9 +32,41 @@ class CardTile extends StatelessWidget {
   Widget noImage() {
     final player = game.overradedPlayer;
     if (player != null) {
-      return Image.memory(
-        player.app.icon,
-        fit: BoxFit.cover,
+      return Stack(
+        alignment: Alignment.center,
+        fit: StackFit.expand,
+        children: [
+          Opacity(
+            opacity: 0.3,
+            child: Image.memory(player.app.icon, fit: BoxFit.cover),
+          ),
+          Center(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: Image.memory(
+                      player.app.icon,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       );
     } else {
       return Container(

@@ -8,6 +8,7 @@ class PlatformModel {
   final GameCategory category;
   final Player? player;
   final String folder;
+  final String? folderCover;
   final List<Game> games;
 
   final DateTime lastUpdate;
@@ -16,6 +17,7 @@ class PlatformModel {
     required this.id,
     required this.folder,
     this.player,
+    this.folderCover,
     required this.lastUpdate,
     required this.category,
     required this.games,
@@ -65,10 +67,12 @@ class PlatformModel {
       DateTime? lastUpdate,
       GameCategory? category,
       String? playerArguments,
+      String? folderCover,
       List<Game>? games}) {
     return PlatformModel(
       id: id,
       category: category ?? this.category,
+      folderCover: folderCover ?? this.folderCover,
       player: player ?? this.player,
       games: games ?? this.games,
       folder: folder ?? this.folder,

@@ -14,28 +14,35 @@ class GameConfig {
   final bool swapABXY;
   final bool menuSounds;
   final LanguageModel? language;
+  final bool enableIGDB;
+  final String? coverFolder;
 
   GameConfig({
     this.themeMode = ThemeMode.system,
     this.swapABXY = false,
     this.menuSounds = true,
     this.language,
+    this.enableIGDB = true,
     this.backgroundType = BackgroundType.bubble,
+    this.coverFolder,
   });
 
-  GameConfig copyWith({
-    ThemeMode? themeMode,
-    BackgroundType? backgroundType,
-    bool? swapABXY,
-    bool? menuSounds,
-    LanguageModel? language,
-  }) {
+  GameConfig copyWith(
+      {ThemeMode? themeMode,
+      BackgroundType? backgroundType,
+      bool? swapABXY,
+      bool? menuSounds,
+      LanguageModel? language,
+      bool? enableIGDB,
+      String? coverFolder}) {
     return GameConfig(
       themeMode: themeMode ?? this.themeMode,
       backgroundType: backgroundType ?? this.backgroundType,
       language: language ?? this.language,
       swapABXY: swapABXY ?? this.swapABXY,
       menuSounds: menuSounds ?? this.menuSounds,
+      enableIGDB: enableIGDB ?? this.enableIGDB,
+      coverFolder: coverFolder ?? this.coverFolder,
     );
   }
 
@@ -45,6 +52,8 @@ class GameConfig {
       'backgroundType': backgroundType.name,
       'swapABXY': swapABXY,
       'menuSounds': menuSounds,
+      'enableIGDB': enableIGDB,
+      if (coverFolder != null) 'coverFolder': coverFolder,
       if (language != null) 'locale': language!.locale.toString(),
     };
   }
@@ -64,6 +73,8 @@ class GameConfig {
       ),
       swapABXY: map['swapABXY'] as bool,
       menuSounds: map['menuSounds'] as bool,
+      enableIGDB: map['enableIGDB'] ?? true,
+      coverFolder: map['coverFolder'],
     );
   }
 

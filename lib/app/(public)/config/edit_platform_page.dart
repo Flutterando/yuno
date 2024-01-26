@@ -1,4 +1,3 @@
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:localization/localization.dart';
@@ -9,6 +8,7 @@ import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 
 import '../../core/widgets/animated_title_app_bart.dart';
+import '../../interactor/actions/config_action.dart';
 import '../../interactor/actions/platform_action.dart';
 import '../../interactor/models/embeds/game_category.dart';
 import '../../interactor/models/embeds/player.dart';
@@ -178,12 +178,35 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                     initialValue: beautifyPath(platform.folder),
                     readOnly: true,
                     onTap: () async {
-                      final selectedDirectory = await getDirectoryPath();
+                      final selectedDirectory = await getDirectory();
 
                       if (selectedDirectory != null) {
                         setState(() {
                           platform = platform.copyWith(
                             folder: selectedDirectory,
+                          );
+                        });
+                      }
+                    },
+                  ),
+                const Gap(17),
+                if (platform.category.id != 'android')
+                  TextFormField(
+                    key: Key(beautifyPath('${platform.folderCover ?? platform.folder}_cover')),
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: 'import_covers'.i18n(),
+                      suffixIcon: const Icon(Icons.folder),
+                    ),
+                    initialValue: beautifyPath(platform.folderCover ?? platform.folder),
+                    readOnly: true,
+                    onTap: () async {
+                      final selectedDirectory = await getDirectory();
+
+                      if (selectedDirectory != null) {
+                        setState(() {
+                          platform = platform.copyWith(
+                            folderCover: selectedDirectory,
                           );
                         });
                       }
@@ -245,10 +268,5 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
         ],
       ),
     );
-  }
-
-  String beautifyPath(String dir) {
-    final path = convertContentUriToFilePath(dir);
-    return path.replaceAll('/storage/emulated/0', '');
   }
 }

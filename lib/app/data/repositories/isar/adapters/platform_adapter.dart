@@ -26,6 +26,7 @@ abstract class PlatformAdapter {
     data.lastUpdate = DateTime.now();
     data.playerPackageId = model.player?.app.package;
     data.playerExtra = model.player?.extra;
+    data.folderCover = model.folderCover;
     return data;
   }
 
@@ -58,6 +59,7 @@ abstract class PlatformAdapter {
               extra: model.playerExtra,
             ),
       games: model.games.map((e) => gameFromData(e)).toList(),
+      folderCover: model.folderCover,
     );
   }
 

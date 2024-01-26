@@ -7,6 +7,7 @@ import '../../interactor/atoms/config_atom.dart';
 import '../../interactor/atoms/gamepad_atom.dart';
 import '../../interactor/services/gamepad_service.dart';
 import 'widgets/about_widget.dart';
+import 'widgets/cover_settings_widget.dart';
 import 'widgets/feedback_widget.dart';
 import 'widgets/platform_widget.dart';
 import 'widgets/preferences_widget.dart';
@@ -85,6 +86,10 @@ class _ConfigPageState extends State<ConfigPage> {
                     label: Text('preferences'.i18n()),
                   ),
                   NavigationRailDestination(
+                    icon: const Icon(Icons.image),
+                    label: Text('cover'.i18n()),
+                  ),
+                  NavigationRailDestination(
                     icon: const Icon(Icons.chat_outlined),
                     label: Text('feedback'.i18n()),
                   ),
@@ -114,6 +119,7 @@ class _ConfigPageState extends State<ConfigPage> {
               children: [
                 PlatformWidget(transitionAnimation: widget.transitionAnimation),
                 const PreferencesWidget(),
+                const CoverSettingsWidget(),
                 FeedbackWidget(),
                 AboutWidget(),
               ],

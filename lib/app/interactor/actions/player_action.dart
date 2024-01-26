@@ -18,14 +18,14 @@ final _defaultAppIntent = <String, IntentFunction>{
       arguments: {
         'ROM': convertContentUriToFilePath(g.path),
         'LIBRETRO':
-            '/data/data/com.retroarch.aarch64/cores/${p.extra}_libretro_android.so',
+        '/data/data/com.retroarch.aarch64/cores/${p.extra}_libretro_android.so',
         'CONFIGFILE':
-            '/storage/emulated/0/Android/data/com.retroarch.aarch64/files/retroarch.cfg',
+        '/storage/emulated/0/Android/data/com.retroarch.aarch64/files/retroarch.cfg',
         'DATADIR': '/data/data/com.retroarch.aarch64',
         'APK': '/data/app/com.retroarch.aarch64-1/base.apk',
         'SDCARD': '/storage/emulated/0',
         'EXTERNAL':
-            '/storage/emulated/0/Android/data/com.retroarch.aarch64/files',
+        '/storage/emulated/0/Android/data/com.retroarch.aarch64/files',
         'IME': 'com.android.inputmethod.latin/.LatinIME',
       },
     );
@@ -38,14 +38,13 @@ final _defaultAppIntent = <String, IntentFunction>{
       arguments: {
         'ROM': convertContentUriToFilePath(g.path),
         'LIBRETRO':
-        '/data/data/com.retroarch/cores/${p.extra}_libretro_android.so',
+            '/data/data/com.retroarch/cores/${p.extra}_libretro_android.so',
         'CONFIGFILE':
-        '/storage/emulated/0/Android/data/com.retroarch/files/retroarch.cfg',
+            '/storage/emulated/0/Android/data/com.retroarch/files/retroarch.cfg',
         'DATADIR': '/data/data/com.retroarch',
         'APK': '/data/app/com.retroarch-1/base.apk',
         'SDCARD': '/storage/emulated/0',
-        'EXTERNAL':
-        '/storage/emulated/0/Android/data/com.retroarch/files',
+        'EXTERNAL': '/storage/emulated/0/Android/data/com.retroarch/files',
         'IME': 'com.android.inputmethod.latin/.LatinIME',
       },
     );
@@ -113,6 +112,22 @@ final _defaultAppIntent = <String, IntentFunction>{
       package: 'xyz.aethersx2.custom',
       componentName: 'xyz.aethersx2.custom.EmulationActivity',
       arguments: {'bootPath': g.path},
+    );
+  },
+  'com.antutu.ABenchMark': (p, g) {
+    return PlayerIntent(
+      action: 'android.intent.action.VIEW',
+      package: 'com.antutu.ABenchMark',
+      componentName: 'org.citra.emu.ui.EmulationActivity',
+      arguments: {'GamePath': g.path},
+    );
+  },
+  'com.antutu.SAABenchMark': (p, g) {
+    return PlayerIntent(
+      action: 'android.intent.action.VIEW',
+      package: 'com.antutu.SAABenchMark',
+      componentName: 'org.citra.emu.ui.EmulationActivity',
+      arguments: {'GamePath': g.path},
     );
   },
   'org.citra.nightly': (p, g) {
@@ -247,6 +262,7 @@ final _defaultAppIntent = <String, IntentFunction>{
       action: 'android.intent.action.MAIN',
       package: 'com.dsemu.drastic',
       componentName: 'com.dsemu.drastic.DraSticActivity',
+      data: g.path,
     );
   },
   'me.magnum.melonds': (p, g) {
