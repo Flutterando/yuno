@@ -1,8 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:yuno/app/interactor/actions/platform_action.dart';
+import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
-import 'package:yuno/app/interactor/models/embeds/game_category.dart';
 import 'package:yuno/app/interactor/models/platform_model.dart';
+import 'package:yuno/app/interactor/repositories/platform_repository.dart';
+import 'package:yuno/injector.dart';
+
+class PlatformRepositoryMock extends Mock implements PlatformRepository {}
+
+class PlatformModelFake extends Fake implements PlatformModel {}
 
 void main() {
   group('PlatformAction |', () {
@@ -98,15 +105,47 @@ void main() {
       expect(games[1].name, 'game 3');
     });
 
-    test('Should create platform', () async {
-      final gameCategory = GameCategory(id: 'asd', name: 'categ', image: 'asd');
-      final platform = PlatformModel(
-          id: 1,
-          folder: '/0/',
-          lastUpdate: DateTime.now(),
-          category: gameCategory,
-          games: <Game>[]);
-      await createPlatform(platform);
+    test('Should fetch platform', () async {
+      // Arrange
+      final repository = PlatformRepositoryMock();
+      final platform = PlatformModelFake();
+      when(() => repository.fetchPlatforms())
+          .thenAnswer((_) => Future.value([platform]));
+      injector.replaceInstance<PlatformRepository>(repository);
+      //Act
+      final result = fetchPlatforms();
+      //Assert
+      expect(platformsState.next(), completion([platform]));
+      expect(result, completes);
+    });
+    test('Should update platform', () {
+      // Arrange
+      final platform = PlatformModelFake();
+      final repository = PlatformRepositoryMock();
+      when(() => repository.updatePlatform(platform))
+          .thenAnswer((_) => Future.value());
+      when(() => repository.fetchPlatforms())
+          .thenAnswer((invocation) => Future.value([platform]));
+      injector.replaceInstance<PlatformRepository>(repository);
+      //Act
+      final result = updatePlatform(platform);
+      //Assert
+      expect(platformsState.next(), completion([platform]));
+      expect(result, completes);
+    });
+    test('Should delete platform', () {
+      // Arrange
+      final platform = PlatformModelFake();
+      final repository = PlatformRepositoryMock();
+      when(() => repository.deletePlatform(platform))
+          .thenAnswer((_) => Future.value());
+      when(() => repository.fetchPlatforms())
+          .thenAnswer((_) => Future.value([]));
+      injector.replaceInstance<PlatformRepository>(repository);
+      //Act
+      final result = deletePlatform(platform);
+      //Assert
+      expectLater(result, completes);
     });
   });
 }

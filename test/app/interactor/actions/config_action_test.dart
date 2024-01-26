@@ -25,7 +25,7 @@ void main() {
       expect(result, completes);
     });
 
-    test('Should fetchConfig', () async {
+    test('Should fetchConfig', () {
       // Arrange
       final repository = ConfigRepositoryMock();
       when(() => repository.getConfig())
