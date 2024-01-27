@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:soundpool/soundpool.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
@@ -41,6 +43,7 @@ void openRail() {
 }
 
 Future<void> precacheCache() async {
+  if (Platform.isLinux) return;
   _clickSoundId = await rootBundle.load(_clickSound).then((ByteData soundData) {
     return _pool.load(soundData);
   });
