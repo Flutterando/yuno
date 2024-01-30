@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:yuno/app/interactor/actions/platform_action.dart';
@@ -5,11 +6,19 @@ import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 import 'package:yuno/app/interactor/models/platform_model.dart';
 import 'package:yuno/app/interactor/repositories/platform_repository.dart';
+import 'package:yuno/app/interactor/repositories/storage_repository.dart';
 import 'package:yuno/injector.dart';
 
 class PlatformRepositoryMock extends Mock implements PlatformRepository {}
 
+class StorageRepositoryMock extends Mock implements StorageRepository {}
+
+class BuildContextMock extends Mock implements BuildContext {}
+
 void main() {
+  setUpAll(() {
+    registerInjectAndroidConfig(injector);
+  });
   group('PlatformAction |', () {
     test('Uri to path', () {
       expect(
@@ -143,6 +152,28 @@ void main() {
       //Act
       final result = deletePlatform(platform);
       //Assert
+      expect(result, completes);
+    });
+    test('First initialization', () {
+      final bContext = BuildContextMock();
+      final repository = PlatformRepositoryMock();
+      when(() => repository.fetchPlatforms())
+          .thenAnswer((_) => Future.value([]));
+      injector.replaceInstance<PlatformRepository>(repository);
+      final result = firstInitialization(bContext);
+      expect(result, completes);
+    });
+    test('Get Directory', () {
+      final uri = Uri();
+      final repository = StorageRepositoryMock();
+      when(() => repository.getDirectoryUri(''))
+          .thenAnswer((_) => Future.value(uri));
+      injector.replaceInstance<StorageRepository>(repository);
+      final result = getDirectory('');
+      expect(result, completes);
+    });
+    test('Should not Get dominant color', () async {
+      final result = getDominatingColor('');
       expect(result, completes);
     });
   });

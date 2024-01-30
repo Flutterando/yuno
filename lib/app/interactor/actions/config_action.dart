@@ -36,7 +36,8 @@ StreamSubscription<BatteryModel>? _batterySubscription;
 Future<void> registerBatteryListener() async {
   final repository = injector.get<DeviceRepository>();
   _batterySubscription?.cancel();
-  _batterySubscription = repository.batteryStatus().listen(batteryState.setValue);
+  _batterySubscription =
+      repository.batteryStatus().listen(batteryState.setValue);
 }
 
 Timer? timer;
