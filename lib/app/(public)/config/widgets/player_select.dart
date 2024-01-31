@@ -7,6 +7,7 @@ import 'package:yuno/app/core/widgets/searchable_dropdown.dart';
 import 'package:yuno/app/interactor/models/embeds/player.dart';
 
 import '../../../core/constants/retroarch_cores.dart';
+import '../../../interactor/actions/player_action.dart';
 import '../../../interactor/atoms/app_atom.dart';
 import '../../../interactor/models/app_model.dart';
 
@@ -19,6 +20,43 @@ class PlayerSelect extends StatelessWidget {
     this.player,
     required this.onChanged,
   });
+
+  Widget appTile(AppModel app) {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundImage: MemoryImage(
+            app.icon,
+          ),
+        ),
+        const Gap(12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              style: const TextStyle(
+                fontSize: 12,
+              ),
+              app.name.substring(
+                0,
+                min(app.name.length, 30),
+              ),
+            ),
+            Text(
+              style: const TextStyle(
+                fontSize: 10,
+              ),
+              app.package.substring(
+                0,
+                min(app.package.length, 30),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +93,44 @@ class PlayerSelect extends StatelessWidget {
                   );
                 }).toList();
               },
-              onChanged: (AppModel? newValue) {
-                if (newValue != null) {
-                  onChanged(
-                    player?.copyWith(app: newValue) ?? Player(app: newValue),
-                  );
+              onChanged: (AppModel? newValue) async {
+                if (newValue == null) {
+                  return;
                 }
+
+                if (!isAppIntentSupported(newValue.package)) {
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            appTile(newValue),
+                            const Gap(20),
+                            Text(
+                              'app_not_supported_content'.i18n(),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('ok'.i18n()),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                  return;
+                }
+
+                onChanged(
+                  player?.copyWith(app: newValue) ?? Player(app: newValue),
+                );
               },
               items: appsState.value.map((AppModel value) {
                 return DropdownMenuItem<AppModel>(
@@ -70,40 +140,7 @@ class PlayerSelect extends StatelessWidget {
                       horizontal: 5,
                       vertical: 9,
                     ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: MemoryImage(
-                            value.icon,
-                          ),
-                        ),
-                        const Gap(12),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              style: const TextStyle(
-                                fontSize: 12,
-                              ),
-                              value.name.substring(
-                                0,
-                                min(value.name.length, 30),
-                              ),
-                            ),
-                            Text(
-                              style: const TextStyle(
-                                fontSize: 10,
-                              ),
-                              value.package.substring(
-                                0,
-                                min(value.package.length, 30),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    child: appTile(value),
                   ),
                 );
               }).toList(),

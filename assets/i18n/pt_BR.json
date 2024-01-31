@@ -41,6 +41,7 @@
   "change_title": "Mudar título",
   "change_cover": "Mudar Capa",
   "cover": "Capa",
+  "app_not_supported_content": "Este aplicativo não é suportado pelo YuNO!\nIsso pode levar a inconsistências.\nVocê ainda pode tentar executá-lo.",
   "import_covers": "Importar Capas",
   "import_covers_description": "Escolha um pasta que contenha\nas capas dos jogos.\nO nome da capa deve ser o mesmo do jogo.",
   "resync": "Ressincronizar",

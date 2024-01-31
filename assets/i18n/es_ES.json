@@ -41,6 +41,7 @@
   "change_title": "Cambiar título",
   "change_cover": "Cambiar Portada",
   "cover": "Portada",
+  "app_not_supported_content": "¡Esta aplicación no es compatible con YuNO!\nEsto puede provocar inconsistencias.\nAún puedes intentar ejecutarla.",
   "import_covers": "Importar Portadas",
   "import_covers_description": "Elige una carpeta que contenga\nportadas de juegos.\nEl nombre de la portada debe ser el mismo que el del juego.",
   "resync": "Re-sincronizar",

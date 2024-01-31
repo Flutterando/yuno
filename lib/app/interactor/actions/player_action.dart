@@ -9,6 +9,10 @@ PlayerIntent? getAppIntent(Game game, Player player) {
   return _defaultAppIntent[player.app.package]?.call(player, game);
 }
 
+bool isAppIntentSupported(String package) {
+  return _defaultAppIntent.containsKey(package);
+}
+
 final _defaultAppIntent = <String, IntentFunction>{
   'com.retroarch.aarch64': (p, g) {
     return PlayerIntent(

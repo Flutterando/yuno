@@ -41,6 +41,7 @@
   "change_title": "更改标题",
   "change_cover": "更改封面",
   "cover": "封面",
+  "app_not_supported_content": "YuNO 不支持此应用程序！\n这可能会导致不一致。\n您仍然可以尝试运行它。",
   "import_covers": "导入封面",
   "import_covers_description": "您可以导入封面，以便在游戏列表中显示。如果您不导入封面，将使用默认封面。",
   "resync": "重新同步",

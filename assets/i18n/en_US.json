@@ -41,6 +41,7 @@
   "change_title": "Change title",
   "change_cover": "Change Cover",
   "cover": "Cover",
+  "app_not_supported_content": "This application is not supported by YuNO!\nThis may lead to inconsistencies.\nYou can still try running it.",
   "import_covers": "Import covers",
   "import_covers_description": "Choose a folder that contains\ngame covers.\nThe cover name must be the same as the game.",
   "resync": "Resync",
