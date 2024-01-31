@@ -8,7 +8,6 @@ import 'package:yuno/app/interactor/repositories/storage_repository.dart';
 import 'package:shared_storage/shared_storage.dart' as shared_storage;
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-
 class MediaStorageRepository implements StorageRepository {
   @override
   Future<Uri?> getDirectoryUri([String? initialFolder]) async {
@@ -18,7 +17,7 @@ class MediaStorageRepository implements StorageRepository {
   }
 
   @override
-  Future<bool> canReadFileByUri(Uri uri) async{
+  Future<bool> canReadFileByUri(Uri uri) async {
     final canRead = await shared_storage.canRead(uri);
     return canRead != true;
   }
@@ -31,12 +30,14 @@ class MediaStorageRepository implements StorageRepository {
   @override
   Future<List<FileDocument>> getDocumentTree(String uriString) async {
     final media = MediaStore();
-    final doc = await media.getDocumentTree(uriString:uriString);
-    if(doc == null) return [];
-    return doc.children.map((e) => FileDocument(
-      name: e.name ?? '',
-      uriString: e.uriString,
-    )).toList();
+    final doc = await media.getDocumentTree(uriString: uriString);
+    if (doc == null) return [];
+    return doc.children
+        .map((e) => FileDocument(
+              name: e.name ?? '',
+              uriString: e.uriString,
+            ))
+        .toList();
   }
 
   @override
@@ -46,10 +47,11 @@ class MediaStorageRepository implements StorageRepository {
   }
 
   @override
-  Future<FileDocument?> selectFile([List<String>? extensions, bool ramdonName = true]) async {
+  Future<FileDocument?> selectFile(
+      [List<String>? extensions, bool ramdonName = true]) async {
     final XTypeGroup typeGroup = XTypeGroup(
       label: 'cover'.i18n(),
-      extensions:extensions,
+      extensions: extensions,
     );
     final file = await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
 

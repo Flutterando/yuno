@@ -47,19 +47,20 @@ Future<PlatformModel> updateGame(Game game, Game newGame) async {
 Future<void> selectCover(Game game) async {
   final storageRepository = injector.get<StorageRepository>();
 
-  final file = await storageRepository.selectFile(<String>['jpg', 'jpeg', 'png']);
+  final file =
+      await storageRepository.selectFile(<String>['jpg', 'jpeg', 'png']);
 
   if (file == null) {
     return;
   }
 
-
   final bytes = await file.getBytes?.call();
-  if(bytes == null) return;
+  if (bytes == null) return;
 
   final divide = Platform.pathSeparator;
 
-  final imagePath = '${await storageRepository.getApplicationImagesDirectory()}$divide${file.name}';
+  final imagePath =
+      '${await storageRepository.getApplicationImagesDirectory()}$divide${file.name}';
 
   final imageFile = File(imagePath);
   await imageFile.create(recursive: true);

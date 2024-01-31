@@ -192,13 +192,15 @@ class _EditPlatformPageState extends State<EditPlatformPage> {
                 const Gap(17),
                 if (platform.category.id != 'android')
                   TextFormField(
-                    key: Key(beautifyPath('${platform.folderCover ?? platform.folder}_cover')),
+                    key: Key(beautifyPath(
+                        '${platform.folderCover ?? platform.folder}_cover')),
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(),
                       labelText: 'import_covers'.i18n(),
                       suffixIcon: const Icon(Icons.folder),
                     ),
-                    initialValue: beautifyPath(platform.folderCover ?? platform.folder),
+                    initialValue:
+                        beautifyPath(platform.folderCover ?? platform.folder),
                     readOnly: true,
                     onTap: () async {
                       final selectedDirectory = await getDirectory();

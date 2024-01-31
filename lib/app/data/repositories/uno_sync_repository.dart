@@ -45,7 +45,8 @@ class UnoSyncRepository implements SyncRepository {
         return game;
       }
 
-      final gameName = basenameWithoutExtension(convertContentUriToFilePath(game.path));
+      final gameName =
+          basenameWithoutExtension(convertContentUriToFilePath(game.path));
 
       final file = files.firstWhereOrNull((doc) {
         final name = doc.name!;

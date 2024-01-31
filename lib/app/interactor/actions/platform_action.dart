@@ -49,7 +49,8 @@ Future<List<Game>> _getGames(PlatformModel platform) async {
 
   await storageRepository.persistedUriPermissions();
 
-  final canRead = await storageRepository.canReadFileByUri(Uri.parse(platform.folder));
+  final canRead =
+      await storageRepository.canReadFileByUri(Uri.parse(platform.folder));
   if (canRead) {
     await getDirectory(platform.folder);
   }
@@ -100,7 +101,8 @@ Future<void> syncPlatform(PlatformModel platform) async {
 
       final coverFolder = platform.folderCover ?? platform.folder;
 
-      var canRead = await storageRepository.canReadFileByUri(Uri.parse(coverFolder));
+      var canRead =
+          await storageRepository.canReadFileByUri(Uri.parse(coverFolder));
       if (canRead) {
         await getDirectory(coverFolder);
       }
@@ -111,7 +113,8 @@ Future<void> syncPlatform(PlatformModel platform) async {
       );
 
       if (gameConfigState.value.coverFolder != null && !metaGame.isSynced) {
-        canRead = await storageRepository.canReadFileByUri(Uri.parse(gameConfigState.value.coverFolder!));
+        canRead = await storageRepository
+            .canReadFileByUri(Uri.parse(gameConfigState.value.coverFolder!));
         if (canRead != true) {
           await getDirectory(gameConfigState.value.coverFolder!);
         }

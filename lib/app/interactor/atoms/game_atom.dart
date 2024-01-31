@@ -302,7 +302,18 @@ final categorieState = [
     name: 'Sega Saturn',
     image: img.segasaturnSVG,
     id: 'sega-saturn',
-    extensions: ['bin', 'ccd', 'chd', 'cue', 'iso', 'm3u', 'mds', 'toc', 'zip', '7z'],
+    extensions: [
+      'bin',
+      'ccd',
+      'chd',
+      'cue',
+      'iso',
+      'm3u',
+      'mds',
+      'toc',
+      'zip',
+      '7z'
+    ],
   ),
   GameCategory(
     name: 'Sony - PlayStation',
