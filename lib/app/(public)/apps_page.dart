@@ -5,9 +5,10 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:yuno/app/interactor/actions/apps_action.dart';
 import 'package:yuno/app/interactor/atoms/gamepad_atom.dart';
 
-import '../core/assets/sounds.dart' as sounds;
+import '../interactor/actions/sound_action.dart';
 import '../interactor/atoms/app_atom.dart';
 import '../interactor/atoms/config_atom.dart';
+import '../interactor/repositories/sound_repository.dart';
 import '../interactor/services/gamepad_service.dart';
 
 class AppsPage extends StatefulWidget {
@@ -80,7 +81,7 @@ class _AppsPageState extends State<AppsPage> {
       return;
     }
 
-    sounds.clickSound();
+    playSound(SoundAssets.click);
     setState(() {
       selectedItemIndex = index;
     });

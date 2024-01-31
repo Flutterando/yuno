@@ -7,12 +7,13 @@ import 'package:gap/gap.dart';
 import 'package:localization/localization.dart';
 import 'package:routefly/routefly.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:yuno/app/interactor/actions/sound_action.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/atoms/game_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
+import 'package:yuno/app/interactor/repositories/sound_repository.dart';
 import 'package:yuno/routes.dart';
 
-import '../core/assets/sounds.dart' as sounds;
 import '../core/assets/svgs.dart';
 import '../core/widgets/animated_menu_leading.dart';
 import '../core/widgets/animated_search.dart';
@@ -180,7 +181,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void switchRail() {
-    sounds.openRail();
+    playSound(SoundAssets.openRail);
     setState(() {
       hasRailsExtended = !hasRailsExtended;
     });
@@ -190,7 +191,7 @@ class _HomePageState extends State<HomePage> {
     if (!allowPressed()) {
       return;
     }
-    sounds.doubleSound();
+    playSound(SoundAssets.double);
 
     if (index < 0 || index >= availableCategoriesState.length) {
       return;
@@ -214,7 +215,7 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    sounds.clickSound();
+    playSound(SoundAssets.click);
     setState(() {
       selectedItemIndex = index;
     });
@@ -234,7 +235,7 @@ class _HomePageState extends State<HomePage> {
       return;
     }
     _lastOpenGameAt = DateTime.now();
-    sounds.enterSound();
+    playSound(SoundAssets.enter);
     openGameWithPlayer(games[selectedItemIndex]);
   }
 
