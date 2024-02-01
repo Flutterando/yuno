@@ -2,6 +2,7 @@
   "about": "Sobre",
   "about_long_text": "Yuno é uma interface frontal de jogos retrô minimalista e de código aberto, projetada para oferecer uma experiência de jogo nostálgica e eficiente. Este projeto visa criar uma interface simplificada para acessar e jogar seus jogos retrô favoritos.",
   "add_platorm": "Adicionar Plataforma",
+  "all": "Todos",
   "app_not_supported_content": "Este aplicativo não é suportado pelo YuNO!\nIsso pode levar a inconsistências.\nVocê ainda pode tentar executá-lo.",
   "apps": "Apps",
   "background_type": "Tipo de fundo",
@@ -43,11 +44,14 @@
   "see_more": "Ver mais",
   "select": "Selecionar",
   "settings": "Configurações",
+  "show_all_tab": "Mostrar aba \"Todas\"",
+  "show_favorite_tab": "Mostrar aba \"Favorito\"",
   "sounds": "Sons",
   "supporters": "Apoiadores",
   "swap_abxy": "Trocar ABXY",
   "syncing": "Sincronizando",
   "syncing_platform": "Sincronizando plataforma",
+  "tabs": "Abas",
   "theme": "Tema",
   "title": "Título"
 }

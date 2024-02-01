@@ -99,18 +99,20 @@ Future<void> syncPlatform(PlatformModel platform) async {
     } else {
       Game metaGame = platform.games[i];
 
-      final coverFolder = platform.folderCover ?? platform.folder;
+      var canRead = true;
 
-      var canRead =
-          await storageRepository.canReadFileByUri(Uri.parse(coverFolder));
-      if (canRead) {
-        await getDirectory(coverFolder);
+      if (platform.category.id != 'android') {
+        final coverFolder = platform.folderCover ?? platform.folder;
+        canRead =
+            await storageRepository.canReadFileByUri(Uri.parse(coverFolder));
+        if (canRead) {
+          await getDirectory(coverFolder);
+        }
+        metaGame = await repository.syncLocalFolder(
+          metaGame,
+          coverFolder,
+        );
       }
-
-      metaGame = await repository.syncLocalFolder(
-        metaGame,
-        coverFolder,
-      );
 
       if (gameConfigState.value.coverFolder != null && !metaGame.isSynced) {
         canRead = await storageRepository

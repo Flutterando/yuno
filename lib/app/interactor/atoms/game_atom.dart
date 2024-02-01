@@ -1,4 +1,7 @@
 import 'package:asp/asp.dart';
+import 'package:collection/collection.dart';
+import 'package:localization/localization.dart';
+import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 import 'package:yuno/app/interactor/models/embeds/game_category.dart';
@@ -19,38 +22,47 @@ final gameSearchState = Atom<String>(
   pipe: debounceTime(const Duration(milliseconds: 500)),
 );
 
-final gamesCategoryState = Atom<GameCategory>(defaultCategoryAllState);
+final gamesCategoryState = Atom<GameCategory>(GameCategory.unknown());
 
 List<Game> get filteredGamesState {
-  if (gamesCategoryState.value.id == 'all') {
+  var category = gamesCategoryState.value;
+  if (!availableCategoriesState.contains(gamesCategoryState.value)) {
+    if (availableCategoriesState.isNotEmpty) {
+      category = availableCategoriesState.first;
+    } else {
+      category = GameCategory.unknown();
+    }
+    gamesCategoryState.setValueWithoutReaction(category);
+  }
+
+  if (category.id == 'all') {
     return gamesState;
-  } else if (gamesCategoryState.value.id == 'favorite') {
+  } else if (category.id == 'favorite') {
     return gamesState //
         .where((game) => game.isFavorite)
         .toList();
   } else {
     return platformsState.value
-        .firstWhere(
-          (e) => e.category == gamesCategoryState.value,
-        )
-        .games;
+            .firstWhereOrNull(
+              (e) => e.category == category,
+            )
+            ?.games ??
+        [];
   }
 }
 
 List<GameCategory> get availableCategoriesState {
   return {
-    defaultCategoryAllState,
-    defaultCategoryFavorite,
+    if (gameConfigState.value.showAllTab)
+      GameCategory(name: 'all'.i18n(), image: img.allSVG, id: 'all'),
+    if (gameConfigState.value.showFavoriteTab)
+      GameCategory(
+          name: 'favorite'.i18n(), image: img.favoriteSVG, id: 'favorite'),
     ...platformsState.value //
         .map((platform) => platform.category)
         .toSet()
   }.toList(growable: false);
 }
-
-final defaultCategoryAllState =
-    GameCategory(name: 'All', image: img.allSVG, id: 'all');
-final defaultCategoryFavorite =
-    GameCategory(name: 'Favorite', image: img.favoriteSVG, id: 'favorite');
 
 List<GameCategory> get categoriesFoSelectState {
   return [

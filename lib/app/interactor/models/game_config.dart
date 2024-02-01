@@ -16,6 +16,8 @@ class GameConfig {
   final LanguageModel? language;
   final bool enableIGDB;
   final String? coverFolder;
+  final bool showAllTab;
+  final bool showFavoriteTab;
 
   GameConfig({
     this.themeMode = ThemeMode.system,
@@ -25,16 +27,21 @@ class GameConfig {
     this.enableIGDB = true,
     this.backgroundType = BackgroundType.bubble,
     this.coverFolder,
+    this.showAllTab = true,
+    this.showFavoriteTab = true,
   });
 
-  GameConfig copyWith(
-      {ThemeMode? themeMode,
-      BackgroundType? backgroundType,
-      bool? swapABXY,
-      bool? menuSounds,
-      LanguageModel? language,
-      bool? enableIGDB,
-      String? coverFolder}) {
+  GameConfig copyWith({
+    ThemeMode? themeMode,
+    BackgroundType? backgroundType,
+    bool? swapABXY,
+    bool? menuSounds,
+    LanguageModel? language,
+    bool? enableIGDB,
+    String? coverFolder,
+    bool? showAllTab,
+    bool? showFavoriteTab,
+  }) {
     return GameConfig(
       themeMode: themeMode ?? this.themeMode,
       backgroundType: backgroundType ?? this.backgroundType,
@@ -43,6 +50,8 @@ class GameConfig {
       menuSounds: menuSounds ?? this.menuSounds,
       enableIGDB: enableIGDB ?? this.enableIGDB,
       coverFolder: coverFolder ?? this.coverFolder,
+      showAllTab: showAllTab ?? this.showAllTab,
+      showFavoriteTab: showFavoriteTab ?? this.showFavoriteTab,
     );
   }
 
@@ -53,6 +62,8 @@ class GameConfig {
       'swapABXY': swapABXY,
       'menuSounds': menuSounds,
       'enableIGDB': enableIGDB,
+      'showAllTab': showAllTab,
+      'showFavoriteTab': showFavoriteTab,
       if (coverFolder != null) 'coverFolder': coverFolder,
       if (language != null) 'locale': language!.locale.toString(),
     };
@@ -74,6 +85,8 @@ class GameConfig {
       swapABXY: map['swapABXY'] as bool,
       menuSounds: map['menuSounds'] as bool,
       enableIGDB: map['enableIGDB'] ?? true,
+      showAllTab: map['showAllTab'] ?? true,
+      showFavoriteTab: map['showFavoriteTab'] ?? true,
       coverFolder: map['coverFolder'],
     );
   }

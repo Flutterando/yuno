@@ -2,6 +2,7 @@
   "about": "About",
   "about_long_text": "Yuno is a minimalist, open-source retro gaming frontend designed to deliver a nostalgic and efficient gaming experience. This project aims to create a simplified interface for accessing and playing your favorite retro games.",
   "add_platorm": "Add Platform",
+  "all": "All",
   "app_not_supported_content": "This application is not supported by YuNO!\nThis may lead to inconsistencies.\nYou can still try running it.",
   "apps": "Apps",
   "background_type": "Background type",
@@ -43,11 +44,14 @@
   "see_more": "See more",
   "select": "Select",
   "settings": "Settings",
+  "show_all_tab": "Show \"All\" tabs",
+  "show_favorite_tab": "Show \"Favorite\" tabs",
   "sounds": "Sounds",
   "supporters": "Supporters",
   "swap_abxy": "Swap ABXY",
   "syncing": "Syncing",
   "syncing_platform": "Syncing platform",
+  "tabs": "Tabs",
   "theme": "Theme",
   "title": "Title"
 }

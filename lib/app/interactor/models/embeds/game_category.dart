@@ -17,6 +17,15 @@ class GameCategory {
     this.shortName = shortName ?? name;
   }
 
+  factory GameCategory.unknown() {
+    return GameCategory(
+      id: 'unknown',
+      name: 'unknown',
+      image: '',
+      shortName: '',
+    );
+  }
+
   bool checkFileExtension(String name) {
     if (extensions.isEmpty) {
       return true;

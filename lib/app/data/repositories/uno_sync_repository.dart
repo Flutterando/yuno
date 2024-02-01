@@ -4,13 +4,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:uno/uno.dart';
 import 'package:yuno/app/interactor/actions/platform_action.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 
 import '../../core/constants/env.dart';
 import '../../interactor/repositories/sync_repository.dart';
-import 'package:path_provider/path_provider.dart' as pathProvider;
 
 class UnoSyncRepository implements SyncRepository {
   final Uno uno;
@@ -50,7 +50,7 @@ class UnoSyncRepository implements SyncRepository {
 
       final file = files.firstWhereOrNull((doc) {
         final name = doc.name!;
-        return name.startsWith('${gameName}.');
+        return name.startsWith(gameName);
       });
 
       if (file == null) {
@@ -83,6 +83,7 @@ class UnoSyncRepository implements SyncRepository {
           'client-id': igdbClientId,
           'authorization': 'Bearer $igdbToken',
         },
+        timeout: const Duration(seconds: 5),
         data:
             'fields artworks,collection,cover.*, first_release_date,genres.*,name,summary; search "${game.name}"; limit 2;',
       );

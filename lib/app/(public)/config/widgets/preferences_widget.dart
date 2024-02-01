@@ -136,7 +136,32 @@ class PreferencesWidget extends StatelessWidget {
                   );
                 },
               ),
-              const Gap(100),
+              const Gap(18),
+              Text(
+                'tabs'.i18n(),
+                style: theme.textTheme.titleMedium,
+              ),
+              const Gap(12),
+              SwitchListTile(
+                title: Text('show_all_tab'.i18n()),
+                value: gameConfigState.value.showAllTab,
+                onChanged: (value) {
+                  saveConfig(
+                    gameConfigState.value.copyWith(showAllTab: value),
+                  );
+                },
+              ),
+              const Gap(12),
+              SwitchListTile(
+                title: Text('show_favorite_tab'.i18n()),
+                value: gameConfigState.value.showFavoriteTab,
+                onChanged: (value) {
+                  saveConfig(
+                    gameConfigState.value.copyWith(showFavoriteTab: value),
+                  );
+                },
+              ),
+              const Gap(200),
             ],
           ),
         ),

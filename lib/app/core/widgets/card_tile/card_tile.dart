@@ -4,8 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:yuno/app/interactor/atoms/game_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
+
+import '../../assets/svgs.dart';
 
 class CardTile extends StatelessWidget {
   final Animation<double> transitionAnimation;
@@ -160,8 +161,8 @@ class CardTile extends StatelessWidget {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(7.0),
-                                child: SvgPicture.asset(
-                                  defaultCategoryFavorite.image,
+                                child: SvgPicture(
+                                  getLoader(favoriteSVG),
                                   width: 20,
                                 ),
                               ),

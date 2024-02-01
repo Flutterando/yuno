@@ -2,6 +2,7 @@
   "about": "关于",
   "about_long_text": "Yuno 是一个极简主义的开源复古游戏前端，旨在提供怀旧而高效的游戏体验。该项目旨在为访问和玩您喜爱的复古游戏创建一个简化的界面。",
   "add_platorm": "添加平台",
+  "all": "全部",
   "app_not_supported_content": "YuNO 不支持此应用程序！\n这可能会导致不一致。\n您仍然可以尝试运行它。",
   "apps": "应用程序",
   "background_type": "背景类型",
@@ -43,11 +44,14 @@
   "see_more": "查看更多",
   "select": "选择",
   "settings": "设置",
+  "show_all_tab": "显示所有选项卡",
+  "show_favorite_tab": "显示收藏选项卡",
   "sounds": "声音",
   "supporters": "支持者",
   "swap_abxy": "交换 ABXY",
   "syncing": "同步中",
   "syncing_platform": "正在同步平台",
+  "tabs": "选项卡",
   "theme": "主题",
   "title": "标题"
 }
