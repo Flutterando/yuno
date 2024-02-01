@@ -42,6 +42,7 @@ class _PlatformWidgetState extends State<PlatformWidget> {
   Widget build(BuildContext context) {
     return RxBuilder(builder: (_) {
       final platforms = platformsState.value;
+      final platformSync = platformSyncState.value;
 
       return Scaffold(
         body: platforms.isEmpty
@@ -90,8 +91,7 @@ class _PlatformWidgetState extends State<PlatformWidget> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         AnimatedSyncButton(
-                          isSyncing:
-                              platformSyncState.value.contains(platform.id),
+                          isSyncing: platformSync.contains(platform.id),
                           onLongPressed: () async {
                             if (checkPlatformSyncing()) {
                               return;
