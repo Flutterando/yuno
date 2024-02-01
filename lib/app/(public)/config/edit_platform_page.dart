@@ -8,12 +8,12 @@ import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
 
 import '../../core/widgets/animated_title_app_bart.dart';
+import '../../core/widgets/player_select.dart';
 import '../../interactor/actions/config_action.dart';
 import '../../interactor/actions/platform_action.dart';
 import '../../interactor/models/embeds/game_category.dart';
 import '../../interactor/models/embeds/player.dart';
 import '../../interactor/models/platform_model.dart';
-import 'widgets/player_select.dart';
 
 class EditPlatformPage extends StatefulWidget {
   const EditPlatformPage({super.key});

@@ -92,6 +92,19 @@ class _PlatformWidgetState extends State<PlatformWidget> {
                         AnimatedSyncButton(
                           isSyncing:
                               platformSyncState.value.contains(platform.id),
+                          onLongPressed: () async {
+                            if (checkPlatformSyncing()) {
+                              return;
+                            }
+                            final snackbar =
+                                SnackBar(content: Text('deep_sync'.i18n()));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackbar);
+                            final games = platform.games
+                                .map((e) => e.copyWith(isSynced: false))
+                                .toList();
+                            await syncPlatform(platform.copyWith(games: games));
+                          },
                           onPressed: () async {
                             if (checkPlatformSyncing()) {
                               return;

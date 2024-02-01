@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 class AnimatedSyncButton extends StatefulWidget {
   final bool isSyncing;
   final VoidCallback? onPressed;
+  final VoidCallback? onLongPressed;
 
   const AnimatedSyncButton({
     required this.isSyncing,
-    required this.onPressed,
+    this.onPressed,
+    this.onLongPressed,
     super.key,
   });
 
@@ -66,12 +68,17 @@ class _AnimatedSyncButtonState extends State<AnimatedSyncButton>
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: widget.onPressed,
-      icon: Transform.rotate(
-        angle: controller.value * (pi * 2),
-        alignment: Alignment.center,
-        child: const Icon(Icons.sync),
+    return InkWell(
+      onTap: widget.onPressed,
+      onLongPress: widget.onLongPressed,
+      borderRadius: BorderRadius.circular(50),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Transform.rotate(
+          angle: controller.value * (pi * 2),
+          alignment: Alignment.center,
+          child: const Icon(Icons.sync),
+        ),
       ),
     );
   }

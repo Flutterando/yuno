@@ -22,12 +22,12 @@ import '../core/widgets/background/background.dart';
 import '../core/widgets/card_tile/card_tile.dart';
 import '../core/widgets/command_bar.dart';
 import '../core/widgets/no_items_widget.dart';
+import '../core/widgets/player_select.dart';
 import '../interactor/actions/game_action.dart';
 import '../interactor/actions/platform_action.dart';
 import '../interactor/atoms/gamepad_atom.dart';
 import '../interactor/atoms/platform_atom.dart';
 import '../interactor/services/gamepad_service.dart';
-import 'config/widgets/player_select.dart';
 
 Route routeBuilder(BuildContext context, RouteSettings settings) {
   return PageRouteBuilder(

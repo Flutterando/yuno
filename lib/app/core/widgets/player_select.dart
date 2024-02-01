@@ -6,10 +6,10 @@ import 'package:localization/localization.dart';
 import 'package:yuno/app/core/widgets/searchable_dropdown.dart';
 import 'package:yuno/app/interactor/models/embeds/player.dart';
 
-import '../../../core/constants/retroarch_cores.dart';
-import '../../../interactor/actions/player_action.dart';
-import '../../../interactor/atoms/app_atom.dart';
-import '../../../interactor/models/app_model.dart';
+import '../../interactor/actions/player_action.dart';
+import '../../interactor/atoms/app_atom.dart';
+import '../../interactor/models/app_model.dart';
+import '../constants/retroarch_cores.dart';
 
 class PlayerSelect extends StatelessWidget {
   final Player? player;
