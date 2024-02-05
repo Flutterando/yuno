@@ -13,14 +13,14 @@
 <br>
 
 <p align="center">
-<img src="assets/vai.png" width="512" alt="Achitecture diagram"/>
+<img src="vai.png" width="512" alt="Achitecture diagram"/>
 </p>
 
 <br>
 <br>
 
 <p align="center">
-<img src="assets/volta.png" width="512" alt="Achitecture diagram"/>
+<img src="volta.png" width="512" alt="Achitecture diagram"/>
 </p>
 
 ### Limites
@@ -36,14 +36,13 @@ Visando aprimorar o desenvolvimento com eficiência e flexibilidade, a arquitetu
 Esta camada deve conter os elementos visuais da aplicação.
 
 ### Interactor
-Esta camada deve incorporar os elementos de estados ou reatividades, a representação das regras de negócio, abstrações para comunicação entre as outras camadas e as ações executadas pela sua UI.
-
+Esta camada deve abranger os estados ou reatividades da aplicação, a representação das regras de negócio, abstrações para comunicação entre as outras camadas e as operações executadas pela sua UI.
 
 - #### Atoms: 
-    Atom refere-se a um estado que possui reatividade própria.
+    Devem armazenar um estado da aplicação.
 
 - #### Actions: 
-    Actions têm o propósito de modificar nossos estados ou reatividades.
+    Devem ter a finalidade de alterar os estados da aplicação.
 
 - #### DTO: 
     Data Transfer Object é um padrão de design usado para transferir dados entre camadas.
@@ -51,24 +50,17 @@ Esta camada deve incorporar os elementos de estados ou reatividades, a represent
 - #### Models: 
     Representam as regras de negócio.
 
-- #### Abstrações:
-    Nesta seção, incluímos abstrações para o repository e services:
-  
-**Repository**:
-O Repository é um padrão que separa a lógica de negócios do acesso aos dados.
-
-**Service**:
-O Service é um padrão que encapsula a lógica de negócios para promover modularidade e reutilização.
-
-
+- #### Interfaces:
+    Devem conter interfaces para alcançar um baixo acoplamento, reduzindo a dependência direta e proporcionando uma substituição fácil de implementações.
+ 
 ## Data
-Esta camada deve interagir com as fontes externas.
+Devem interagir com as fontes externas.
 
 - #### Adapter:
-    O padrão Adapter é uma estrutura de design que possibilita o uso da interface de uma classe existente como se fosse outra interface. Funciona como um intermediário, permitindo que objetos com interfaces incompatíveis colaborem entre si e convertendo a interface de uma classe para algo que outra classe espera.
+   Deve haver as adaptaçãoes para garantir que os dados externos sigam os padrões definidos pela aplicação.
 
 - #### Tratamento de erros:
-    Deve haver tratamento de erros nesta seção para centralizar o local onde serão gerenciados os erros.
+    Como boa prática, devemos tratar os erros da nossa aplicação garantindo estabilidade e reduzindo a ocorrência de falhas.
   
 - #### Repository: 
     Deve conter a classe concreta, proveniente da abstração, para a comunicação entre as camadas.
