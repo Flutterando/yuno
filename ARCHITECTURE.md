@@ -13,14 +13,14 @@
 <br>
 
 <p align="center">
-<img src="vai.png" width="512" alt="Achitecture diagram"/>
+<img src="assets/vai.png" width="512" alt="Achitecture diagram"/>
 </p>
 
 <br>
 <br>
 
 <p align="center">
-<img src="volta.png" width="512" alt="Achitecture diagram"/>
+<img src="assets/volta.png" width="512" alt="Achitecture diagram"/>
 </p>
 
 ### Limites
