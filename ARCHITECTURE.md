@@ -1,14 +1,14 @@
 # Arquitetura - MiniCore
 
-**Objetivo**: Propor uma arquitetura simplificada e de fácil entendimento, tendo como foco o FrontEnd. A estrutura proposta é baseada em três camadas distintas, sendo elas: User Interactor, Adaptation e External.
+**Objective**: Propose a simplified and easily understandable architecture, focusing on the FrontEnd. The proposed structure is based on three distinct layers: User Interactor, Adaptation, and External.
 
-### Camadas
+### Layers
 
-**User Interactor**: Deve ser responsável por declarar as entradas, saídas e interações da aplicação.
+**User Interactor**: Should be responsible for declaring the inputs, outputs, and interactions of the application.
 
-**Adaptation**: Deve ser responsável por realizar a tradução e comunicação entre as camadas de User Interactor e External.
+**Adaptation**: Should be responsible for translating and facilitating communication between the User Interactor and External layers.
 
-**External**: Deve ser responsável por lidar com as informações externas à sua aplicação.
+**External**: Should be responsible for handling information external to your application.
 <br>
 <br>
 
@@ -23,88 +23,89 @@
 <img src="assets/volta.png" width="512" alt="Achitecture diagram"/>
 </p>
 
-### Limites
+### Limits
 
-Dentro dos limites arquiteturais estabelecidos, destaca-se que a camada User Interactor não deve possuir acesso direto à camada External. Para contornar essa restrição, a camada Adaptation atua como intermediária, realizando a comunicação entre as camadas User Interactor e External.
+Within the established architectural boundaries, it is highlighted that the User Interactor layer should not have direct access to the External layer. To overcome this restriction, the Adaptation layer acts as an intermediary, facilitating communication between the User Interactor and External layers.
 
-Visando aprimorar o desenvolvimento com eficiência e flexibilidade, a arquitetura assegura um baixo acoplamento através da clara separação de responsabilidades em cada camada.
+With the aim of enhancing development efficiency and flexibility, the architecture ensures low coupling through a clear separation of responsibilities in each layer.
 
 
-## Estrutura da Arquitetura
+## Architecture Structure
 
 ### UI (User Interface)
-Esta camada deve conter os elementos visuais da aplicação.
+This layer must contain the visual elements of the application.
 
 ### Interactor
-Esta camada deve abranger os estados ou reatividades da aplicação, a representação das regras de negócio, abstrações para comunicação entre as outras camadas e as operações executadas pela sua UI.
+This layer should encompass the states or reactivities of the application, the representation of business rules, abstractions for communication between the other layers, and the operations executed by its UI.
 
 - #### Atoms: 
-    Devem armazenar um estado da aplicação.
+    They must store an application state.
 
 - #### Actions: 
-    Devem ter a finalidade de alterar os estados da aplicação.
+    They must have the purpose of changing the application states.
 
 - #### DTO: 
-    Data Transfer Object é um padrão de design usado para transferir dados entre camadas.
+    Data Transfer Object is a design pattern used to transfer data between layers.
 
 - #### Models: 
-    Representam as regras de negócio.
+    They represent business rules.
 
 - #### Interfaces:
-    Devem conter interfaces para alcançar um baixo acoplamento, reduzindo a dependência direta e proporcionando uma substituição fácil de implementações.
+    They must contain interfaces to achieve loose coupling, reducing direct dependency and providing easy replacement of implementations.
  
 ## Data
-Devem interagir com as fontes externas.
+They must interact with external sources.
 
-- #### Adapter:
-   Deve haver as adaptaçãoes para garantir que os dados externos sigam os padrões definidos pela aplicação.
+- #### Adapter: 
+    There must be adaptations to ensure that external data follows the standards defined by the application.
 
-- #### Tratamento de erros:
-    Como boa prática, devemos tratar os erros da nossa aplicação garantindo estabilidade e reduzindo a ocorrência de falhas.
+- #### Tratamento de erros:  
+    As a good practice, we must handle errors in our application, ensuring stability and reducing the occurrence of failures.
   
 - #### Repository: 
-    Deve conter a classe concreta, proveniente da abstração, para a comunicação entre as camadas.
+    It must contain the concrete class, coming from the abstraction, for communication between layers.
     
 - #### Service: 
-    Deve conter a classe concreta, proveniente da abstração, para a comunicação entre as camadas.
+    It must contain the concrete class, coming from the abstraction, for communication between layers.
 
 ## Core
-Deve conter informações globais e reutilizáveis para todas as camadas da aplicação.
+It must contain global and reusable information for all layers of the application.
 
-## Benefícios da Utilização da Arquitetura MiniCore:
+## Benefits of Using MiniCore Architecture:
 
-- #### Facilidade de Entendimento: 
-    Proporciona uma estrutura clara e intuitiva, facilitando a compreensão do código para desenvolvedores.
+- #### Ease of Understanding: 
+    It provides a clear and intuitive structure, making the code easier for developers to understand.
 
-- #### Manutenibilidade:
-    A divisão em camadas e a clareza das responsabilidades tornam o código mais fácil de manter e atualizar.
+- #### Maintainability:
+    Layering and clarifying responsibilities makes the code easier to maintain and update.
 
-- #### Escalabilidade de Código:
-    A arquitetura é projetada para lidar com o crescimento da aplicação, garantindo que ela possa escalar de maneira eficaz.
+- #### Code Scalability:
+    The architecture is designed to handle application growth, ensuring it can scale effectively.
 
-- #### Acesso Fácil a Variáveis e Métodos Globais:
-    Facilita o acesso a variáveis e métodos globais, promovendo uma comunicação eficiente entre as diferentes partes do sistema.
+- #### Easy Access to Global Variables and Methods:
+    Facilitates access to global variables and methods, promoting efficient communication between different parts of the system.
 
-- #### Facilita Testes (Sem a Necessidade de Mockar os Atoms):
-    Simplifica a realização de testes, eliminando a necessidade de simular ou simbolizar (mockar) os Atoms, tornando o processo de teste mais eficiente e menos complexo.
+- #### Facilitates Testing (Without the Need to Mock the Atoms):
+    Simplify testing by eliminating the need to simulate or mock Atoms, making the testing process more efficient and less complex.
 
-Outro ponto importante será o estado global, com isso ganhamos: <br><br>
-Acessibilidade Universal: O estado global permite que os dados sejam acessados de qualquer lugar da aplicação. Isso pode ser útil quando você precisa compartilhar informações entre diferentes partes da interface do usuário ou entre várias páginas.
+Another important point will be the global state, and with this, we gain:
 
-Redução da Complexidade: Em vez de passar dados através de vários componentes como parâmetros, o uso de um estado global pode simplificar o código, tornando-o mais legível e fácil de entender.
+Universal Accessibility: The global state allows data to be accessed from anywhere in the application. This can be useful when you need to share information between different parts of the user interface or across multiple pages.
 
-Facilidade de Manutenção: Ao centralizar o estado em um local global, torna-se mais fácil manter e modificar o estado da aplicação. Isso pode facilitar a resolução de bugs e a implementação de novos recursos.
+Reduced Complexity: Instead of passing data through various components as parameters, the use of a global state can simplify the code, making it more readable and easier to understand.
 
-Melhor Desempenho: Dependendo da implementação, um estado global bem gerenciado pode levar a um melhor desempenho, especialmente em comparação com abordagens onde os dados precisam ser passados através de muitos componentes.
+Ease of Maintenance: By centralizing the state in a global location, it becomes easier to maintain and modify the application state. This can facilitate bug resolution and the implementation of new features.
+
+Improved Performance: Depending on the implementation, a well-managed global state can lead to better performance, especially compared to approaches where data needs to be passed through many components.
 
 
 <br>
 
-Ao adotar a arquitetura MiniCore, os desenvolvedores ganham um desenvolvimento de sistemas mais robustos, eficientes e de fácil manutenção, promovendo uma experiência de desenvolvimento mais positiva e sustentável.
+By adopting the MiniCore architecture, developers gain a more robust, efficient, and easily maintainable system development, promoting a more positive and sustainable development experience.
 
-## Exemplos
+## Examples
 
-De acordo com a arquitetura proposta, define-se a estrutura de pastas.
+According to the proposed architecture, the folder structure is defined.
 
 ```
 .
@@ -128,4 +129,4 @@ De acordo com a arquitetura proposta, define-se a estrutura de pastas.
         └── services/
 ```
 
-Veja alguns [exemplos](https://github.com/FelCarv01/mini-core-examples).
+See some [examples](https://github.com/FelCarv01/mini-core-examples).
