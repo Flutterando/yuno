@@ -1,10 +1,9 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:localization/localization.dart';
 import 'package:routefly/routefly.dart';
-import 'package:yuno/app/core/assets/svgs.dart';
 import 'package:yuno/app/core/widgets/animated_floating_action_button.dart';
+import 'package:yuno/app/core/widgets/category_image_widget.dart';
 import 'package:yuno/app/interactor/atoms/platform_atom.dart';
 
 import '../../../../routes.dart';
@@ -68,9 +67,8 @@ class _PlatformWidgetState extends State<PlatformWidget> {
                   }
                   return ListTile(
                     leading: CircleAvatar(
-                      child: SvgPicture(
-                        getLoader(platform.category.image),
-                        width: 24,
+                      child: CategoryImageWidget(
+                        image: platform.category.image,
                       ),
                     ),
                     title: Text(platform.category.name),
