@@ -1,5 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:collection/collection.dart';
+import 'package:emu_icons/emu_icons.dart';
 import 'package:localization/localization.dart';
 import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/atoms/platform_atom.dart';
@@ -80,7 +81,7 @@ List<GameCategory> get categoriesFoSelectState {
 final categorieState = [
   GameCategory(
     name: 'Android',
-    image: CategoryImage.fromSVG(img.androidSVG),
+    image: CategoryImage.fromEmuIcon(BrandLogoName.android),
     id: 'android',
   ),
   GameCategory(
@@ -115,7 +116,7 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Nintendo - 64',
-    image: CategoryImage.fromSVG(img.n64SVG),
+    image: CategoryImage.fromEmuIcon(BrandLogoName.n64),
     id: 'nintendo-64',
     extensions: ['bin', 'n64', 'ndd', 'u1', 'v64', 'z64', 'zip', '7z'],
   ),
@@ -169,7 +170,7 @@ final categorieState = [
   GameCategory(
     name: 'Nintendo - Switch',
     shortName: 'Switch',
-    image: CategoryImage.fromSVG(img.switchSVG),
+    image: CategoryImage.fromEmuIcon(BrandLogoName.switchLogo),
     id: 'switch',
     extensions: ['nro', 'nso', 'nca', 'xci', 'nsp'],
   ),
@@ -359,7 +360,7 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Sony - PlayStation 2',
-    image: CategoryImage.fromSVG(img.ps2SVG),
+    image: CategoryImage.fromEmuIcon(BrandLogoName.ps2),
     id: 'ps2',
     extensions: ['bin', 'chd', 'cso', 'cue', 'gz', 'iso'],
   ),

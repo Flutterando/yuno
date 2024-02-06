@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:emu_icons/emu_icons.dart';
 
 class GameCategory {
   final String id;
@@ -33,14 +34,16 @@ class GameCategory {
   }
 
   @override
-  bool operator ==(covariant GameCategory other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other.id == id && other.name == name && other.image == image;
+    return other is GameCategory && other.id == id;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ image.hashCode;
+  int get hashCode {
+    return id.hashCode;
+  }
 }
 
 abstract class CategoryImage {
@@ -50,7 +53,7 @@ abstract class CategoryImage {
     return SVGCategoryImage(path);
   }
 
-  static CategoryImage fromEmuIcon(icon) {
+  static CategoryImage fromEmuIcon(BrandLogoName icon) {
     return EmuIconsCategoryImage(icon);
   }
 }
@@ -62,7 +65,7 @@ class SVGCategoryImage extends CategoryImage {
 }
 
 class EmuIconsCategoryImage extends CategoryImage {
-  final dynamic icon;
+  final BrandLogoName icon;
 
   const EmuIconsCategoryImage(this.icon);
 }

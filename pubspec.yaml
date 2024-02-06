@@ -72,6 +72,8 @@ dependencies:
   shared_storage: ^0.8.0
   install_or_uninstall_app_listener:
     path: plugins/install_or_uninstall_app_listener
+  emu_icons:
+    path: plugins/emu_icons
   localization: ^2.1.1
 
 dev_dependencies:

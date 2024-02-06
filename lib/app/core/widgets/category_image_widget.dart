@@ -1,3 +1,4 @@
+import 'package:emu_icons/brand_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:yuno/app/interactor/models/embeds/game_category.dart';
@@ -20,7 +21,11 @@ class CategoryImageWidget extends StatelessWidget {
       );
     }
     if (localImage is EmuIconsCategoryImage) {
-      return const SizedBox();
+      return SizedBox(
+        width: size,
+        height: size,
+        child: BrandIcon(logoName: localImage.icon),
+      );
     }
 
     return const SizedBox();
