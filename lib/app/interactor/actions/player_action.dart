@@ -158,12 +158,20 @@ final _defaultAppIntent = <String, IntentFunction>{
       arguments: {'GamePath': g.path},
     );
   },
-  '3ds.org.citra.citra_emu': (p, g) {
+  'org.citra.citra_emu.canary': (p, g) {
+    return PlayerIntent(
+      action: 'android.intent.action.VIEW',
+      package: 'org.citra.citra_emu.canary',
+      componentName: 'org.citra.citra_emu.activities.EmulationActivity',
+      data: g.path,
+    );
+  },
+  'org.citra.citra_emu': (p, g) {
     return PlayerIntent(
       action: 'android.intent.action.VIEW',
       package: 'org.citra.citra_emu',
-      componentName: 'org.citra.citra_emu.ui.EmulationActivity',
-      arguments: {'GamePath': g.path},
+      componentName: 'org.citra.citra_emu.activities.EmulationActivity',
+      data: g.path,
     );
   },
   'com.explusalpha.MdEmu': (p, g) {
