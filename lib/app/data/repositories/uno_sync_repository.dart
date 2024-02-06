@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:uno/uno.dart';
 import 'package:yuno/app/interactor/actions/platform_action.dart';
 import 'package:yuno/app/interactor/models/embeds/game.dart';
@@ -14,13 +14,20 @@ import '../../interactor/repositories/sync_repository.dart';
 
 class UnoSyncRepository implements SyncRepository {
   final Uno uno;
+  final MediaStore media;
 
-  UnoSyncRepository({required this.uno});
+  UnoSyncRepository._({required this.uno, required this.media});
+
+  factory UnoSyncRepository() {
+    return UnoSyncRepository._(
+      uno: Uno(),
+      media: MediaStore(),
+    );
+  }
 
   @override
   Future<Game> syncLocalFolder(Game game, String coverFolder) async {
     try {
-      final media = MediaStore();
       final documents = await media.getDocumentTree(uriString: coverFolder);
 
       if (documents == null) {
@@ -57,7 +64,7 @@ class UnoSyncRepository implements SyncRepository {
         return game;
       }
 
-      final dirPath = await pathProvider.getApplicationDocumentsDirectory();
+      final dirPath = await path_provider.getApplicationDocumentsDirectory();
       final imageName = file.name!;
       final pathSeparator = Platform.pathSeparator;
       final imageFile = File('${dirPath.path}${pathSeparator}local_$imageName');
@@ -100,7 +107,7 @@ class UnoSyncRepository implements SyncRepository {
       var image = "https:${json['cover']['url']}";
       image = image.replaceAll('t_thumb', 't_cover_big');
 
-      final dirPath = await pathProvider.getApplicationDocumentsDirectory();
+      final dirPath = await path_provider.getApplicationDocumentsDirectory();
       final imageName = basename(image);
       final pathSeparator = Platform.pathSeparator;
       final imageFile = File('${dirPath.path}${pathSeparator}igdb_$imageName');

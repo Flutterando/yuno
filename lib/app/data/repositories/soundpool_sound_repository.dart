@@ -4,9 +4,15 @@ import 'package:soundpool/soundpool.dart';
 import '../../interactor/repositories/sound_repository.dart';
 
 class SoundpoolSoundRepository extends SoundRepository {
-  final _soundPool = Soundpool.fromOptions(
-    options: const SoundpoolOptions(streamType: StreamType.music),
-  );
+  final Soundpool _soundPool;
+
+  SoundpoolSoundRepository._(this._soundPool);
+
+  factory SoundpoolSoundRepository() {
+    return SoundpoolSoundRepository._(Soundpool.fromOptions(
+      options: const SoundpoolOptions(streamType: StreamType.music),
+    ));
+  }
 
   int _clickSoundId = 0;
   int _doubleSoundId = 0;
