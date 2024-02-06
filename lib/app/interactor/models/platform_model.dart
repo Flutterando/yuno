@@ -56,7 +56,7 @@ class PlatformModel {
       folder: '',
       lastUpdate: DateTime.now(),
       games: [],
-      category: GameCategory(name: '', image: '', id: ''),
+      category: const GameCategory(name: '', image: NoCategoryImage(), id: ''),
     );
   }
 

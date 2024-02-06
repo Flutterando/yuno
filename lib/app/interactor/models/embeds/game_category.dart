@@ -3,25 +3,23 @@
 class GameCategory {
   final String id;
   final String name;
-  late final shortName;
-  final String image;
+  final String shortName;
+  final CategoryImage image;
   final List<String> extensions;
 
-  GameCategory({
+  const GameCategory({
     required this.id,
     required this.name,
     required this.image,
     String? shortName,
     this.extensions = const [],
-  }) {
-    this.shortName = shortName ?? name;
-  }
+  }) : shortName = shortName ?? name;
 
   factory GameCategory.unknown() {
-    return GameCategory(
+    return const GameCategory(
       id: 'unknown',
       name: 'unknown',
-      image: '',
+      image: NoCategoryImage(),
       shortName: '',
     );
   }
@@ -43,4 +41,32 @@ class GameCategory {
 
   @override
   int get hashCode => id.hashCode ^ name.hashCode ^ image.hashCode;
+}
+
+abstract class CategoryImage {
+  const CategoryImage();
+
+  static CategoryImage fromSVG(String path) {
+    return SVGCategoryImage(path);
+  }
+
+  static CategoryImage fromEmuIcon(icon) {
+    return EmuIconsCategoryImage(icon);
+  }
+}
+
+class SVGCategoryImage extends CategoryImage {
+  final String path;
+
+  const SVGCategoryImage(this.path);
+}
+
+class EmuIconsCategoryImage extends CategoryImage {
+  final dynamic icon;
+
+  const EmuIconsCategoryImage(this.icon);
+}
+
+class NoCategoryImage extends CategoryImage {
+  const NoCategoryImage();
 }

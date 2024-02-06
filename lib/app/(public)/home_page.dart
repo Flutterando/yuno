@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:localization/localization.dart';
 import 'package:routefly/routefly.dart';
@@ -14,12 +13,12 @@ import 'package:yuno/app/interactor/models/embeds/game.dart';
 import 'package:yuno/app/interactor/repositories/sound_repository.dart';
 import 'package:yuno/routes.dart';
 
-import '../core/assets/svgs.dart';
 import '../core/widgets/animated_menu_leading.dart';
 import '../core/widgets/animated_search.dart';
 import '../core/widgets/animated_title_app_bart.dart';
 import '../core/widgets/background/background.dart';
 import '../core/widgets/card_tile/card_tile.dart';
+import '../core/widgets/category_image_widget.dart';
 import '../core/widgets/command_bar.dart';
 import '../core/widgets/no_items_widget.dart';
 import '../core/widgets/player_select.dart';
@@ -555,10 +554,9 @@ class _HomePageState extends State<HomePage> {
                                   controller: menuScrollController,
                                   index: i,
                                   key: ValueKey(i),
-                                  child: SvgPicture(
-                                    getLoader(
-                                        availableCategoriesState[i].image),
-                                    width: 28,
+                                  child: CategoryImageWidget(
+                                    image: availableCategoriesState[i].image,
+                                    size: 28,
                                   ),
                                 ),
                                 label:

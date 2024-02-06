@@ -54,10 +54,17 @@ List<Game> get filteredGamesState {
 List<GameCategory> get availableCategoriesState {
   return {
     if (gameConfigState.value.showAllTab)
-      GameCategory(name: 'all'.i18n(), image: img.allSVG, id: 'all'),
+      GameCategory(
+        name: 'all'.i18n(),
+        image: CategoryImage.fromSVG(img.allSVG),
+        id: 'all',
+      ),
     if (gameConfigState.value.showFavoriteTab)
       GameCategory(
-          name: 'favorite'.i18n(), image: img.favoriteSVG, id: 'favorite'),
+        name: 'favorite'.i18n(),
+        image: CategoryImage.fromSVG(img.favoriteSVG),
+        id: 'favorite',
+      ),
     ...platformsState.value //
         .map((platform) => platform.category)
         .toSet()
@@ -71,73 +78,77 @@ List<GameCategory> get categoriesFoSelectState {
 }
 
 final categorieState = [
-  GameCategory(name: 'Android', image: img.androidSVG, id: 'android'),
+  GameCategory(
+    name: 'Android',
+    image: CategoryImage.fromSVG(img.androidSVG),
+    id: 'android',
+  ),
   GameCategory(
     name: 'Neo Geo',
-    image: img.neogeoSVG,
+    image: CategoryImage.fromSVG(img.neogeoSVG),
     id: 'neo-geo',
     extensions: ['zip', '7z'],
   ),
   GameCategory(
     name: 'Neo Geo CD',
-    image: img.neogeocdSVG,
+    image: CategoryImage.fromSVG(img.neogeocdSVG),
     id: 'neo-geo-cd',
     extensions: ['chd', 'cue'],
   ),
   GameCategory(
     name: 'Neo Geo Pocket',
-    image: img.neogeopocketSVG,
+    image: CategoryImage.fromSVG(img.neogeopocketSVG),
     id: 'neo-geo-pocket',
     extensions: ['zip', 'ngp', 'ngc', '7z'],
   ),
   GameCategory(
     name: 'Neo Geo Pocket Color',
-    image: img.neogeopocketcolorSVG,
+    image: CategoryImage.fromSVG(img.neogeopocketcolorSVG),
     id: 'neo-geo-pocket-color',
     extensions: ['zip', 'ngp', 'ngc', '7z'],
   ),
   GameCategory(
     name: 'Nintendo - 3DS',
-    image: img.n3dsSVG,
+    image: CategoryImage.fromSVG(img.n3dsSVG),
     id: 'nintendo-3ds',
     extensions: ['3ds', '3dsx', 'app', 'axf', 'cci', 'cxi', 'elf'],
   ),
   GameCategory(
     name: 'Nintendo - 64',
-    image: img.n64SVG,
+    image: CategoryImage.fromSVG(img.n64SVG),
     id: 'nintendo-64',
     extensions: ['bin', 'n64', 'ndd', 'u1', 'v64', 'z64', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Nintendo - DS',
-    image: img.ndsSVG,
+    image: CategoryImage.fromSVG(img.ndsSVG),
     id: 'nintendo-ds',
     extensions: ['bin', 'nds', 'rar', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Nintendo - Game Boy',
     shortName: 'Game Boy',
-    image: img.gameboySVG,
+    image: CategoryImage.fromSVG(img.gameboySVG),
     id: 'nintendo-game-boy',
     extensions: ['gb', 'gbc', 'gbs', '7z', 'zip'],
   ),
   GameCategory(
     name: 'Nintendo - Game Boy Advance',
-    image: img.gameboyadvanceSVG,
+    image: CategoryImage.fromSVG(img.gameboyadvanceSVG),
     shortName: 'Game Boy Advance',
     id: 'nintendo-gba',
     extensions: ['bin', 'gba', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Nintendo - Game Boy Color',
-    image: img.gameboycolorSVG,
+    image: CategoryImage.fromSVG(img.gameboycolorSVG),
     shortName: 'Game Boy Color',
     id: 'nintendo-gbc',
     extensions: ['gb', 'gbc', 'gbs', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Nintendo - GameCube',
-    image: img.gamecubeSVG,
+    image: CategoryImage.fromSVG(img.gamecubeSVG),
     shortName: 'GameCube',
     id: 'nintendo-gamecube',
     extensions: [
@@ -158,14 +169,14 @@ final categorieState = [
   GameCategory(
     name: 'Nintendo - Switch',
     shortName: 'Switch',
-    image: img.switchSVG,
+    image: CategoryImage.fromSVG(img.switchSVG),
     id: 'switch',
     extensions: ['nro', 'nso', 'nca', 'xci', 'nsp'],
   ),
   GameCategory(
     name: 'Nintendo - Wii',
     shortName: 'Wii',
-    image: img.wiiSVG,
+    image: CategoryImage.fromSVG(img.wiiSVG),
     id: 'nintendo-wii',
     extensions: [
       'ciao',
@@ -184,7 +195,7 @@ final categorieState = [
   GameCategory(
     name: 'Nintendo Entertainment System',
     shortName: 'NES',
-    image: img.nesSVG,
+    image: CategoryImage.fromSVG(img.nesSVG),
     id: 'nes',
     extensions: [
       'bin',
@@ -201,7 +212,7 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Sega 32X',
-    image: img.sega32xSVG,
+    image: CategoryImage.fromSVG(img.sega32xSVG),
     id: 'sega-32x',
     extensions: [
       '32x',
@@ -224,7 +235,7 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Sega CD',
-    image: img.segacdSVG,
+    image: CategoryImage.fromSVG(img.segacdSVG),
     id: 'sega-cd',
     extensions: [
       '32x',
@@ -248,19 +259,19 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Sega Dreamcast',
-    image: img.dreamcastSVG,
+    image: CategoryImage.fromSVG(img.dreamcastSVG),
     id: 'sega-dreamcast',
     extensions: ['cdi', 'chd', 'gdi', 'bin', 'dat', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Sega Game Gear',
-    image: img.segagamegearSVG,
+    image: CategoryImage.fromSVG(img.segagamegearSVG),
     id: 'sega-game-gear',
     extensions: ['bin', 'bms', 'col', 'gg', 'rom', 'sg', 'sms', 'zip', '7z'],
   ),
   GameCategory(
     name: 'Sega Genesis',
-    image: img.segagenesisSVG,
+    image: CategoryImage.fromSVG(img.segagenesisSVG),
     id: 'sega-genesis',
     extensions: [
       '32x',
@@ -286,7 +297,7 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Sega Master System',
-    image: img.segamastersystemSVG,
+    image: CategoryImage.fromSVG(img.segamastersystemSVG),
     id: 'sega-master-system',
     extensions: [
       '32x',
@@ -312,7 +323,7 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Sega Saturn',
-    image: img.segasaturnSVG,
+    image: CategoryImage.fromSVG(img.segasaturnSVG),
     id: 'sega-saturn',
     extensions: [
       'bin',
@@ -329,7 +340,7 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Sony - PlayStation',
-    image: img.ps1SVG,
+    image: CategoryImage.fromSVG(img.ps1SVG),
     id: 'ps1',
     extensions: [
       'bin',
@@ -348,26 +359,26 @@ final categorieState = [
   ),
   GameCategory(
     name: 'Sony - PlayStation 2',
-    image: img.ps2SVG,
+    image: CategoryImage.fromSVG(img.ps2SVG),
     id: 'ps2',
     extensions: ['bin', 'chd', 'cso', 'cue', 'gz', 'iso'],
   ),
   GameCategory(
     name: 'Sony - PlayStation Portable',
-    image: img.pspSVG,
+    image: CategoryImage.fromSVG(img.pspSVG),
     id: 'psp',
     extensions: ['cso', 'chd', 'elf', 'iso', 'pbp', 'prx'],
   ),
   GameCategory(
     name: 'Sony - PlayStation Vita',
-    image: img.psvitaSVG,
+    image: CategoryImage.fromSVG(img.psvitaSVG),
     id: 'psvita',
     extensions: ['dpt'],
   ),
   GameCategory(
     name: 'Super Nintendo Entertainment System',
     shortName: 'SNES',
-    image: img.snesSVG,
+    image: CategoryImage.fromSVG(img.snesSVG),
     id: 'snes',
     extensions: [
       'bml',
@@ -390,13 +401,13 @@ final categorieState = [
   ),
   GameCategory(
     name: 'TurboGrafx 16',
-    image: img.turbografx16SVG,
+    image: CategoryImage.fromSVG(img.turbografx16SVG),
     id: 'turbografx-16',
     extensions: ['ccd', 'chd', 'cue', 'm3u', 'pce', 'sgx', 'toc', 'zip', '7z'],
   ),
   GameCategory(
     name: 'TurboGrafx CD',
-    image: img.turbografxcdSVG,
+    image: CategoryImage.fromSVG(img.turbografxcdSVG),
     id: 'turbografx-cd',
     extensions: ['ccd', 'chd', 'cue', 'm3u', 'pce', 'sgx', 'toc'],
   ),
