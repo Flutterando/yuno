@@ -38,7 +38,7 @@ class _AppPageState extends State<AppPage> {
       Future.delayed(const Duration(seconds: 2)),
     ]).whenComplete(() {
       sounds.playSound(SoundAssets.intro);
-      Routefly.navigate(routePaths.home);
+      Routefly.navigate(routePaths.home.list);
     });
   }
 

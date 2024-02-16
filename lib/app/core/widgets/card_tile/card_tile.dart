@@ -8,7 +8,7 @@ import 'package:yuno/app/interactor/models/embeds/game.dart';
 
 import '../../assets/svgs.dart';
 
-class CardTile extends StatelessWidget {
+class CardTile extends InheritedWidget {
   final Animation<double> transitionAnimation;
   final int index;
   final int gamesLength;
@@ -28,9 +28,32 @@ class CardTile extends StatelessWidget {
     this.onTap,
     this.selected = false,
     required this.onLongPressed,
-  });
+  }) : super(child: const _CardTile());
 
-  Widget noImage() {
+  static CardTile _of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<CardTile>()!;
+  }
+
+  @override
+  bool updateShouldNotify(CardTile oldWidget) {
+    var update = oldWidget.game.path != game.path ||
+        oldWidget.transitionAnimation != transitionAnimation ||
+        oldWidget.index != index ||
+        oldWidget.gamesLength != gamesLength ||
+        oldWidget.selected != selected;
+
+    if (selected) {
+      update = update || oldWidget.colorSelect != colorSelect;
+    }
+
+    return update;
+  }
+}
+
+class _CardTile extends StatelessWidget {
+  const _CardTile();
+
+  Widget noImage(Game game) {
     final player = game.overradedPlayer;
     if (player != null) {
       return Stack(
@@ -88,20 +111,14 @@ class CardTile extends StatelessWidget {
     }
   }
 
-  Widget withImage() {
-    return Image.file(
-      File(game.image),
-      fit: BoxFit.cover,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    double start = index / gamesLength;
-    double duration = 1 / gamesLength;
+    final tile = CardTile._of(context);
+    double start = tile.index / tile.gamesLength;
+    double duration = 1 / tile.gamesLength;
 
     final curved = CurvedAnimation(
-      parent: transitionAnimation,
+      parent: tile.transitionAnimation,
       curve: const Interval(0.5, 1.0),
     );
 
@@ -110,7 +127,7 @@ class CardTile extends StatelessWidget {
       curve: Interval(start, start + duration, curve: Curves.easeOut),
     ));
 
-    final scale = selected ? 1.0 : 0.97;
+    final scale = tile.selected ? 1.0 : 0.97;
     final borderRadius = BorderRadius.circular(12);
 
     return AnimatedBuilder(
@@ -130,28 +147,31 @@ class CardTile extends StatelessWidget {
                   borderRadius: borderRadius,
                 ),
                 child: InkWell(
-                  onLongPress: onLongPressed,
+                  onLongPress: tile.onLongPressed,
                   borderRadius: borderRadius,
-                  onTap: onTap,
+                  onTap: tile.onTap,
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     decoration: BoxDecoration(
                       borderRadius: borderRadius,
                       border: Border.all(
-                        color: selected ? colorSelect : Colors.transparent,
+                        color: tile.selected
+                            ? tile.colorSelect
+                            : Colors.transparent,
                         width: 3,
                       ),
-                      image: game.hasImage
+                      image: tile.game.hasImage
                           ? DecorationImage(
-                              image: FileImage(File(game.image)),
+                              image: FileImage(File(tile.game.image)),
                               fit: BoxFit.cover,
                             )
                           : null,
                     ),
                     child: Stack(
                       children: [
-                        if (!game.hasImage) Center(child: noImage()),
-                        if (game.isFavorite)
+                        if (!tile.game.hasImage)
+                          Center(child: noImage(tile.game)),
+                        if (tile.game.isFavorite)
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Container(

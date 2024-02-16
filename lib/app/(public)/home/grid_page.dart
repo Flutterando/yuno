@@ -13,20 +13,20 @@ import 'package:yuno/app/interactor/models/embeds/game.dart';
 import 'package:yuno/app/interactor/repositories/sound_repository.dart';
 import 'package:yuno/routes.dart';
 
-import '../core/widgets/animated_menu_leading.dart';
-import '../core/widgets/animated_search.dart';
-import '../core/widgets/animated_title_app_bart.dart';
-import '../core/widgets/background/background.dart';
-import '../core/widgets/card_tile/card_tile.dart';
-import '../core/widgets/category_image_widget.dart';
-import '../core/widgets/command_bar.dart';
-import '../core/widgets/no_items_widget.dart';
-import '../core/widgets/player_select.dart';
-import '../interactor/actions/game_action.dart';
-import '../interactor/actions/platform_action.dart';
-import '../interactor/atoms/gamepad_atom.dart';
-import '../interactor/atoms/platform_atom.dart';
-import '../interactor/services/gamepad_service.dart';
+import '../../core/widgets/animated_menu_leading.dart';
+import '../../core/widgets/animated_search.dart';
+import '../../core/widgets/animated_title_app_bart.dart';
+import '../../core/widgets/background/background.dart';
+import '../../core/widgets/card_tile/card_tile.dart';
+import '../../core/widgets/category_image_widget.dart';
+import '../../core/widgets/command_bar.dart';
+import '../../core/widgets/no_items_widget.dart';
+import '../../core/widgets/player_select.dart';
+import '../../interactor/actions/game_action.dart';
+import '../../interactor/actions/platform_action.dart';
+import '../../interactor/atoms/gamepad_atom.dart';
+import '../../interactor/atoms/platform_atom.dart';
+import '../../interactor/services/gamepad_service.dart';
 
 Route routeBuilder(BuildContext context, RouteSettings settings) {
   return PageRouteBuilder(
@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void handleKey(GamepadButton? event) {
-    if (Routefly.currentOriginalPath != routePaths.home ||
+    if (Routefly.currentOriginalPath != routePaths.home.grid ||
         event == null ||
         _dialogContext?.mounted == true) {
       return;
