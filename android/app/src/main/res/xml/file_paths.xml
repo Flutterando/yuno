@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths>
-    <external-path name="external_files" path="."/>
-</paths>
+<resources>
+    <paths>
+        <external-path
+            path="."
+            name="ext" />
+        <root-path
+            path="."
+            name="root" />
+    </paths>
+</resources>
