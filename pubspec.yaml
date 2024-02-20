@@ -20,7 +20,7 @@ version: 0.2.1+23
 
 environment:
   sdk: '>=3.2.4 <4.0.0'
-  flutter: 3.16.7
+  flutter: 3.19.0
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -69,7 +69,7 @@ dependencies:
   battery_plus: ^5.0.2
   intl: ^0.18.1
   based_battery_indicator: ^1.0.3
-  shared_storage: ^0.8.0
+  shared_storage: ^0.8.1
   install_or_uninstall_app_listener:
     path: plugins/install_or_uninstall_app_listener
   emu_icons:

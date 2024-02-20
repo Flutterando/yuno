@@ -17,44 +17,44 @@ jobs:
       contents: write
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.16.7'
-        channel: 'stable'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+          channel: 'stable'
 
-    - name: Install dependencies
-      run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-    - name: Decode Keystore File
-      run: echo "${{ secrets.KEYSTORE }}" | base64 -d > ${{ github.workspace }}/android/app/key.jks
-      env:
-        KEYSTORE: ${{ secrets.KEYSTORE }}
+      - name: Decode Keystore File
+        run: echo "${{ secrets.KEYSTORE }}" | base64 -d > ${{ github.workspace }}/android/app/key.jks
+        env:
+          KEYSTORE: ${{ secrets.KEYSTORE }}
 
-    - name: Decode .env
-      run: echo "${{ secrets.FLUTTER_ENV }}" > ${{ github.workspace }}/.env
-      env:
-        FLUTTER_ENV: ${{ secrets.FLUTTER_ENV }}
+      - name: Decode .env
+        run: echo "${{ secrets.FLUTTER_ENV }}" > ${{ github.workspace }}/.env
+        env:
+          FLUTTER_ENV: ${{ secrets.FLUTTER_ENV }}
 
-    - name: Build APK
-      run: flutter build apk --dart-define-from-file=.env --release --split-per-abi --flavor prod
-      env:
-        KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWD }}
-        KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+      - name: Build APK
+        run: flutter build apk --dart-define-from-file=.env --release --split-per-abi --flavor prod
+        env:
+          KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWD }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
 
-    - name: Build AppBundle
-      run: flutter build appbundle --release --flavor prod
-      env:
-        KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWD }}
-        KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+      - name: Build AppBundle
+        run: flutter build appbundle --release --flavor prod
+        env:
+          KEYSTORE_PASSWD: ${{ secrets.KEYSTORE_PASSWD }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
 
-    - name: Upload Artifact
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "${{ github.workspace }}/build/app/outputs/flutter-apk/*.apk,${{ github.workspace }}/build/app/outputs/bundle/prodRelease/app-prod-release.aab"
-        allowUpdates: true
-        makeLatest: true
-        omitBodyDuringUpdate: true
+      - name: Upload Artifact
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "${{ github.workspace }}/build/app/outputs/flutter-apk/*.apk,${{ github.workspace }}/build/app/outputs/bundle/prodRelease/app-prod-release.aab"
+          allowUpdates: true
+          makeLatest: true
+          omitBodyDuringUpdate: true
 
