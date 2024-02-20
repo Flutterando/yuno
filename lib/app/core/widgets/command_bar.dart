@@ -15,6 +15,7 @@ class NavigationCommand extends StatelessWidget {
   final VoidCallback? onPlay;
   final VoidCallback? onFavorite;
   final VoidCallback? onSettings;
+  final VoidCallback? onGameView;
   final ColorScheme colorScheme;
   final bool isSyncing;
 
@@ -22,6 +23,7 @@ class NavigationCommand extends StatelessWidget {
     super.key,
     this.onApps,
     this.onFavorite,
+    this.onGameView,
     this.onSettings,
     this.onPlay,
     this.isSyncing = false,
@@ -55,10 +57,10 @@ class NavigationCommand extends StatelessWidget {
             background: colorScheme.onBackground,
             textColor: colorScheme.background,
           ),
-          const Gap(17),
           IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.laptop_windows_outlined)),
+            onPressed: onGameView,
+            icon: const Icon(Icons.space_dashboard_rounded),
+          ),
           const Spacer(),
           if (isSyncing)
             Row(

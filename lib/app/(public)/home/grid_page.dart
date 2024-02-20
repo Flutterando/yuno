@@ -241,6 +241,7 @@ class _HomePageState extends State<HomePage> with HomeMixin {
                 onSettings: openSettings,
                 onFavorite: favorite,
                 onPlay: openGame,
+                onGameView: gameView,
               ),
             ),
           ],

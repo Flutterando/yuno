@@ -229,6 +229,9 @@ class _ListPageState extends State<ListPage> with HomeMixin {
                               controller: scrollController,
                               index: index,
                               child: AnimatedTile(
+                                index: index,
+                                gamesLength: games.length,
+                                transitionAnimation: widget.transitionAnimation,
                                 colorScheme: colorScheme,
                                 selected: selected,
                                 text: game.name,
@@ -236,6 +239,11 @@ class _ListPageState extends State<ListPage> with HomeMixin {
                                     getPlatformFromGame(game).category.name,
                                 onTap: () {
                                   handlerSelect(index);
+                                  openGame();
+                                },
+                                onLongPressed: () {
+                                  handlerSelect(index);
+                                  gameMenu();
                                 },
                               ),
                             );
@@ -268,6 +276,7 @@ class _ListPageState extends State<ListPage> with HomeMixin {
               onSettings: openSettings,
               onFavorite: favorite,
               onPlay: openGame,
+              onGameView: gameView,
             ),
           ),
         ],
