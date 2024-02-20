@@ -55,6 +55,10 @@ class NavigationCommand extends StatelessWidget {
             background: colorScheme.onBackground,
             textColor: colorScheme.background,
           ),
+          const Gap(17),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.laptop_windows_outlined)),
           const Spacer(),
           if (isSyncing)
             Row(

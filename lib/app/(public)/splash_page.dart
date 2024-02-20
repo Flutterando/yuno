@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:routefly/routefly.dart';
 import 'package:yuno/app/interactor/actions/gamepad_action.dart';
+import 'package:yuno/app/interactor/atoms/config_atom.dart';
 import 'package:yuno/app/interactor/repositories/sound_repository.dart';
 import 'package:yuno/routes.dart';
 
@@ -14,6 +15,7 @@ import '../interactor/actions/apps_action.dart';
 import '../interactor/actions/config_action.dart';
 import '../interactor/actions/platform_action.dart' as platform;
 import '../interactor/actions/sound_action.dart' as sounds;
+import '../interactor/models/game_config.dart';
 
 class AppPage extends StatefulWidget {
   const AppPage({super.key});
@@ -38,7 +40,11 @@ class _AppPageState extends State<AppPage> {
       Future.delayed(const Duration(seconds: 2)),
     ]).whenComplete(() {
       sounds.playSound(SoundAssets.intro);
-      Routefly.navigate(routePaths.home.list);
+      if (gameConfigState.value.gameView == GameViewType.grid) {
+        Routefly.navigate(routePaths.home.grid);
+      } else {
+        Routefly.navigate(routePaths.home.list);
+      }
     });
   }
 

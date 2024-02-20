@@ -8,6 +8,11 @@ import 'package:yuno/app/interactor/atoms/config_atom.dart';
 
 import 'language_model.dart';
 
+enum GameViewType {
+  grid,
+  list,
+}
+
 class GameConfig {
   final ThemeMode themeMode;
   final BackgroundType backgroundType;
@@ -18,12 +23,14 @@ class GameConfig {
   final String? coverFolder;
   final bool showAllTab;
   final bool showFavoriteTab;
+  final GameViewType gameView;
 
   GameConfig({
     this.themeMode = ThemeMode.system,
     this.swapABXY = false,
     this.menuSounds = true,
     this.language,
+    this.gameView = GameViewType.grid,
     this.enableIGDB = true,
     this.backgroundType = BackgroundType.bubble,
     this.coverFolder,
@@ -41,8 +48,10 @@ class GameConfig {
     String? coverFolder,
     bool? showAllTab,
     bool? showFavoriteTab,
+    GameViewType? gameView,
   }) {
     return GameConfig(
+      gameView: gameView ?? this.gameView,
       themeMode: themeMode ?? this.themeMode,
       backgroundType: backgroundType ?? this.backgroundType,
       language: language ?? this.language,
@@ -57,6 +66,7 @@ class GameConfig {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'gameView': gameView.name,
       'themeMode': themeMode.name,
       'backgroundType': backgroundType.name,
       'swapABXY': swapABXY,
@@ -81,6 +91,10 @@ class GameConfig {
       ),
       language: languagesState.firstWhereOrNull(
         (e) => e.locale.toString() == map['locale'],
+      ),
+      gameView: GameViewType.values.firstWhere(
+        (e) => e.name == map['gameView'],
+        orElse: () => GameViewType.grid,
       ),
       swapABXY: map['swapABXY'] as bool,
       menuSounds: map['menuSounds'] as bool,
